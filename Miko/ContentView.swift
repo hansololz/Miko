@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -55,7 +56,74 @@ struct ContentView: View {
     }
 }
 
+struct CameraView: UIViewControllerRepresentable {
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        var parent: CameraView
+
+        init(parent: CameraView) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let uiImage = info[.originalImage] as? UIImage {
+                parent.image = uiImage
+            }
+
+            parent.presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var image: UIImage?
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = .camera
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+}
+
+struct ContentView2: View {
+    @State private var image: UIImage? = nil
+    @State private var isShowingCamera = false
+
+    var body: some View {
+        VStack {
+            if let image = image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                Text("No Image")
+                    .foregroundColor(.gray)
+                    .font(.largeTitle)
+            }
+
+            Button(action: {
+                isShowingCamera = true
+            }) {
+                Text("Take Photo")
+                    .font(.title)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .sheet(isPresented: $isShowingCamera) {
+                CameraView(image: $image)
+            }
+        }
+    }
+}
+
 #Preview {
-    ContentView()
+    ContentView2()
         .modelContainer(for: Item.self, inMemory: true)
 }

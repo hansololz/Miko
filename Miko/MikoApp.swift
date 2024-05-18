@@ -25,7 +25,7 @@ struct MikoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView2()
         }
         .modelContainer(sharedModelContainer)
     }
