@@ -96,9 +96,9 @@
 		63F0C6992BF899B6001F426E /* Miko */ = {
 			isa = PBXGroup;
 			children = (
+				63F0C7152BFACF7A001F426E /* Data */,
 				63F0C7122BFABD8C001F426E /* Views */,
 				63F0C69A2BF899B6001F426E /* MikoApp.swift */,
-				63F0C69E2BF899B6001F426E /* Item.swift */,
 				63F0C6A02BF899B7001F426E /* Assets.xcassets */,
 				63F0C6A22BF899B7001F426E /* Preview Content */,
 			);
@@ -136,6 +136,14 @@
 				63F0C7132BFABDBA001F426E /* MainView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		63F0C7152BFACF7A001F426E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				63F0C69E2BF899B6001F426E /* Item.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
