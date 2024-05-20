@@ -12,10 +12,12 @@ import AVFoundation
 import SwiftData
 
 struct ContentView: View {
+    @State private var searchText = ""
+    
     var body: some View {
-        CameraView()
+        CameraView(searchText: $searchText)
             .edgesIgnoringSafeArea(.all)
-        BottomSheetEntryView()
+        BottomSheetView(searchText: $searchText)
     }
 }
 

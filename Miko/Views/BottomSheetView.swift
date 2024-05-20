@@ -9,19 +9,33 @@ import Foundation
 import UIKit
 import SwiftUI
 
-struct BottomSheetEntryView: View {
+struct BottomSheetView: View {
     @State var showButtomSheet = false
+    @Binding var searchText: String
     
     var body: some View {
         VStack {
-            Button("Shows sheet") {
+            Button("Shows sheet: \"\(searchText)\", click on tags") {
                 showButtomSheet.toggle()
             }
             .buttonStyle(.borderedProminent)
         }
         .padding()
         .sheet(isPresented: $showButtomSheet) {
-            Text("This is s bottom sheet")
+            Text("Tommy, process change should show here.")
+            Text("Current text: \"\(searchText)\"")
         }
     }
+}
+
+#Preview {
+    struct BottomwSheetPreview: View {
+        @State private var searchText = "Preview Text"
+        
+        var body: some View {
+            BottomSheetView(searchText: $searchText)
+        }
+    }
+
+    return BottomwSheetPreview()
 }

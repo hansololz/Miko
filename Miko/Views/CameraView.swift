@@ -10,11 +10,19 @@ import SwiftUI
 import Vision
 
 struct CameraView: UIViewControllerRepresentable {
+    @Binding var searchText: String
+    
     class Coordinator: NSObject {
         var parent: CameraView
         
         init(parent: CameraView) {
             self.parent = parent
+        }
+        
+        func updateSearchText(_ text: String) {
+            DispatchQueue.main.async {
+                self.parent.searchText = text
+            }
         }
     }
     
@@ -24,17 +32,20 @@ struct CameraView: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> UIViewController {
         let cameraViewController = CameraViewController()
+        cameraViewController.coordinator = context.coordinator
         return cameraViewController
     }
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
+
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     var timer: Timer?
     var lastSampleBuffer: CMSampleBuffer?
+    weak var coordinator: CameraView.Coordinator?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,10 +172,19 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let alert = UIAlertController(title: "Text Selected", message: label.text, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
+        
+        coordinator?.updateSearchText(label.text ?? "")
     }
 }
 
 #Preview {
-    CameraView()
-        .modelContainer(for: Item.self, inMemory: true)
+    struct CameraView_Preview: View {
+        @State private var searchText = "Preview Text"
+        
+        var body: some View {
+            CameraView(searchText: $searchText)
+        }
+    }
+
+    return CameraView_Preview()
 }
