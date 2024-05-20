@@ -29,12 +29,12 @@ struct CameraView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
-
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     var timer: Timer?
+    var lastSampleBuffer: CMSampleBuffer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,18 +65,20 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         captureSession.startRunning()
         
-        // Start the timer to control scanning interval
-        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(scanForText), userInfo: nil, repeats: true)
+        // Start the timer to control capture interval
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
     }
     
-    @objc func scanForText() {
-        guard let connection = previewLayer.connection else { return }
-        
-        let videoOutput = captureSession.outputs.first as? AVCaptureVideoDataOutput
-        videoOutput?.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
+    @objc func captureFrame() {
+        guard let sampleBuffer = lastSampleBuffer else { return }
+        processSampleBuffer(sampleBuffer)
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        lastSampleBuffer = sampleBuffer
+    }
+    
+    func processSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
         var requestOptions: [VNImageOption : Any] = [:]
@@ -134,7 +136,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let rect = observation.boundingBox.applying(transform)
         
         let label = UILabel(frame: rect)
-        label.backgroundColor = UIColor.yellow.withAlphaComponent(1.0)
+        label.backgroundColor = UIColor.yellow.withAlphaComponent(0.7)
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.text = recognizedText
@@ -161,8 +163,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         present(alert, animated: true, completion: nil)
     }
 }
-
-
 
 #Preview {
     CameraView()
