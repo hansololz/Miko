@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct MikoApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             // The item model is placeholder, will replace this with something more useful later.
