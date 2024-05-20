@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69A2BF899B6001F426E /* MikoApp.swift */; };
-		63F0C69D2BF899B6001F426E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69C2BF899B6001F426E /* ContentView.swift */; };
 		63F0C69F2BF899B6001F426E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69E2BF899B6001F426E /* Item.swift */; };
 		63F0C6A12BF899B7001F426E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A02BF899B7001F426E /* Assets.xcassets */; };
 		63F0C6A42BF899B7001F426E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A32BF899B7001F426E /* Preview Assets.xcassets */; };
@@ -38,7 +37,6 @@
 /* Begin PBXFileReference section */
 		63F0C6972BF899B6001F426E /* Miko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F0C69A2BF899B6001F426E /* MikoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoApp.swift; sourceTree = "<group>"; };
-		63F0C69C2BF899B6001F426E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		63F0C69E2BF899B6001F426E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		63F0C6A02BF899B7001F426E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63F0C6A32BF899B7001F426E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 			children = (
 				63F0C7122BFABD8C001F426E /* Views */,
 				63F0C69A2BF899B6001F426E /* MikoApp.swift */,
-				63F0C69C2BF899B6001F426E /* ContentView.swift */,
 				63F0C69E2BF899B6001F426E /* Item.swift */,
 				63F0C6A02BF899B7001F426E /* Assets.xcassets */,
 				63F0C6A22BF899B7001F426E /* Preview Content */,
@@ -271,7 +268,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F0C69D2BF899B6001F426E /* ContentView.swift in Sources */,
 				63F0C7142BFABDBA001F426E /* MainView.swift in Sources */,
 				63F0C69F2BF899B6001F426E /* Item.swift in Sources */,
 				63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */,
