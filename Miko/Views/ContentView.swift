@@ -12,12 +12,19 @@ import AVFoundation
 import SwiftData
 
 struct ContentView: View {
+    @State private var isSheetPresented = true
     @State private var searchText = ""
     
     var body: some View {
-        CameraView(searchText: $searchText)
-            .edgesIgnoringSafeArea(.all)
-        BottomSheetView(searchText: $searchText)
+        VStack {
+            CameraView(searchText: $searchText)
+                .edgesIgnoringSafeArea(.all)
+        }
+        .sheet(isPresented: $isSheetPresented) {
+            BottomSheetView(isSheetPresented: $isSheetPresented, searchText: $searchText)
+                 .presentationDetents([.fraction(0.25), .large])
+                 .presentationDragIndicator(.visible)
+        }
     }
 }
 
