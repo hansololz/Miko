@@ -25,26 +25,9 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.30), .large])
                 .presentationDragIndicator(.visible)
                 .onAppear {
-                    preventDismissal()
+                    SheetManager.preventDismissal()
                 }
         }
-    }
-    
-    private func preventDismissal() {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootViewController = windowScene.windows.first?.rootViewController {
-            if let sheetPresentationController = rootViewController.presentedViewController?.presentationController as? UISheetPresentationController {
-                sheetPresentationController.delegate = SheetDelegate.shared
-            }
-        }
-    }
-}
-
-class SheetDelegate: NSObject, UISheetPresentationControllerDelegate {
-    static let shared = SheetDelegate()
-    
-    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        return false
     }
 }
 
