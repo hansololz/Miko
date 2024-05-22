@@ -181,18 +181,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         let rect = observation.boundingBox.applying(transform)
         
-        // Calculate the center of the bounding box
-        let centerX = rect.midX
-        let centerY = rect.midY
-        
         // Calculate the target area
         let targetX = view.bounds.width * 0.5
         let targetY = view.bounds.height * 0.35
-        let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
-        let toleranceY: CGFloat = 10.0 // Adjust tolerance as needed
-        
-        // Check if the center of the bounding box is within the target area
-        return abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY
+
+        return rect.minX < targetX && targetX < rect.maxX && rect.minY < targetY && targetY < rect.maxY
     }
     
     func highlightText(observation: VNRecognizedTextObservation) {
