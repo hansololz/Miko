@@ -156,7 +156,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 if !self.isTextInViewFinder(observation: observation) { continue }
                 if topCandidate.string.count < 3 { continue }
                 
-                let boundingBox = observation.boundingBox
                 let distance = self.getTextCenterDistance(observation: observation)
                 
                 if distance < smallestDistance {
@@ -165,7 +164,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 }
             }
             
-
+            
             self.coordinator?.updateSearchText(topText)
         }
     }
@@ -180,7 +179,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let rect = observation.boundingBox.applying(transform)
         let targetX = view.bounds.width * 0.5
         let targetY = view.bounds.height * 0.35
-
+        
         return rect.minX < targetX && targetX < rect.maxX && rect.minY < targetY && targetY < rect.maxY
     }
     
@@ -198,7 +197,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         let targetX = view.bounds.width * 0.5
         let targetY = view.bounds.height * 0.35
-
+        
         return abs(centerX - targetX) * abs(centerY - targetY)
     }
     
@@ -223,7 +222,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let targetX = view.bounds.width * 0.5
         let targetY = view.bounds.height * 0.35
         let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
-        let toleranceY: CGFloat = 15.0 // Adjust tolerance as needed
+        let toleranceY: CGFloat = 40.0 // Adjust tolerance as needed
         
         // Check if the center of the bounding box is within the target area
         if abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY {
@@ -267,6 +266,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             CameraView(searchText: $searchText)
         }
     }
-
+    
     return CameraView_Preview()
 }
