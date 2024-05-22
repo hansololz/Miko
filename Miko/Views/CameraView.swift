@@ -46,6 +46,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var timer: Timer?
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
+    var viewfinderIconView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +79,27 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         // Start the timer to control capture interval
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
+        
+        addViewfinderIconOverlay()
+    }
+    
+    func addViewfinderIconOverlay() {
+        let viewfinderIcon = UIImage(systemName: "viewfinder.rectangular") // Make sure to have the viewfinder.rectangular icon in your assets
+        viewfinderIconView = UIImageView(image: viewfinderIcon)
+        viewfinderIconView.translatesAutoresizingMaskIntoConstraints = false
+        viewfinderIconView.contentMode = .scaleAspectFit
+        viewfinderIconView.tintColor = .white // Set the color if needed
+        view.addSubview(viewfinderIconView)
+        
+        // Size increased by 3 times, assuming the original size is 30x30
+        let iconSize: CGFloat = 210
+        
+        NSLayoutConstraint.activate([
+            viewfinderIconView.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.5),
+            viewfinderIconView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.35),
+            viewfinderIconView.widthAnchor.constraint(equalToConstant: iconSize),
+            viewfinderIconView.heightAnchor.constraint(equalToConstant: iconSize)
+        ])
     }
     
     @objc func captureFrame() {
