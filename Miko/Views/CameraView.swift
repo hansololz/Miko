@@ -21,7 +21,9 @@ struct CameraView: UIViewControllerRepresentable {
         
         func updateSearchText(_ text: String) {
             DispatchQueue.main.async {
-                self.parent.searchText = text
+                if self.parent.searchText != text {
+                    self.parent.searchText = text
+                }
             }
         }
     }
@@ -92,7 +94,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.addSubview(viewfinderIconView)
         
         // Size increased by 3 times, assuming the original size is 30x30
-        let iconSize: CGFloat = 180
+        let iconSize: CGFloat = 120
         
         NSLayoutConstraint.activate([
             viewfinderIconView.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.5),
@@ -146,13 +148,51 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 }
             }
             
+            var largestArea: CGFloat = 0
+            var largestText: String = ""
+            
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
-                if topCandidate.string.count > 4 {
-                    self.highlightText(observation: observation)
+                if !self.isTextInViewFinder(observation: observation) { continue }
+                if topCandidate.string.count < 3 { continue }
+                
+                let boundingBox = observation.boundingBox
+                let area = boundingBox.width * boundingBox.height
+                
+                if area > largestArea {
+                    largestArea = area
+                    largestText = topCandidate.string
                 }
+                
+//                self.highlightText(observation: observation) // uncommit to show label
             }
+            
+
+            self.coordinator?.updateSearchText(largestText)
         }
+    }
+    
+    func isTextInViewFinder(observation: VNRecognizedTextObservation) -> Bool {
+        let xOffset: CGFloat = view.bounds.size.width
+        let yOffset: CGFloat = view.bounds.size.height
+        let transform = CGAffineTransform.identity
+            .scaledBy(x: xOffset, y: -yOffset)
+            .translatedBy(x: 0, y: -1)
+        
+        let rect = observation.boundingBox.applying(transform)
+        
+        // Calculate the center of the bounding box
+        let centerX = rect.midX
+        let centerY = rect.midY
+        
+        // Calculate the target area
+        let targetX = view.bounds.width * 0.5
+        let targetY = view.bounds.height * 0.35
+        let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
+        let toleranceY: CGFloat = 10.0 // Adjust tolerance as needed
+        
+        // Check if the center of the bounding box is within the target area
+        return abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY
     }
     
     func highlightText(observation: VNRecognizedTextObservation) {
