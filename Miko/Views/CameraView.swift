@@ -86,7 +86,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func addViewfinderIconOverlay() {
-        let viewfinderIcon = UIImage(systemName: "viewfinder.rectangular") // Make sure to have the viewfinder.rectangular icon in your assets
+        let viewfinderIcon = UIImage(systemName: "dot.viewfinder") // Make sure to have the viewfinder.rectangular icon in your assets
         viewfinderIconView = UIImageView(image: viewfinderIcon)
         viewfinderIconView.translatesAutoresizingMaskIntoConstraints = false
         viewfinderIconView.contentMode = .scaleAspectFit
@@ -94,7 +94,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.addSubview(viewfinderIconView)
         
         // Size increased by 3 times, assuming the original size is 30x30
-        let iconSize: CGFloat = 120
+        let iconSize: CGFloat = 30
         
         NSLayoutConstraint.activate([
             viewfinderIconView.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.5),
