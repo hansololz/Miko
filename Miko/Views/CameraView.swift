@@ -92,7 +92,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.addSubview(viewfinderIconView)
         
         // Size increased by 3 times, assuming the original size is 30x30
-        let iconSize: CGFloat = 210
+        let iconSize: CGFloat = 180
         
         NSLayoutConstraint.activate([
             viewfinderIconView.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.5),
@@ -168,22 +168,35 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         let rect = observation.boundingBox.applying(transform)
         
-        let label = UILabel(frame: rect)
-        label.backgroundColor = UIColor.yellow.withAlphaComponent(0.7)
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        label.text = recognizedText
-        label.numberOfLines = 0
-        label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = .center
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 5
-        label.isUserInteractionEnabled = true
+        // Calculate the center of the bounding box
+        let centerX = rect.midX
+        let centerY = rect.midY
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped(_:)))
-        label.addGestureRecognizer(tapGesture)
+        // Calculate the target area
+        let targetX = view.bounds.width * 0.5
+        let targetY = view.bounds.height * 0.35
+        let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
+        let toleranceY: CGFloat = 15.0 // Adjust tolerance as needed
         
-        view.addSubview(label)
+        // Check if the center of the bounding box is within the target area
+        if abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY {
+            let label = UILabel(frame: rect)
+            label.backgroundColor = UIColor.yellow.withAlphaComponent(0.7)
+            label.textColor = UIColor.black
+            label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+            label.text = recognizedText
+            label.numberOfLines = 0
+            label.adjustsFontSizeToFitWidth = true
+            label.textAlignment = .center
+            label.layer.masksToBounds = true
+            label.layer.cornerRadius = 5
+            label.isUserInteractionEnabled = true
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped(_:)))
+            label.addGestureRecognizer(tapGesture)
+            
+            view.addSubview(label)
+        }
     }
     
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
