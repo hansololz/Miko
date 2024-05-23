@@ -24,12 +24,12 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isSheetPresented) {
             BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
-                .presentationDetents([.fraction(0.30), .large], selection: $selectedDetent)
+                .presentationDetents([.fraction(0.30), .fraction(0.999)], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled()
         }
         .onChange(of: selectedDetent) { oldDetent, newDetent in
-            isSheetExpended = (newDetent == .large)
+            isSheetExpended = (newDetent != .fraction(0.30))
         }
     }
 }
@@ -38,4 +38,3 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
 }
-
