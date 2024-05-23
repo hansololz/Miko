@@ -13,7 +13,9 @@ import SwiftData
 
 struct ContentView: View {
     @State private var isSheetPresented = true
+    @State private var isSheetExpended = false
     @State private var searchText = ""
+    @State private var selectedDetent: PresentationDetent = .fraction(0.30)
     
     var body: some View {
         VStack {
@@ -21,12 +23,14 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
         }
         .sheet(isPresented: $isSheetPresented) {
-            BottomSheetView(isSheetPresented: $isSheetPresented, searchText: $searchText)
-                .presentationDetents([.fraction(0.30), .large])
+            BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
+                .presentationDetents([.fraction(0.30), .large], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
-                .onAppear {
-                    SheetManager.preventDismissal()
-                }
+                .interactiveDismissDisabled()
+        }
+        .onChange(of: selectedDetent) { oldDetent, newDetent in
+            isSheetExpended = (newDetent == .large)
+            print("Is the detent large? \(isSheetExpended)")
         }
     }
 }
