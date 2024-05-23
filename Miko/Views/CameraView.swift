@@ -8,6 +8,7 @@
 import AVFoundation
 import SwiftUI
 import Vision
+import CoreMotion
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var searchText: String
@@ -49,6 +50,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
     var viewfinderIconView: UIImageView!
+    var motionManager: CMMotionManager!
+    var isDeviceMoving = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,10 +82,10 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         captureSession.startRunning()
         
-        // Start the timer to control capture interval
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
         
         addViewfinderIconOverlay()
+        setupMotionManager()
     }
     
     func addViewfinderIconOverlay() {
@@ -93,7 +96,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         viewfinderIconView.tintColor = .white // Set the color if needed
         view.addSubview(viewfinderIconView)
         
-        // Size increased by 3 times, assuming the original size is 30x30
         let iconSize: CGFloat = 30
         
         NSLayoutConstraint.activate([
@@ -139,6 +141,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func handleDetectedText(request: VNRequest) {
+        if isDeviceMoving { return }
+        
         guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
         
         DispatchQueue.main.async {
@@ -198,17 +202,14 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         let rect = observation.boundingBox.applying(transform)
         
-        // Calculate the center of the bounding box
         let centerX = rect.midX
         let centerY = rect.midY
         
-        // Calculate the target area
         let targetX = view.bounds.width * 0.5
         let targetY = view.bounds.height * 0.35
         let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
         let toleranceY: CGFloat = 40.0 // Adjust tolerance as needed
         
-        // Check if the center of the bounding box is within the target area
         if abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY {
             let label = UILabel(frame: rect)
             label.backgroundColor = UIColor.yellow.withAlphaComponent(0.7)
@@ -226,6 +227,23 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             label.addGestureRecognizer(tapGesture)
             
             view.addSubview(label)
+        }
+    }
+    
+    func setupMotionManager() {
+        motionManager = CMMotionManager()
+        motionManager.deviceMotionUpdateInterval = 1.0
+        
+        motionManager.startDeviceMotionUpdates(to: OperationQueue.current!) { (motion, error) in
+            guard error == nil else {
+                print("Error: \(error!)")
+                return
+            }
+            if let motion = motion {
+                self.isDeviceMoving = abs(motion.userAcceleration.x) > 0.03 ||
+                abs(motion.userAcceleration.y) > 0.03 ||
+                abs(motion.userAcceleration.z) > 0.03
+            }
         }
     }
     
