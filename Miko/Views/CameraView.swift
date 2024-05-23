@@ -21,7 +21,7 @@ struct CameraView: UIViewControllerRepresentable {
         
         func updateSearchText(_ text: String) {
             DispatchQueue.main.async {
-                if self.parent.searchText != text {
+                if !text.isEmpty && self.parent.searchText != text {
                     self.parent.searchText = text
                 }
             }
