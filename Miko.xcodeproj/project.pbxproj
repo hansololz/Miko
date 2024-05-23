@@ -15,7 +15,6 @@
 		63F0C6B82BF899B7001F426E /* MikoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C6B72BF899B7001F426E /* MikoUITests.swift */; };
 		63F0C6BA2BF899B7001F426E /* MikoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C6B92BF899B7001F426E /* MikoUITestsLaunchTests.swift */; };
 		63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7132BFABDBA001F426E /* ContentView.swift */; };
-		63F0C7172BFAD11A001F426E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7162BFAD11A001F426E /* AppDelegate.swift */; };
 		63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7182BFB0860001F426E /* BottomSheetView.swift */; };
 		63F0C71B2BFB1064001F426E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C71A2BFB1064001F426E /* CameraView.swift */; };
 /* End PBXBuildFile section */
@@ -49,7 +48,6 @@
 		63F0C6B72BF899B7001F426E /* MikoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoUITests.swift; sourceTree = "<group>"; };
 		63F0C6B92BF899B7001F426E /* MikoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		63F0C7132BFABDBA001F426E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		63F0C7162BFAD11A001F426E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63F0C7182BFB0860001F426E /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		63F0C71A2BFB1064001F426E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				63F0C7132BFABDBA001F426E /* ContentView.swift */,
-				63F0C7162BFAD11A001F426E /* AppDelegate.swift */,
 				63F0C7182BFB0860001F426E /* BottomSheetView.swift */,
 				63F0C71A2BFB1064001F426E /* CameraView.swift */,
 			);
@@ -285,7 +282,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F0C7172BFAD11A001F426E /* AppDelegate.swift in Sources */,
 				63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */,
 				63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */,
 				63F0C71B2BFB1064001F426E /* CameraView.swift in Sources */,

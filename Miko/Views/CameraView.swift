@@ -232,7 +232,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func setupMotionManager() {
         motionManager = CMMotionManager()
-        motionManager.deviceMotionUpdateInterval = 1.0
+        motionManager.deviceMotionUpdateInterval = 0.1
         
         motionManager.startDeviceMotionUpdates(to: OperationQueue.current!) { (motion, error) in
             guard error == nil else {
