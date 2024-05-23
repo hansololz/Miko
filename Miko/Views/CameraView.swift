@@ -52,7 +52,6 @@ struct CameraView: UIViewControllerRepresentable {
 }
 
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-    
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     var timer: Timer?
@@ -61,6 +60,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var viewfinderIconView: UIImageView!
     var motionManager: CMMotionManager!
     var isDeviceMoving = false
+    var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
+    var shouldSampleText = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +120,16 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func processSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
+        if !shouldSampleText { return }
+        
+        let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
+        
+        if (currentTime - cameraSampleDelay) > lastTextProcessedTimestamp {
+            lastTextProcessedTimestamp = currentTime
+        } else {
+            return
+        }
+        
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
         var requestOptions: [VNImageOption: Any] = [:]
@@ -209,17 +220,21 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
-        DispatchQueue.global(qos: .background).async {
-            self.captureSession.stopRunning()
-        }
+        shouldSampleText = false
+        
+//        DispatchQueue.global(qos: .background).async {
+//            self.captureSession.stopRunning()
+//        }
     }
     
     func resumeCamera() {
-        DispatchQueue.global(qos: .background).async {
-            if !self.captureSession.isRunning {
-                self.captureSession.startRunning()
-            }
-        }
+        shouldSampleText = true
+        
+//        DispatchQueue.global(qos: .background).async {
+//            if !self.captureSession.isRunning {
+//                self.captureSession.startRunning()
+//            }
+//        }
     }
 }
 
