@@ -40,7 +40,15 @@ struct CameraView: UIViewControllerRepresentable {
         return cameraViewController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        if let cameraViewController = uiViewController as? CameraViewController {
+            if isSheetExpended {
+                cameraViewController.pauseCamera()
+            } else {
+                cameraViewController.resumeCamera()
+            }
+        }
+    }
 }
 
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -196,6 +204,20 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 self.isDeviceMoving = abs(motion.userAcceleration.x) > 0.03 ||
                 abs(motion.userAcceleration.y) > 0.03 ||
                 abs(motion.userAcceleration.z) > 0.03
+            }
+        }
+    }
+    
+    func pauseCamera() {
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.stopRunning()
+        }
+    }
+    
+    func resumeCamera() {
+        DispatchQueue.global(qos: .background).async {
+            if !self.captureSession.isRunning {
+                self.captureSession.startRunning()
             }
         }
     }
