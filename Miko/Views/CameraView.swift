@@ -101,7 +101,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         NSLayoutConstraint.activate([
             viewfinderIconView.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.bounds.width * 0.5),
-            viewfinderIconView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.35),
+            viewfinderIconView.centerYAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * viewFinderCenterY),
             viewfinderIconView.widthAnchor.constraint(equalToConstant: iconSize),
             viewfinderIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
@@ -168,7 +168,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 
                 let rect = observation.boundingBox.applying(transform)
                 let targetX = self.view.bounds.width * 0.5
-                let targetY = self.view.bounds.height * 0.35
+                let targetY = self.view.bounds.height * viewFinderCenterY
                 
                 if !(rect.minX < targetX && targetX < rect.maxX && rect.minY < targetY && targetY < rect.maxY) {
                     continue
@@ -207,7 +207,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let centerY = rect.midY
         
         let targetX = view.bounds.width * 0.5
-        let targetY = view.bounds.height * 0.35
+        let targetY = view.bounds.height * viewFinderCenterY
         let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
         let toleranceY: CGFloat = 40.0 // Adjust tolerance as needed
         
