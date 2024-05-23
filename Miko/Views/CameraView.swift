@@ -83,8 +83,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         captureSession.startRunning()
         
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
-        
         addViewfinderIconOverlay()
         setupMotionManager()
     }
@@ -107,19 +105,15 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         ])
     }
     
-    @objc func captureFrame() {
-        guard let sampleBuffer = lastSampleBuffer else { return }
-        processSampleBuffer(sampleBuffer)
-    }
-    
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         lastSampleBuffer = sampleBuffer
+        processSampleBuffer(sampleBuffer)
     }
     
     func processSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
-        var requestOptions: [VNImageOption : Any] = [:]
+        var requestOptions: [VNImageOption: Any] = [:]
         if let cameraIntrinsicData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
             requestOptions = [.cameraIntrinsics: cameraIntrinsicData]
         }
@@ -185,49 +179,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 }
             }
             
-            
             self.coordinator?.updateSearchText(topText)
-        }
-    }
-    
-    func highlightText(observation: VNRecognizedTextObservation) {
-        guard let topCandidate = observation.topCandidates(1).first else { return }
-        
-        let recognizedText = topCandidate.string
-        
-        let xOffset: CGFloat = view.bounds.size.width
-        let yOffset: CGFloat = view.bounds.size.height
-        let transform = CGAffineTransform.identity
-            .scaledBy(x: xOffset, y: -yOffset)
-            .translatedBy(x: 0, y: -1)
-        
-        let rect = observation.boundingBox.applying(transform)
-        
-        let centerX = rect.midX
-        let centerY = rect.midY
-        
-        let targetX = view.bounds.width * 0.5
-        let targetY = view.bounds.height * viewFinderCenterY
-        let toleranceX: CGFloat = 40.0 // Adjust tolerance as needed
-        let toleranceY: CGFloat = 40.0 // Adjust tolerance as needed
-        
-        if abs(centerX - targetX) <= toleranceX && abs(centerY - targetY) <= toleranceY {
-            let label = UILabel(frame: rect)
-            label.backgroundColor = UIColor.yellow.withAlphaComponent(0.7)
-            label.textColor = UIColor.black
-            label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-            label.text = recognizedText
-            label.numberOfLines = 0
-            label.adjustsFontSizeToFitWidth = true
-            label.textAlignment = .center
-            label.layer.masksToBounds = true
-            label.layer.cornerRadius = 5
-            label.isUserInteractionEnabled = true
-            
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped(_:)))
-            label.addGestureRecognizer(tapGesture)
-            
-            view.addSubview(label)
         }
     }
     
