@@ -153,10 +153,26 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
-                if !self.isTextInViewFinder(observation: observation) { continue }
                 if topCandidate.string.count < 3 { continue }
                 
-                let distance = self.getTextCenterDistance(observation: observation)
+                let xOffset: CGFloat = self.view.bounds.size.width
+                let yOffset: CGFloat = self.view.bounds.size.height
+                let transform = CGAffineTransform.identity
+                    .scaledBy(x: xOffset, y: -yOffset)
+                    .translatedBy(x: 0, y: -1)
+                
+                let rect = observation.boundingBox.applying(transform)
+                let targetX = self.view.bounds.width * 0.5
+                let targetY = self.view.bounds.height * 0.35
+                
+                if !(rect.minX < targetX && targetX < rect.maxX && rect.minY < targetY && targetY < rect.maxY) {
+                    continue
+                }
+                
+                let centerX = rect.midX
+                let centerY = rect.midY
+                
+                let distance = abs(centerX - targetX) * abs(centerY - targetY)
                 
                 if distance < smallestDistance {
                     smallestDistance = distance
@@ -167,38 +183,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             
             self.coordinator?.updateSearchText(topText)
         }
-    }
-    
-    func isTextInViewFinder(observation: VNRecognizedTextObservation) -> Bool {
-        let xOffset: CGFloat = view.bounds.size.width
-        let yOffset: CGFloat = view.bounds.size.height
-        let transform = CGAffineTransform.identity
-            .scaledBy(x: xOffset, y: -yOffset)
-            .translatedBy(x: 0, y: -1)
-        
-        let rect = observation.boundingBox.applying(transform)
-        let targetX = view.bounds.width * 0.5
-        let targetY = view.bounds.height * 0.35
-        
-        return rect.minX < targetX && targetX < rect.maxX && rect.minY < targetY && targetY < rect.maxY
-    }
-    
-    func getTextCenterDistance(observation: VNRecognizedTextObservation) -> CGFloat {
-        let xOffset: CGFloat = view.bounds.size.width
-        let yOffset: CGFloat = view.bounds.size.height
-        let transform = CGAffineTransform.identity
-            .scaledBy(x: xOffset, y: -yOffset)
-            .translatedBy(x: 0, y: -1)
-        
-        
-        let rect = observation.boundingBox.applying(transform)
-        let centerX = rect.midX
-        let centerY = rect.midY
-        
-        let targetX = view.bounds.width * 0.5
-        let targetY = view.bounds.height * 0.35
-        
-        return abs(centerX - targetX) * abs(centerY - targetY)
     }
     
     func highlightText(observation: VNRecognizedTextObservation) {
