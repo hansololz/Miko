@@ -16,15 +16,15 @@ struct BottomSheetView: View {
     var body: some View {
         VStack {
             Text("Tommy, process change should show here.")
-            Text("Current text: \"\(searchText)\"")
             Text("Is sheet expended: \"\(isSheetExpended)\"")
+            Text("Current text: \"\(searchText)\"")
         }
     }
 }
 
 #Preview {
     struct BottomwSheetPreview: View {
-        @State var isSheetExpended = true
+        @State private var isSheetExpended = true
         @State private var searchText = "Preview Text"
         
         var body: some View {

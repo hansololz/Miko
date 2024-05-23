@@ -11,6 +11,7 @@ import Vision
 import CoreMotion
 
 struct CameraView: UIViewControllerRepresentable {
+    @Binding var isSheetExpended: Bool
     @Binding var searchText: String
     
     class Coordinator: NSObject {
@@ -22,7 +23,7 @@ struct CameraView: UIViewControllerRepresentable {
         
         func updateSearchText(_ text: String) {
             DispatchQueue.main.async {
-                if !text.isEmpty && self.parent.searchText != text {
+                if !text.isEmpty && self.parent.searchText != text && !self.parent.isSheetExpended {
                     self.parent.searchText = text
                 }
             }
@@ -262,10 +263,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 #Preview {
     struct CameraView_Preview: View {
+        @State private var isSheetExpended = false
         @State private var searchText = "Preview Text"
         
         var body: some View {
-            CameraView(searchText: $searchText)
+            CameraView(isSheetExpended: $isSheetExpended, searchText: $searchText)
         }
     }
     

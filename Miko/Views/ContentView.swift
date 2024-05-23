@@ -19,7 +19,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            CameraView(searchText: $searchText)
+            CameraView(isSheetExpended: $isSheetExpended, searchText: $searchText)
                 .edgesIgnoringSafeArea(.all)
         }
         .sheet(isPresented: $isSheetPresented) {
@@ -30,7 +30,6 @@ struct ContentView: View {
         }
         .onChange(of: selectedDetent) { oldDetent, newDetent in
             isSheetExpended = (newDetent == .large)
-            print("Is the detent large? \(isSheetExpended)")
         }
     }
 }
