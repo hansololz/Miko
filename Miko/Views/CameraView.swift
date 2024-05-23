@@ -199,18 +199,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             }
         }
     }
-    
-    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
-        guard let label = sender.view as? UILabel else { return }
-        print("Label tapped: \(label.text ?? "")")
-        
-        // Perform any action you want when the label is tapped
-        let alert = UIAlertController(title: "Text Selected", message: label.text, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-        
-        coordinator?.updateSearchText(label.text ?? "")
-    }
 }
 
 #Preview {
