@@ -12,20 +12,11 @@ import AVFoundation
 import SwiftData
 
 struct ContentView: View {
-    @State private var isSheetPresented = true
+    @State private var isSheetPresented = false
     @State private var isSheetExpended = false
     @State private var searchText = ""
     @State private var selectedDetent: PresentationDetent = .fraction(bottomSheetAnchor)
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
-    
-//    @State private var sheetOpacity: Double {
-//        let fullScreenHeight = UIScreen.main.bounds.height
-//        let fraction = Double(sheetOffset / fullScreenHeight)
-//        
-//        print("HERE \(fullScreenHeight) | \(sheetOffset) | \(fraction) | \(min(1.0, max(0.0, 1.0 - fraction)))")
-//        
-//        return min(1.0, max(0.0, 1.0 - fraction))
-//    }
     
     var body: some View {
         VStack {
