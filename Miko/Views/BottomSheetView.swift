@@ -15,10 +15,13 @@ struct BottomSheetView: View {
     @Binding var searchText: String
     
     var body: some View {
-        VStack {
+        ZStack {
             if searchText.isEmpty {
+                WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+                    .opacity(0)
                 Text("Point the camera at text you want to look up and see search results.")
                     .multilineTextAlignment(.center)
+                    .background(Color.white)
                     .padding(.all, 20)
             } else {
                 WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
