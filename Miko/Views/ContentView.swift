@@ -12,7 +12,7 @@ import AVFoundation
 import SwiftData
 
 struct ContentView: View {
-    @State private var isSheetPresented = false
+    @State private var isSheetPresented = true
     @State private var isSheetExpended = false
     @State private var searchText = ""
     @State private var selectedDetent: PresentationDetent = .fraction(bottomSheetAnchor)
