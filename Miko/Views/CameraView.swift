@@ -1,10 +1,3 @@
-//
-//  CameraView.swift
-//  Miko
-//
-//  Created by David Zhang on 5/19/24.
-//
-
 import AVFoundation
 import SwiftUI
 import Vision
@@ -13,6 +6,7 @@ import CoreMotion
 struct CameraView: UIViewControllerRepresentable {
     @Binding var isSheetExpended: Bool
     @Binding var searchText: String
+    @Binding var sheetOffset: CGFloat
     
     class Coordinator: NSObject {
         var parent: CameraView
@@ -47,6 +41,13 @@ struct CameraView: UIViewControllerRepresentable {
             } else {
                 cameraViewController.resumeCamera()
             }
+            
+            if (sheetOffset != 0.0) {
+                let offsetFloat = (UIScreen.main.bounds.height - sheetOffset)/UIScreen.main.bounds.height
+                let truncatedOffset = max(min(offsetFloat, 0.9), 0.6)
+                let alpha = (truncatedOffset - 0.6)/0.3
+                cameraViewController.updateOverlayAlpha(alpha)
+            }
         }
     }
 }
@@ -54,6 +55,7 @@ struct CameraView: UIViewControllerRepresentable {
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    var overlayView: UIView!
     var timer: Timer?
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
@@ -90,6 +92,12 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         previewLayer.frame = view.layer.frame
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
+        
+        // Add overlay view
+        overlayView = UIView(frame: view.bounds)
+        overlayView.backgroundColor = .black
+        overlayView.alpha = 0.0
+        view.addSubview(overlayView)
         
         captureSession.startRunning()
         
@@ -247,33 +255,16 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
+        print("STOP CAMERA")
         shouldSampleText = false
-        
-//        DispatchQueue.global(qos: .background).async {
-//            self.captureSession.stopRunning()
-//        }
     }
     
     func resumeCamera() {
+        print("START CAMERA")
         shouldSampleText = true
-        
-//        DispatchQueue.global(qos: .background).async {
-//            if !self.captureSession.isRunning {
-//                self.captureSession.startRunning()
-//            }
-//        }
-    }
-}
-
-#Preview {
-    struct CameraView_Preview: View {
-        @State private var isSheetExpended = false
-        @State private var searchText = "Preview Text"
-        
-        var body: some View {
-            CameraView(isSheetExpended: $isSheetExpended, searchText: $searchText)
-        }
     }
     
-    return CameraView_Preview()
+    func updateOverlayAlpha(_ alpha: CGFloat) {
+        overlayView.alpha = alpha
+    }
 }

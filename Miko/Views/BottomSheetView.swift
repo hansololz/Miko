@@ -13,18 +13,27 @@ import WebKit
 struct BottomSheetView: View {
     @Binding var isSheetExpended: Bool
     @Binding var searchText: String
+    @Binding var sheetOffset: CGFloat
     
     var body: some View {
-        ZStack {
-            if searchText.isEmpty {
-                WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
-                    .opacity(0)
-                Text("Point the camera at text you want to look up and see search results.")
-                    .multilineTextAlignment(.center)
-                    .background(Color.white)
-                    .padding(.all, 20)
-            } else {
-                WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+        GeometryReader { geometry in
+            ZStack {
+                if searchText.isEmpty {
+                    WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+                        .opacity(0)
+                    Text("Point the camera at text you want to look up and see search results.")
+                        .multilineTextAlignment(.center)
+                        .background(Color.white)
+                        .padding(.all, 20)
+                } else {
+                    WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+                }
+            }
+            .onAppear {
+                sheetOffset = geometry.size.height
+            }
+            .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
+                sheetOffset = newValue
             }
         }
     }
@@ -57,15 +66,16 @@ struct WebView: UIViewRepresentable {
     }
 }
 
-#Preview {
-    struct BottomwSheetPreview: View {
-        @State private var isSheetExpended = true
-        @State private var searchText = "Preview Text"
-        
-        var body: some View {
-            BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
-        }
-    }
-    
-    return BottomwSheetPreview()
-}
+//#Preview {
+//    struct BottomwSheetPreview: View {
+//        @State private var isSheetExpended = true
+//        @State private var searchText = "Preview Text"
+//
+//
+//        var body: some View {
+//            BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
+//        }
+//    }
+//    
+//    return BottomwSheetPreview()
+//}
