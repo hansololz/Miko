@@ -24,7 +24,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isSheetPresented) {
             BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
-                .presentationDetents([.fraction(bottomSheetAnchor), .fraction(0.999)], selection: $selectedDetent)
+                .presentationDetents([.fraction(bottomSheetAnchor), .fraction(1.0)], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled()
         }
