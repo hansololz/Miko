@@ -62,6 +62,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var isDeviceMoving = false
     var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
     var shouldSampleText = true
+    var currentZoomFactor: CGFloat = 1.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,14 +95,15 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         addViewfinderIconOverlay()
         setupMotionManager()
+        setupPinchGesture()
     }
     
     func addViewfinderIconOverlay() {
-        let viewfinderIcon = UIImage(systemName: "dot.viewfinder") // Make sure to have the viewfinder.rectangular icon in your assets
+        let viewfinderIcon = UIImage(systemName: "dot.viewfinder")
         viewfinderIconView = UIImageView(image: viewfinderIcon)
         viewfinderIconView.translatesAutoresizingMaskIntoConstraints = false
         viewfinderIconView.contentMode = .scaleAspectFit
-        viewfinderIconView.tintColor = .white // Set the color if needed
+        viewfinderIconView.tintColor = .white
         view.addSubview(viewfinderIconView)
         
         let iconSize: CGFloat = 30
@@ -112,6 +114,31 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             viewfinderIconView.widthAnchor.constraint(equalToConstant: iconSize),
             viewfinderIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
+    }
+    
+    func setupPinchGesture() {
+        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+        view.addGestureRecognizer(pinchGestureRecognizer)
+    }
+    
+    @objc func handlePinch(_ pinch: UIPinchGestureRecognizer) {
+        guard let device = AVCaptureDevice.default(for: .video) else { return }
+        
+        if pinch.state == .changed {
+            let maxZoomFactor = min(device.activeFormat.videoMaxZoomFactor, 10.0)
+            let newZoomFactor = min(max(1.0, currentZoomFactor * pinch.scale), maxZoomFactor)
+            
+            do {
+                try device.lockForConfiguration()
+                device.videoZoomFactor = newZoomFactor
+                device.unlockForConfiguration()
+                
+                currentZoomFactor = newZoomFactor
+                pinch.scale = 1.0
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
