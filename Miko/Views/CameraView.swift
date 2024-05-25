@@ -44,8 +44,8 @@ struct CameraView: UIViewControllerRepresentable {
             
             if (sheetOffset != 0.0) {
                 let offsetFloat = (UIScreen.main.bounds.height - sheetOffset)/UIScreen.main.bounds.height
-                let truncatedOffset = max(min(offsetFloat, 0.9), 0.6)
-                let alpha = (truncatedOffset - 0.6)/0.3
+                let truncatedOffset = max(min(offsetFloat, cameraFadeOutHeight), cameraFadeInHeight)
+                let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
                 cameraViewController.updateOverlayAlpha(alpha)
             }
         }
@@ -206,7 +206,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
-                if topCandidate.string.count < 3 { continue }
+                if topCandidate.string.count < minimumSearchTextLength { continue }
                 
                 let xOffset: CGFloat = self.view.bounds.size.width
                 let yOffset: CGFloat = self.view.bounds.size.height
@@ -247,9 +247,9 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 return
             }
             if let motion = motion {
-                self.isDeviceMoving = abs(motion.userAcceleration.x) > 0.03 ||
-                abs(motion.userAcceleration.y) > 0.03 ||
-                abs(motion.userAcceleration.z) > 0.03
+                self.isDeviceMoving = abs(motion.userAcceleration.x) > maximumUserAcceleration ||
+                abs(motion.userAcceleration.y) > maximumUserAcceleration ||
+                abs(motion.userAcceleration.z) > maximumUserAcceleration
             }
         }
     }
