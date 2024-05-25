@@ -5,7 +5,7 @@ import CoreMotion
 import UIKit
 
 struct CameraView: UIViewControllerRepresentable {
-    @Binding var isSheetExpended: Bool
+    @Binding var selectSheetAnchor: PresentationDetent
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
@@ -19,7 +19,7 @@ struct CameraView: UIViewControllerRepresentable {
         
         func updateSearchText(_ text: String) {
             DispatchQueue.main.async {
-                if !text.isEmpty && self.parent.searchText != text && !self.parent.isSheetExpended {
+                if !text.isEmpty && self.parent.searchText != text && self.parent.selectSheetAnchor == restSheetAnchor {
                     self.parent.searchText = text
                 }
             }
@@ -28,6 +28,7 @@ struct CameraView: UIViewControllerRepresentable {
         func showMenu() {
             DispatchQueue.main.async {
                 self.parent.showMenu = true
+                self.parent.selectSheetAnchor = fullSheetAnchor
             }
         }
     }
@@ -44,10 +45,10 @@ struct CameraView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if let cameraViewController = uiViewController as? CameraViewController {
-            if isSheetExpended {
-                cameraViewController.pauseCamera()
-            } else {
+            if selectSheetAnchor == restSheetAnchor {
                 cameraViewController.resumeCamera()
+            } else {
+                cameraViewController.pauseCamera()
             }
             
             if (sheetOffset != 0.0) {

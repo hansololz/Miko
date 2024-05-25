@@ -4,7 +4,7 @@ let bottomSheetAnchor = 0.50
 let viewFinderCenterY = (1.0 - bottomSheetAnchor) / 2
 
 let restSheetAnchor = PresentationDetent.fraction(bottomSheetAnchor)
-let fillSheetAnchor = PresentationDetent.fraction(0.999)
+let fullSheetAnchor = PresentationDetent.fraction(0.999)
 
 // Delay between each time the text updates, in miliseconds
 let cameraSampleDelay: UInt64 = 500
