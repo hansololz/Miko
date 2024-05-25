@@ -1,12 +1,3 @@
-//
-//  BottomSheet.swift
-//  Miko
-//
-//  Created by David Zhang on 5/19/24.
-//
-
-import Foundation
-import UIKit
 import SwiftUI
 import WebKit
 
@@ -66,16 +57,17 @@ struct WebView: UIViewRepresentable {
     }
 }
 
-//#Preview {
-//    struct BottomwSheetPreview: View {
-//        @State private var isSheetExpended = true
-//        @State private var searchText = "Preview Text"
-//
-//
-//        var body: some View {
-//            BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText)
-//        }
-//    }
-//    
-//    return BottomwSheetPreview()
-//}
+#Preview {
+    struct BottomwSheetPreview: View {
+        @State private var isSheetExpended = true
+        @State private var searchText = "Preview Text"
+        @State private var sheetOffset: CGFloat = 0.9
+
+
+        var body: some View {
+            BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText, sheetOffset: $sheetOffset)
+        }
+    }
+    
+    return BottomwSheetPreview()
+}

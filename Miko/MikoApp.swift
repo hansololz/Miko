@@ -1,10 +1,3 @@
-//
-//  MikoApp.swift
-//  Miko
-//
-//  Created by David Zhang on 5/18/24.
-//
-
 import SwiftUI
 import SwiftData
 

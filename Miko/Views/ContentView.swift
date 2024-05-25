@@ -1,21 +1,10 @@
-//
-//  MainView.swift
-//  Miko
-//
-//  Created by David Zhang on 5/19/24.
-//
-
-import Foundation
 import SwiftUI
-import UIKit
-import AVFoundation
-import SwiftData
 
 struct ContentView: View {
     @State private var isSheetPresented = true
     @State private var isSheetExpended = false
     @State private var searchText = ""
-    @State private var selectedDetent: PresentationDetent = .medium
+    @State private var selectedDetent: PresentationDetent = .fraction(bottomSheetAnchor)
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
     
     var body: some View {
@@ -25,10 +14,10 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isSheetPresented) {
             BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText, sheetOffset: $sheetOffset)
-                .presentationDetents([.medium, .fraction(0.999)], selection: $selectedDetent)
+                .presentationDetents([.fraction(bottomSheetAnchor), .fraction(0.999)], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
                 .presentationBackgroundInteraction(
-                    .enabled(upThrough: .medium)
+                    .enabled(upThrough: .fraction(bottomSheetAnchor))
                 )
                 .interactiveDismissDisabled()
         }
