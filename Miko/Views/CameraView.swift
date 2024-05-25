@@ -60,6 +60,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
     var viewfinderIconView: UIImageView!
+    var menuIconView: UIImageView!
     var motionManager: CMMotionManager!
     var isDeviceMoving = false
     var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
@@ -102,6 +103,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         captureSession.startRunning()
         
         addViewfinderIconOverlay()
+//        addMenuIconOverlay()
+        a
         setupMotionManager()
         setupPinchGesture()
     }
@@ -122,6 +125,36 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             viewfinderIconView.widthAnchor.constraint(equalToConstant: iconSize),
             viewfinderIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
+    }
+    
+    func addMenuIconOverlay() {
+        let heartIcon = UIImage(systemName: "ellipsis.circle")
+        menuIconView = UIImageView(image: heartIcon)
+        menuIconView.translatesAutoresizingMaskIntoConstraints = false
+        menuIconView.contentMode = .scaleAspectFit
+        menuIconView.tintColor = .white
+        view.addSubview(menuIconView)
+        
+        let iconSize: CGFloat = 30
+        
+        NSLayoutConstraint.activate([
+            menuIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
+            menuIconView.widthAnchor.constraint(equalToConstant: iconSize),
+            menuIconView.heightAnchor.constraint(equalToConstant: iconSize)
+        ])
+        
+        // Add tap gesture recognizer to menuIconView
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
+        menuIconView.isUserInteractionEnabled = true
+        menuIconView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func menuIconTapped() {
+        let newViewController = UIViewController()
+        newViewController.view.backgroundColor = .white
+        newViewController.title = "New Page"
+        navigationController?.pushViewController(newViewController, animated: true)
     }
     
     func setupPinchGesture() {

@@ -12,7 +12,7 @@ struct BottomSheetView: View {
                 if searchText.isEmpty {
                     WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
                         .opacity(0)
-                    Text("Point the camera at text you want to look up and see search results.")
+                    Text("Point the camera at text you want to look up.")
                         .multilineTextAlignment(.center)
                         .background(Color.white)
                         .padding(.all, 20)
