@@ -4,7 +4,7 @@ struct ContentView: View {
     @State private var isSheetPresented = true
     @State private var isSheetExpended = false
     @State private var searchText = ""
-    @State private var selectedDetent: PresentationDetent = .fraction(bottomSheetAnchor)
+    @State private var selectedDetent = restSheetAnchor
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
     
     var body: some View {
@@ -14,10 +14,10 @@ struct ContentView: View {
         }
         .sheet(isPresented: $isSheetPresented) {
             BottomSheetView(isSheetExpended: $isSheetExpended, searchText: $searchText, sheetOffset: $sheetOffset)
-                .presentationDetents([.fraction(bottomSheetAnchor), .fraction(0.999)], selection: $selectedDetent)
+                .presentationDetents([restSheetAnchor, fillSheetAnchor], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
                 .presentationBackgroundInteraction(
-                    .enabled(upThrough: .fraction(bottomSheetAnchor))
+                    .enabled(upThrough: restSheetAnchor)
                 )
                 .interactiveDismissDisabled()
         }
