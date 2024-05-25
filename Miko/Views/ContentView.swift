@@ -21,10 +21,12 @@ struct ContentView: View {
                 )
                 .interactiveDismissDisabled()
         }
-//        .onChange(of: selectSheetAnchor) { oldDetent, newDetent in
-//            if newDetent == fullSheetAnchor {
-//                showMenu = false
-//            }
-//        }
+        .onChange(of: selectSheetAnchor) { oldDetent, newDetent in
+            if newDetent == restSheetAnchor {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    showMenu = false
+                }
+            }
+        }
     }
 }

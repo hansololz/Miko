@@ -10,7 +10,12 @@ struct BottomSheetView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                if searchText.isEmpty {
+                if showMenu {
+                    Text("Menu Text")
+                        .multilineTextAlignment(.center)
+                        .background(Color.white)
+                        .padding(.all, 20)
+                } else if searchText.isEmpty {
                     WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
