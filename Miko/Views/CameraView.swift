@@ -2,6 +2,7 @@ import AVFoundation
 import SwiftUI
 import Vision
 import CoreMotion
+import UIKit
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var isSheetExpended: Bool
@@ -103,7 +104,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         captureSession.startRunning()
         
         addViewfinderIconOverlay()
-//        addMenuIconOverlay()
+        addMenuIconOverlay()
         
         setupMotionManager()
         setupPinchGesture()
@@ -129,14 +130,32 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func addMenuIconOverlay() {
         let menuIcon = UIImage(systemName: "ellipsis.circle")
+        
+        // Create a container view
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.isUserInteractionEnabled = true
+        view.addSubview(containerView)
+        
+        // Create the icon view
         menuIconView = UIImageView(image: menuIcon)
         menuIconView.translatesAutoresizingMaskIntoConstraints = false
         menuIconView.contentMode = .scaleAspectFit
         menuIconView.tintColor = .white
-        view.addSubview(menuIconView)
+        containerView.addSubview(menuIconView)
         
         let iconSize: CGFloat = 30
+        let touchAreaSize: CGFloat = 90 // Increase this value to make the touch area larger
         
+        // Constraints for the container view
+        NSLayoutConstraint.activate([
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 30),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize / 2)),
+            containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
+            containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
+        ])
+        
+        // Center the icon view inside the container view
         NSLayoutConstraint.activate([
             menuIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
@@ -144,18 +163,20 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             menuIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
         
-        // Add tap gesture recognizer to menuIconView
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
-        menuIconView.isUserInteractionEnabled = true
-        menuIconView.addGestureRecognizer(tapGestureRecognizer)
+        // Add tap gesture recognizer to the container view
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
+        containerView.addGestureRecognizer(tapGesture)
     }
-    
+
+    // Action method for tap gesture
     @objc func menuIconTapped() {
-        let newViewController = UIViewController()
-        newViewController.view.backgroundColor = .white
-        newViewController.title = "New Page"
-        navigationController?.pushViewController(newViewController, animated: true)
+        // Assuming you have a view controller named NewPageViewController
+        print("HERE 5")
+//        let newPageVC = NewPageViewController()
+//        newPageVC.modalPresentationStyle = .fullScreen
+//        present(newPageVC, animated: true, completion: nil)
     }
+
     
     func setupPinchGesture() {
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
