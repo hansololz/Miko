@@ -11,10 +11,7 @@ struct BottomSheetView: View {
         GeometryReader { geometry in
             ZStack {
                 if showMenu {
-                    Text("Menu Text")
-                        .multilineTextAlignment(.center)
-                        .background(Color.white)
-                        .padding(.all, 20)
+                    MenuView(selectSheetAnchor: $selectSheetAnchor, showMenu: $showMenu, searchText: $searchText, sheetOffset: $sheetOffset)
                 } else if searchText.isEmpty {
                     WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
                         .opacity(0)

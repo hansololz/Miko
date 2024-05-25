@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		630636472BFEFBE30078935D /* ViewDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630636462BFEFBE30078935D /* ViewDefaults.swift */; };
+		630636622C0299770078935D /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630636612C0299770078935D /* MenuView.swift */; };
 		63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69A2BF899B6001F426E /* MikoApp.swift */; };
 		63F0C69F2BF899B6001F426E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69E2BF899B6001F426E /* Item.swift */; };
 		63F0C6A12BF899B7001F426E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A02BF899B7001F426E /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		630636462BFEFBE30078935D /* ViewDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDefaults.swift; sourceTree = "<group>"; };
+		630636612C0299770078935D /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		63F0C6972BF899B6001F426E /* Miko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F0C69A2BF899B6001F426E /* MikoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoApp.swift; sourceTree = "<group>"; };
 		63F0C69E2BF899B6001F426E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -139,9 +141,10 @@
 		63F0C7122BFABD8C001F426E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				63F0C7132BFABDBA001F426E /* ContentView.swift */,
 				63F0C7182BFB0860001F426E /* BottomSheetView.swift */,
 				63F0C71A2BFB1064001F426E /* CameraView.swift */,
+				63F0C7132BFABDBA001F426E /* ContentView.swift */,
+				630636612C0299770078935D /* MenuView.swift */,
 				630636462BFEFBE30078935D /* ViewDefaults.swift */,
 			);
 			path = Views;
@@ -285,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630636622C0299770078935D /* MenuView.swift in Sources */,
 				63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */,
 				63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */,
 				630636472BFEFBE30078935D /* ViewDefaults.swift in Sources */,
