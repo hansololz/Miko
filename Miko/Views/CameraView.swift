@@ -104,7 +104,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         addViewfinderIconOverlay()
 //        addMenuIconOverlay()
-        a
+        
         setupMotionManager()
         setupPinchGesture()
     }
