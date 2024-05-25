@@ -3,6 +3,7 @@ import WebKit
 
 struct BottomSheetView: View {
     @Binding var isSheetExpended: Bool
+    @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     

@@ -6,6 +6,7 @@ import UIKit
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var isSheetExpended: Bool
+    @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     
@@ -21,6 +22,12 @@ struct CameraView: UIViewControllerRepresentable {
                 if !text.isEmpty && self.parent.searchText != text && !self.parent.isSheetExpended {
                     self.parent.searchText = text
                 }
+            }
+        }
+        
+        func showMenu() {
+            DispatchQueue.main.async {
+                self.parent.showMenu = true
             }
         }
     }
@@ -167,16 +174,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
         containerView.addGestureRecognizer(tapGesture)
     }
-
+    
     // Action method for tap gesture
     @objc func menuIconTapped() {
-        // Assuming you have a view controller named NewPageViewController
-        print("HERE 5")
-//        let newPageVC = NewPageViewController()
-//        newPageVC.modalPresentationStyle = .fullScreen
-//        present(newPageVC, animated: true, completion: nil)
+        coordinator?.showMenu()
     }
-
     
     func setupPinchGesture() {
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
