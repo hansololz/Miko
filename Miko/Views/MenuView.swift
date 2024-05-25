@@ -5,16 +5,20 @@ struct MenuView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    
-    @State private var searchEngineOption: String? = "Google"
+    @State private var searchEngineOption: SearchEngineOption? = loadSearchEnginePreference() {
+        didSet {
+            saveSearchEnginePreference(option: searchEngineOption ?? .google)
+        }
+    }
+    @State private var isToggleOn: Bool = false
     
     private var appVersion: String {
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                return version
-            } else {
-                return "1.0"
-            }
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        } else {
+            return "1.0"
         }
+    }
     
     var body: some View {
         NavigationView {
@@ -35,10 +39,14 @@ struct MenuView: View {
                 }
                 
                 Section(header: Text("Search Engine")) {
-                    getSearchEngineOption(option: "Google")
-                    getSearchEngineOption(option: "Bing")
-                    getSearchEngineOption(option: "DuckDuckGo")
+                    getSearchEngineOption(option: .google)
+                    getSearchEngineOption(option: .bing)
+                    getSearchEngineOption(option: .duckDuckGo)
                 }
+                
+//                Section(header: Text("Toggle Section")) {
+//                    Toggle("Enable Feature", isOn: $isToggleOn)
+//                }
             }
             .navigationTitle("Neko Cam")
             .navigationBarItems(leading: Button("Done") {
@@ -47,12 +55,12 @@ struct MenuView: View {
         }
     }
     
-    private func getSearchEngineOption(option: String) -> some View {
+    private func getSearchEngineOption(option: SearchEngineOption) -> some View {
         Button(action: {
             searchEngineOption = option
         }) {
             HStack {
-                Text(option)
+                Text(option.displayName)
                 Spacer()
                 if searchEngineOption == option {
                     Image(systemName: "checkmark")
