@@ -128,8 +128,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func addMenuIconOverlay() {
-        let heartIcon = UIImage(systemName: "ellipsis.circle")
-        menuIconView = UIImageView(image: heartIcon)
+        let menuIcon = UIImage(systemName: "ellipsis.circle")
+        menuIconView = UIImageView(image: menuIcon)
         menuIconView.translatesAutoresizingMaskIntoConstraints = false
         menuIconView.contentMode = .scaleAspectFit
         menuIconView.tintColor = .white
@@ -288,12 +288,10 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
-        print("STOP CAMERA")
         shouldSampleText = false
     }
     
     func resumeCamera() {
-        print("START CAMERA")
         shouldSampleText = true
     }
     
