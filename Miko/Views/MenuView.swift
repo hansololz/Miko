@@ -29,8 +29,7 @@ struct MenuView: View {
             saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
         }
     }
-    
-    @State var locationToggle: Bool = loadLocationInSearchQueryPreference()
+    @StateObject private var viewModel = LocationViewModel()
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -61,10 +60,13 @@ struct MenuView: View {
                 }
                 
                 Section(header: Text("Location")) {
-                    Toggle(isOn: $locationToggle) {
+//                    Text(viewModel.locationName)
+//                                    .font(.title)
+//                                    .padding()
+                    Toggle(isOn: $locationInSearchQuery) {
                         Text("Use location in search query")
                     }
-                    .onChange(of: locationToggle) { old, new in
+                    .onChange(of: locationInSearchQuery) { old, new in
                         locationInSearchQuery = new
                     }
                 }

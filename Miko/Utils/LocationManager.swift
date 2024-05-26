@@ -6,35 +6,69 @@ func saveLocationInSearchQueryPreference(preference: Bool) {
     print("Saved preference: \(preference)")
 }
 
-func loadLocationInSearchQueryPreference() -> Bool {
+func loadLocationInSearchQueryPreference(key: String) -> Bool {
     let preference = UserDefaults.standard.bool(forKey: "locationInSearchQuery")
-    print("Loaded preference: \(preference)")
+    print("Loaded preference: \(preference) \(key)")
     return preference
 }
 
+// LocationManager Class
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    private var locationManager = CLLocationManager()
+    private let locationManager = CLLocationManager()
     
-    @Published var location: CLLocation? = nil
-    @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
+    @Published var location: CLLocation? {
+        didSet {
+            if let location = location {
+                fetchLocationName(from: location)
+            }
+        }
+    }
+    @Published var locationName: String = "Unknown"
     
     override init() {
         super.init()
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func startUpdatingLocation() {
+        locationManager.startUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        self.location = location
+        if let location = locations.first {
+            self.location = location
+            locationManager.stopUpdatingLocation()
+        }
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.authorizationStatus = status
-        if status == .authorizedWhenInUse || status == .authorizedAlways {
-            self.locationManager.startUpdatingLocation()
+    private func fetchLocationName(from location: CLLocation) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error in reverse geocoding: \(error)")
+                self.locationName = "Unknown"
+            } else if let placemarks = placemarks, let placemark = placemarks.first {
+                self.locationName = placemark.locality ?? "Unknown"
+            }
         }
+    }
+}
+
+// LocationViewModel Class
+class LocationViewModel: ObservableObject {
+    @Published var locationName: String = "Fetching location..."
+    private var locationManager = LocationManager()
+    
+    init() {
+        locationManager.$locationName
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$locationName)
+    }
+    
+    func startUpdatingLocation() {
+        locationManager.startUpdatingLocation()
     }
 }

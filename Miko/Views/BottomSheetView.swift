@@ -8,7 +8,7 @@ struct BottomSheetView: View {
     @Binding var sheetOffset: CGFloat
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
-    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference()
+    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference(key: "1")
     @StateObject var locationManager = LocationManager()
     
     var body: some View {
