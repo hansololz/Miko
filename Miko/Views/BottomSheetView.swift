@@ -42,14 +42,20 @@ struct BottomSheetView: View {
     }
 }
 
+
 struct WebView: UIViewRepresentable {
     let urlString: String
     
-    class Coordinator: NSObject {
+    class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
         
         init(parent: WebView) {
             self.parent = parent
+        }
+        
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            // Execute JavaScript to scroll to the top of the page
+            webView.evaluateJavaScript("window.scrollTo(0, 0);", completionHandler: nil)
         }
     }
     
@@ -59,6 +65,7 @@ struct WebView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
         return webView
     }
     
