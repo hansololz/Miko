@@ -37,6 +37,11 @@ struct MenuView: View {
         }
     }
     @State var showingAlert = false
+    @State var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages() {
+        didSet {
+            saveCameraSearchLanguages(languages: selectedSearchLanguages)
+        }
+    }
     @StateObject var locationManager = LocationManager()
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
@@ -110,12 +115,18 @@ struct MenuView: View {
                     }
                 }
                 
-                Section(header: Text("Search Content: \(searchEngineOption)")) {
+                Section(header: Text("Search Content")) {
                     getSearchContentOption(engine: searchEngineOption, option: .all)
                     getSearchContentOption(engine: searchEngineOption, option: .images)
                     getSearchContentOption(engine: searchEngineOption, option: .videos)
                     getSearchContentOption(engine: searchEngineOption, option: .news)
                     getSearchContentOption(engine: searchEngineOption, option: .shopping)
+                }
+                
+                Section(header: Text("Languages")) {
+                    NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
+                        Label("Supported languages", systemImage: "checklist")
+                    }
                 }
             }
             .navigationTitle("Neko Cam")
@@ -202,3 +213,46 @@ struct ContactView: View {
         .navigationBarTitle("Contact")
     }
 }
+
+struct SupportedLangaugesView: View {
+    @Binding var selectedSearchLanguages: [SearchLanguage] {
+        didSet {
+            saveCameraSearchLanguages(languages: selectedSearchLanguages)
+        }
+    }
+    
+    var body: some View {
+        List {
+            ForEach(SearchLanguage.allCases, id: \.self) { language in
+                LanguageRow(language: language, isSelected: selectedSearchLanguages.contains(language)) { isSelected in
+                    if isSelected {
+                        if !selectedSearchLanguages.contains(language) {
+                            selectedSearchLanguages.append(language)
+                        }
+                    } else {
+                        if let index = selectedSearchLanguages.firstIndex(of: language) {
+                            selectedSearchLanguages.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("Select Languages")
+    }
+}
+
+struct LanguageRow: View {
+    let language: SearchLanguage
+    let isSelected: Bool
+    let toggleSelection: (Bool) -> Void
+    
+    var body: some View {
+        Toggle(isOn: Binding<Bool>(
+            get: { isSelected },
+            set: { newValue in toggleSelection(newValue) }
+        )) {
+            Text(language.displayName)
+        }
+    }
+}
+
