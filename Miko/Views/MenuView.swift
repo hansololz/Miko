@@ -15,7 +15,7 @@ struct MenuView: View {
             saveSearchContentPreference(option: searchContentOption)
         }
     }
-//    @State private var isToggleOn: Bool = false
+    //    @State private var isToggleOn: Bool = false
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -35,7 +35,7 @@ struct MenuView: View {
                                 .foregroundColor(.gray)
                         }
                     }
-                    NavigationLink(destination: Text("Privacy Policy")) {
+                    NavigationLink(destination: PrivacyPolicyView()) {
                         Label("Privacy Policy", systemImage: "doc")
                     }
                     NavigationLink(destination: Text("Contact")) {
@@ -96,5 +96,34 @@ struct MenuView: View {
         }
         .background(Color.white)
         .cornerRadius(10)
+    }
+}
+
+struct PrivacyPolicyView: View {
+    var body: some View {
+        NavigationView {
+            List {
+                Section(header: Text("App Data")) {
+                    Text("The app itself, excluding the search engines, does not store any data externally. App settings data are only stored on device.")
+                }
+                
+                Section(header: Text("Third Party Search Engines")) {
+                    Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policy.\n\nThe app displays third party search engines as webpages in a browser view.")
+                }
+
+                Section(header: Text("Changes to This Privacy Policy")) {
+                    Text("We may update our privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on this page.")
+                }
+                
+                Section(header: Text("Acceptance of Terms")) {
+                    Text("By using our app, you signify your acceptance of this privacy policy. If you do not agree to this policy, please do not use our app. Your continued use of the app following the posting of changes to this policy will be deemed your acceptance of those changes.")
+                }
+                
+                Section(header: Text("Contact Us")) {
+                    Text("If you have any questions about this privacy policy, please contact us:\n- By email: nekocam@deezus.com")
+                }
+            }
+            .navigationBarTitle("Privacy Policy")
+        }
     }
 }
