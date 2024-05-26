@@ -9,12 +9,25 @@ func loadLocationInSearchQueryPreference() -> Bool {
     return UserDefaults.standard.bool(forKey: "locationInSearchQuery")
 }
 
-// LocationManager Class
+func saveIsFirstEverLocationPermissionRequest() {
+    UserDefaults.standard.set(false, forKey: "isFirstEverLocationPermissionRequest")
+}
+
+func loadIsFirstEverLocationPermissionRequest() -> Bool {
+    let userDefaults = UserDefaults.standard
+    if userDefaults.object(forKey: "isFirstEverLocationPermissionRequest") == nil {
+        return true
+    } else {
+        return userDefaults.bool(forKey: "isFirstEverLocationPermissionRequest")
+    }
+}
+
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     private var lastLocation: CLLocation?
     private var lastUpdateTime: Date?
-
+    private var authorizedCallback: (() -> Void)?
+    
     @Published var location: CLLocation? {
         didSet {
             if let location = location {
@@ -57,8 +70,27 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         return locationManager.authorizationStatus == .authorizedWhenInUse && locationManager.accuracyAuthorization == .fullAccuracy
     }
     
-    func requestAuthorization() {
+    func requestAuthorization(callback: @escaping () -> Void) {
+        self.authorizedCallback = callback
         locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            print("Location permission granted.")
+            // Perform any action needed when permission is granted
+            startUpdatingLocation()
+        case .denied, .restricted:
+            print("Location permission denied or restricted.")
+            // Handle the case when permission is denied or restricted
+        case .notDetermined:
+            print("Location permission not determined.")
+        @unknown default:
+            print("Unknown authorization status.")
+        }
+        
+        authorizedCallback?()
     }
     
     private func fetchLocationName(from location: CLLocation) {

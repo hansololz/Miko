@@ -1,5 +1,7 @@
 import SwiftUI
 
+var shouldShowAlertPrompt = false
+
 struct MenuView: View {
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var showMenu: Bool
@@ -29,8 +31,14 @@ struct MenuView: View {
             saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
         }
     }
-    @StateObject var locationManager = LocationManager()
+    @State var isFirstEverLocationPermissionRequest: Bool = loadIsFirstEverLocationPermissionRequest() {
+        didSet {
+            saveIsFirstEverLocationPermissionRequest()
+        }
+    }
+//    @State var shouldShowAlertPrompt = !loadIsFirstEverLocationPermissionRequest()
     @State var showingAlert = false
+    @StateObject var locationManager = LocationManager()
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -65,13 +73,20 @@ struct MenuView: View {
                         Text("Use location in search query")
                     }
                     .onChange(of: locationInSearchQuery) { old, new in
-                        if !locationManager.isAuthorized() {
-                            locationManager.requestAuthorization()
-                            
+                        if isFirstEverLocationPermissionRequest {
                             if !locationManager.isAuthorized() {
-                                locationInSearchQuery = false
-                                showingAlert = true
+                                locationManager.requestAuthorization {
+                                    shouldShowAlertPrompt = true
+                                    locationInSearchQuery = locationManager.isAuthorized()
+                                }
                             }
+                            
+                            isFirstEverLocationPermissionRequest = false
+                        } else if shouldShowAlertPrompt {
+                            shouldShowAlertPrompt = false
+                        } else if !locationManager.isAuthorized() {
+                            locationInSearchQuery = false
+                            showingAlert = true
                         } else {
                             locationInSearchQuery = new
                         }
