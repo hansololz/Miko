@@ -26,7 +26,6 @@ struct BottomSheetView: View {
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
                         .multilineTextAlignment(.center)
-                        .background(Color.white)
                         .padding(.all, 20)
                 } else {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))
