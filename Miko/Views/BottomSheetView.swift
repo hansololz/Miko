@@ -10,7 +10,11 @@ struct BottomSheetView: View {
     @Binding var sheetOffset: CGFloat
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
-    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference()
+    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
+        didSet {
+            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
+        }
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -34,7 +38,7 @@ struct BottomSheetView: View {
                 } else {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
                         .onAppear {
-                            if locationInSearchQuery {
+                            if locationManager.isAuthorized() && locationInSearchQuery {
                                 locationManager.startUpdatingLocation()
                             } else {
                                 locationManager.stopUpdatingLocation()
@@ -44,10 +48,11 @@ struct BottomSheetView: View {
             }
             .onAppear {
                 sheetOffset = geometry.size.height
-                if locationInSearchQuery {
+                
+                if locationManager.isAuthorized() && locationInSearchQuery {
                     locationManager.startUpdatingLocation()
                 } else {
-                    locationManager.stopUpdatingLocation()
+                    locationInSearchQuery = false
                 }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in

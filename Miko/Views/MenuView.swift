@@ -29,7 +29,8 @@ struct MenuView: View {
             saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
         }
     }
-    @StateObject private var viewModel = LocationViewModel()
+    @StateObject var locationManager = LocationManager()
+    @State var showingAlert = false
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -64,7 +65,25 @@ struct MenuView: View {
                         Text("Use location in search query")
                     }
                     .onChange(of: locationInSearchQuery) { old, new in
-                        locationInSearchQuery = new
+                        if !locationManager.isAuthorized() {
+                            locationManager.requestAuthorization()
+                            locationInSearchQuery = false
+                            showingAlert = true
+                        } else {
+                            locationInSearchQuery = new
+                        }
+                    }
+                    .alert(isPresented: $showingAlert) {
+                        Alert(
+                            title: Text("Location Permission Needed"),
+                            message: Text("This features requires location access. Please enable location services in your device settings."),
+                            primaryButton: .default(Text("Go to Settings")) {
+                                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(appSettings)
+                                }
+                            },
+                            secondaryButton: .cancel()
+                        )
                     }
                 }
                 

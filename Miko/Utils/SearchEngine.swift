@@ -110,7 +110,7 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
         "\(searchText), \(locationManager.locationName)"
     }
     
-    print("HERE \(query)")
+    print("HERE 3 \(query)")
     
     let contentOptions = searchEngineDirectory[engine]
     if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }

@@ -29,7 +29,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
         locationManager.distanceFilter = 5
     }
     
@@ -83,6 +82,20 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
         
         self.lastUpdateTime = Date()
+    }
+    
+    func isAuthorized() -> Bool {
+        return locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways
+    }
+    
+//    func isTempAuthorized() -> Bool {
+//        return locationManager.authorizationStatus == .
+//    }
+//    
+    func requestAuthorization() {
+//        if (locationManager.authorizationStatus != .authorizedWhenInUse) {
+//            locationManager.requestWhenInUseAuthorization()
+//        }
     }
     
     private func fetchLocationName(from location: CLLocation) {
