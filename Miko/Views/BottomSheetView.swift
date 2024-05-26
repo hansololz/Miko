@@ -33,8 +33,9 @@ struct BottomSheetView: View {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
-                        .padding(.all, 20)
+                        .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
                         .onAppear {
