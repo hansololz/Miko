@@ -6,17 +6,8 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    
-    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference() {
-        didSet {
-            saveSearchEnginePreference(option: searchEngineOption)
-        }
-    }
-    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference() {
-        didSet {
-            saveSearchContentPreference(option: searchContentOption)
-        }
-    }
+    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
+    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
     
     var body: some View {
         GeometryReader { geometry in

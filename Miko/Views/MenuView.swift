@@ -5,8 +5,16 @@ struct MenuView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @Binding var searchEngineOption: SearchEngineOption
-    @Binding var searchContentOption: SearchContentOption
+    @Binding var searchEngineOption: SearchEngineOption {
+        didSet {
+            saveSearchEnginePreference(option: searchEngineOption)
+        }
+    }
+    @Binding var searchContentOption: SearchContentOption {
+        didSet {
+            saveSearchContentPreference(option: searchContentOption)
+        }
+    }
 //    @State private var isToggleOn: Bool = false
     
     private var appVersion: String {
@@ -48,10 +56,6 @@ struct MenuView: View {
                     getSearchContentOption(option: .news)
                     getSearchContentOption(option: .shopping)
                 }
-                
-//                Section(header: Text("Toggle Section")) {
-//                    Toggle("Enable Feature", isOn: $isToggleOn)
-//                }
             }
             .navigationTitle("Neko Cam")
             .navigationBarItems(leading: Button("Done") {

@@ -56,27 +56,31 @@ func loadSearchContentPreference() -> SearchContentOption {
     }
 }
 
+private let googleBaseUrl = "https://www.google.com/search"
+private let bingBaseUrl = "https://www.bing.com"
+private let duckDuckGoBaseUrl = "https://duckduckgo.com"
+
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
     .google: [
-        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
-        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
-        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
-        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
-        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+        .all:       { searchText in "\(googleBaseUrl)?q=\(searchText)" },
+        .images:    { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=isch" },
+        .videos:    { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=vid" },
+        .news:      { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=nws" },
+        .shopping:  { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=shop" },
     ],
     .bing: [
-        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
-        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
-        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
-        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
-        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+        .all:       { searchText in "\(bingBaseUrl)/search?q=\(searchText)" },
+        .images:    { searchText in "\(bingBaseUrl)/images/search?q=\(searchText)" },
+        .videos:    { searchText in "\(bingBaseUrl)/videos/search?q=\(searchText)" },
+        .news:      { searchText in "\(bingBaseUrl)/news/search?q=\(searchText)" },
+        .shopping:  { searchText in "\(bingBaseUrl)/shop/search?q=\(searchText)" },
     ],
     .duckDuckGo: [
-        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
-        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
-        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
-        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
-        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+        .all:       { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)" },
+        .images:    { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iax=images&ia=images" },
+        .videos:    { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iax=videos&ia=videos" },
+        .news:      { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=news&ia=news" },
+        .shopping:  { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=shopping&ia=shopping" },
     ]
 ]
 
