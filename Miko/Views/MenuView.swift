@@ -65,10 +65,10 @@ struct MenuView: View {
                         }
                     }
                     NavigationLink(destination: PrivacyPolicyView()) {
-                        Label("Privacy Policy", systemImage: "doc")
+                        Text("Privacy Policy")
                     }
                     NavigationLink(destination: ContactView()) {
-                        Label("Contact", systemImage: "envelope")
+                        Text("Contact")
                     }
                 }
                 
@@ -125,7 +125,7 @@ struct MenuView: View {
                 
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
-                        Label("Supported languages", systemImage: "checklist")
+                        Text("Supported languages")
                     }
                 }
             }
@@ -182,7 +182,7 @@ struct PrivacyPolicyView: View {
             }
             
             Section(header: Text("Third Party Search Engines")) {
-                Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policy.\n\nThe app displays third party search engines as webpages in a browser view.")
+                Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policies.\n\nThe app displays third party search engines as webpages in a browser view.")
             }
             
             Section(header: Text("Changes to This Privacy Policy")) {
