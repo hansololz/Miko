@@ -2,6 +2,8 @@ import SwiftUI
 import WebKit
 
 struct BottomSheetView: View {
+    @StateObject var locationManager = LocationManager()
+    
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var showMenu: Bool
     @Binding var searchText: String
@@ -9,14 +11,13 @@ struct BottomSheetView: View {
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
     @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference()
-    @StateObject var locationManager = LocationManager()
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 if showMenu {
                     MenuView(
-                        selectSheetAnchor: $selectSheetAnchor, 
+                        selectSheetAnchor: $selectSheetAnchor,
                         showMenu: $showMenu,
                         searchText: $searchText,
                         sheetOffset: $sheetOffset,
@@ -25,17 +26,21 @@ struct BottomSheetView: View {
                         locationInSearchQuery: $locationInSearchQuery
                     )
                 } else if searchText.isEmpty {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
                         .multilineTextAlignment(.center)
                         .padding(.all, 20)
                 } else {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
                 }
             }
             .onAppear {
                 sheetOffset = geometry.size.height
+                if locationInSearchQuery {
+                    print("HERE 10")
+                    locationManager.startUpdatingLocation()
+                }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
                 sheetOffset = newValue

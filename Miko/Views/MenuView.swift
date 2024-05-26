@@ -60,9 +60,6 @@ struct MenuView: View {
                 }
                 
                 Section(header: Text("Location")) {
-//                    Text(viewModel.locationName)
-//                                    .font(.title)
-//                                    .padding()
                     Toggle(isOn: $locationInSearchQuery) {
                         Text("Use location in search query")
                     }

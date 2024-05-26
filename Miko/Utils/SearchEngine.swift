@@ -103,13 +103,19 @@ func getDefaultSearchUrl(searchText: String) -> String  {
     return "https://www.google.com/search?tbm=isch&q=\(searchText)"
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String) -> String {
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationManager: LocationManager) -> String {
+    let query = if locationManager.locationName.isEmpty {
+        searchText
+    } else {
+        "\(searchText), \(locationManager.locationName)"
+    }
+    
     let contentOptions = searchEngineDirectory[engine]
-    if contentOptions == nil { return getDefaultSearchUrl(searchText: searchText) }
+    if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }
     let searchMethod = (contentOptions ?? [:])[content]
     if searchMethod == nil {
-        return getDefaultSearchUrl(searchText: searchText)
+        return getDefaultSearchUrl(searchText: query)
     } else {
-        return searchMethod!(searchText)
+        return searchMethod!(query)
     }
 }
