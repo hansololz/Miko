@@ -122,13 +122,15 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         overlayView.alpha = 0.0
         view.addSubview(overlayView)
         
-        captureSession.startRunning()
-        
         addViewfinderIconOverlay()
         addMenuIconOverlay()
         
         setupMotionManager()
         setupPinchGesture()
+    
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
     }
     
     func addViewfinderIconOverlay() {
