@@ -1,10 +1,3 @@
-//
-//  SearchEngine.swift
-//  Miko
-//
-//  Created by David Zhang on 5/25/24.
-//
-
 import Foundation
 
 enum SearchEngineOption: String, CaseIterable {
@@ -47,5 +40,18 @@ func loadSearchEnginePreference() -> SearchEngineOption {
         return option
     } else {
         return .google
+    }
+}
+
+func saveSearchContentPreference(option: SearchContentOption) {
+    UserDefaults.standard.set(option.rawValue, forKey: "searchContentOption")
+}
+
+func loadSearchContentPreference() -> SearchContentOption {
+    if let savedOption = UserDefaults.standard.string(forKey: "searchContentOption"),
+       let option = SearchContentOption.from(savedOption) {
+        return option
+    } else {
+        return .images
     }
 }

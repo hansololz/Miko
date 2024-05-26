@@ -10,6 +10,11 @@ struct MenuView: View {
             saveSearchEnginePreference(option: searchEngineOption ?? .google)
         }
     }
+    @State private var searchContentOption: SearchContentOption? = loadSearchContentPreference() {
+        didSet {
+            saveSearchContentPreference(option: searchContentOption ?? .all)
+        }
+    }
     @State private var isToggleOn: Bool = false
     
     private var appVersion: String {
@@ -44,6 +49,14 @@ struct MenuView: View {
                     getSearchEngineOption(option: .duckDuckGo)
                 }
                 
+                Section(header: Text("Search Content")) {
+                    getSearchContentOption(option: .all)
+                    getSearchContentOption(option: .images)
+                    getSearchContentOption(option: .videos)
+                    getSearchContentOption(option: .news)
+                    getSearchContentOption(option: .shopping)
+                }
+                
 //                Section(header: Text("Toggle Section")) {
 //                    Toggle("Enable Feature", isOn: $isToggleOn)
 //                }
@@ -63,6 +76,23 @@ struct MenuView: View {
                 Text(option.displayName)
                 Spacer()
                 if searchEngineOption == option {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.blue)
+                }
+            }
+        }
+        .background(Color.white)
+        .cornerRadius(10)
+    }
+    
+    private func getSearchContentOption(option: SearchContentOption) -> some View {
+        Button(action: {
+            searchContentOption = option
+        }) {
+            HStack {
+                Text(option.displayName)
+                Spacer()
+                if searchContentOption == option {
                     Image(systemName: "checkmark")
                         .foregroundColor(.blue)
                 }
