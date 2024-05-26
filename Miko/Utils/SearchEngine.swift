@@ -3,7 +3,10 @@ import Foundation
 enum SearchEngineOption: String, CaseIterable {
     case google = "Google"
     case bing = "Bing"
+    case brave = "Brave"
     case duckDuckGo = "DuckDuckGo"
+    case baidu = "Baidu"
+    case yandex = "Yandex"
     
     var displayName: String {
         return self.rawValue
@@ -59,6 +62,7 @@ func loadSearchContentPreference() -> SearchContentOption {
 private let googleBaseUrl = "https://www.google.com/search"
 private let bingBaseUrl = "https://www.bing.com"
 private let duckDuckGoBaseUrl = "https://duckduckgo.com"
+private let baiduBaseUrl = "https://www.baidu.com";
 
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
     .google: [
@@ -67,6 +71,12 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
         .videos:    { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=vid" },
         .news:      { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=nws" },
         .shopping:  { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=shop" },
+    ],
+    .brave: [
+        .all:       { searchText in "https://search.brave.com/search?source=web&q=\(searchText)" },
+        .images:    { searchText in "https://search.brave.com/images?q=\(searchText)" },
+        .videos:    { searchText in "https://search.brave.com/videos?q=\(searchText)" },
+        .news:      { searchText in "https://search.brave.com/news?q=\(searchText)" },
     ],
     .bing: [
         .all:       { searchText in "\(bingBaseUrl)/search?q=\(searchText)" },
@@ -81,7 +91,16 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
         .videos:    { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iax=videos&ia=videos" },
         .news:      { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=news&ia=news" },
         .shopping:  { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=shopping&ia=shopping" },
+    ],
+    .baidu: [
+        .all:       { searchText in "\(baiduBaseUrl)/s?wd=\(searchText)" },
+    ],
+    .yandex: [
+        .all:       { searchText in "https://yandex.com/search?text=\(searchText)" },
+        .images:    { searchText in "https://yandex.com/images/search?text=\(searchText)" },
+        .videos:    { searchText in "https://yandex.com/video/search?text=\(searchText)" },
     ]
+    
 ]
 
 func getDefaultSearchUrl(searchText: String) -> String  {

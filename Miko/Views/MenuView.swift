@@ -8,6 +8,15 @@ struct MenuView: View {
     @Binding var searchEngineOption: SearchEngineOption {
         didSet {
             saveSearchEnginePreference(option: searchEngineOption)
+            
+            let contentOptions = searchEngineDirectory[searchEngineOption] ?? [:]
+            if contentOptions[searchContentOption] == nil {
+                if contentOptions[.images] == nil {
+                    searchContentOption = .all
+                } else {
+                    searchContentOption = .images
+                }
+            }
         }
     }
     @Binding var searchContentOption: SearchContentOption {
@@ -16,6 +25,8 @@ struct MenuView: View {
         }
     }
     //    @State private var isToggleOn: Bool = false
+    
+    var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -44,17 +55,17 @@ struct MenuView: View {
                 }
                 
                 Section(header: Text("Search Engine")) {
-                    getSearchEngineOption(option: .google)
-                    getSearchEngineOption(option: .bing)
-                    getSearchEngineOption(option: .duckDuckGo)
+                    ForEach(searchEngines, id: \.self) { option in
+                        getSearchEngineOption(option: option)
+                    }
                 }
                 
-                Section(header: Text("Search Content")) {
-                    getSearchContentOption(option: .all)
-                    getSearchContentOption(option: .images)
-                    getSearchContentOption(option: .videos)
-                    getSearchContentOption(option: .news)
-                    getSearchContentOption(option: .shopping)
+                Section(header: Text("Search Content: \(searchEngineOption)")) {
+                    getSearchContentOption(engine: searchEngineOption, option: .all)
+                    getSearchContentOption(engine: searchEngineOption, option: .images)
+                    getSearchContentOption(engine: searchEngineOption, option: .videos)
+                    getSearchContentOption(engine: searchEngineOption, option: .news)
+                    getSearchContentOption(engine: searchEngineOption, option: .shopping)
                 }
             }
             .navigationTitle("Neko Cam")
@@ -77,25 +88,28 @@ struct MenuView: View {
                 }
             }
         }
-        .background(Color.white)
         .cornerRadius(10)
     }
     
-    private func getSearchContentOption(option: SearchContentOption) -> some View {
-        Button(action: {
-            searchContentOption = option
-        }) {
-            HStack {
-                Text(option.displayName)
-                Spacer()
-                if searchContentOption == option {
-                    Image(systemName: "checkmark")
-                        .foregroundColor(.blue)
+    @ViewBuilder
+    private func getSearchContentOption(engine: SearchEngineOption, option: SearchContentOption) -> some View {
+        let contentOptions = searchEngineDirectory[engine] ?? [:]
+        
+        if contentOptions[option] != nil {
+            Button(action: {
+                searchContentOption = option
+            }) {
+                HStack {
+                    Text(option.displayName)
+                    Spacer()
+                    if searchContentOption == option {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.blue)
+                    }
                 }
             }
+            .cornerRadius(10)
         }
-        .background(Color.white)
-        .cornerRadius(10)
     }
 }
 
