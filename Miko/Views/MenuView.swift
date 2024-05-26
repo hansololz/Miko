@@ -76,7 +76,7 @@ struct MenuView: View {
                     .alert(isPresented: $showingAlert) {
                         Alert(
                             title: Text("Location Permission Needed"),
-                            message: Text("This features requires location access. Please enable location services in your device settings."),
+                            message: Text("This features requires \"While Using the App\" location access and percise location accuray. Please enable location services in your device settings."),
                             primaryButton: .default(Text("Go to Settings")) {
                                 if let appSettings = URL(string: UIApplication.openSettingsURLString) {
                                     UIApplication.shared.open(appSettings)
