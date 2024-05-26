@@ -20,6 +20,7 @@ struct ContentView: View {
                     .enabled(upThrough: restSheetAnchor)
                 )
                 .interactiveDismissDisabled()
+                .edgesIgnoringSafeArea(.all)
         }
         .onChange(of: selectSheetAnchor) { oldDetent, newDetent in
             if newDetent == restSheetAnchor {

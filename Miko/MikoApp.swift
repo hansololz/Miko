@@ -7,7 +7,6 @@ struct MikoApp: App {
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            // The item model is placeholder, will replace this with something more useful later.
             Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
