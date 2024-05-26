@@ -5,17 +5,9 @@ struct MenuView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @State private var searchEngineOption: SearchEngineOption? = loadSearchEnginePreference() {
-        didSet {
-            saveSearchEnginePreference(option: searchEngineOption ?? .google)
-        }
-    }
-    @State private var searchContentOption: SearchContentOption? = loadSearchContentPreference() {
-        didSet {
-            saveSearchContentPreference(option: searchContentOption ?? .all)
-        }
-    }
-    @State private var isToggleOn: Bool = false
+    @Binding var searchEngineOption: SearchEngineOption
+    @Binding var searchContentOption: SearchContentOption
+//    @State private var isToggleOn: Bool = false
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {

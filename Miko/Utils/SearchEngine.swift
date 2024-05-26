@@ -55,3 +55,15 @@ func loadSearchContentPreference() -> SearchContentOption {
         return .images
     }
 }
+
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String) -> String {
+    if engine == .google {
+        
+    } else if engine == .bing {
+        
+    } else if engine == .duckDuckGo {
+        
+    }
+    
+    return "https://www.google.com/search?tbm=isch&q=\(searchText)"
+}

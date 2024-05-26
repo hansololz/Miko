@@ -7,20 +7,38 @@ struct BottomSheetView: View {
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     
+    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference() {
+        didSet {
+            saveSearchEnginePreference(option: searchEngineOption)
+        }
+    }
+    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference() {
+        didSet {
+            saveSearchContentPreference(option: searchContentOption)
+        }
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 if showMenu {
-                    MenuView(selectSheetAnchor: $selectSheetAnchor, showMenu: $showMenu, searchText: $searchText, sheetOffset: $sheetOffset)
+                    MenuView(
+                        selectSheetAnchor: $selectSheetAnchor, 
+                        showMenu: $showMenu,
+                        searchText: $searchText,
+                        sheetOffset: $sheetOffset,
+                        searchEngineOption: $searchEngineOption,
+                        searchContentOption: $searchContentOption
+                    )
                 } else if searchText.isEmpty {
-                    WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
                         .multilineTextAlignment(.center)
                         .background(Color.white)
                         .padding(.all, 20)
                 } else {
-                    WebView(urlString: "https://www.google.com/search?tbm=isch&q=\(searchText)")
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))
                 }
             }
             .onAppear {
