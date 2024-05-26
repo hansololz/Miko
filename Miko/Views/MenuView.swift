@@ -67,8 +67,11 @@ struct MenuView: View {
                     .onChange(of: locationInSearchQuery) { old, new in
                         if !locationManager.isAuthorized() {
                             locationManager.requestAuthorization()
-                            locationInSearchQuery = false
-                            showingAlert = true
+                            
+                            if !locationManager.isAuthorized() {
+                                locationInSearchQuery = false
+                                showingAlert = true
+                            }
                         } else {
                             locationInSearchQuery = new
                         }
