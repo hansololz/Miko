@@ -29,7 +29,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.requestWhenInUseAuthorization()
         locationManager.distanceFilter = 5
     }
     
@@ -51,38 +50,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let newLocation = locations.first else { return }
-        
-        print("HERE 1")
-        
-        // Check if the last update time is more than 1 minute ago
-        if let lastUpdateTime = lastUpdateTime {
-            print("HERE 1.1")
-            let timeInterval = Date().timeIntervalSince(lastUpdateTime)
-            if timeInterval < 60 {
-                print("HERE 1.2")
-                // Less than a minute has passed since the last update
-                return
-            }
-        }
-        
-        print("HERE 2")
-        
-        // Update the location if it is more than 5 meters away from the last known location
-        if let lastLocation = lastLocation {
-            print("HERE 3")
-            let distance = newLocation.distance(from: lastLocation)
-            if distance > 5 {
-                print("HERE 4")
-                self.location = newLocation
-                self.lastLocation = newLocation
-            }
-        } else {
-            print("HERE 5")
-            self.location = newLocation
-            self.lastLocation = newLocation
-        }
-        
-        self.lastUpdateTime = Date()
+        self.location = newLocation
     }
     
     func isAuthorized() -> Bool {
@@ -101,10 +69,13 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 print("Error in reverse geocoding: \(error)")
                 self.locationName = ""
             } else if let placemarks = placemarks, let placemark = placemarks.first {
-                self.locationName = placemark.name ?? ""
+                if self.locationName != placemark.name ?? "" {
+                    self.locationName = placemark.name ?? ""
+                    print("NEW LOCATION \(self.locationName)")
+                }
+                
+                print("OLD LOCATION \(self.locationName)")
             }
-            
-            print("LOCATION \(self.locationName)")
         }
     }
 }
