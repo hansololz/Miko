@@ -239,6 +239,9 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             self.handleDetectedText(request: request)
         }
         
+        // Specify the recognition languages
+        request.recognitionLanguages = ["zh-Hans", "zh-Hant", "ja", "ko", "en"]
+        
         do {
             try imageRequestHandler.perform([request])
         } catch {
