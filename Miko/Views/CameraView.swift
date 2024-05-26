@@ -9,7 +9,11 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @State private var hasCameraPermission: Bool = true
+    @Binding var isFirstEverCameraPermissionRequest: Bool {
+        didSet {
+            saveIsFirstEverCameraPermissionRequest()
+        }
+    }
     
     class Coordinator: NSObject {
         var parent: CameraView
@@ -32,6 +36,12 @@ struct CameraView: UIViewControllerRepresentable {
                 self.parent.selectSheetAnchor = fullSheetAnchor
             }
         }
+        
+        func updateIsFirstEverCameraPermissionRequest() {
+            DispatchQueue.main.async {
+                self.parent.isFirstEverCameraPermissionRequest = true
+            }
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -41,11 +51,6 @@ struct CameraView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let cameraViewController = CameraViewController()
         cameraViewController.coordinator = context.coordinator
-        
-        cameraViewController.checkCameraPermission { granted in
-            hasCameraPermission = granted
-         }
-        
         return cameraViewController
     }
     
@@ -84,6 +89,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.coordinator?.updateIsFirstEverCameraPermissionRequest()
         
         captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo
@@ -331,20 +338,20 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         overlayView.alpha = alpha
     }
     
-    func checkCameraPermission(completion: @escaping (Bool) -> Void) {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            completion(true)
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.async {
-                    completion(granted)
-                }
-            }
-        default:
-            completion(false)
-        }
-    }
+//    func checkCameraPermission(completion: @escaping (Bool) -> Void) {
+//        switch AVCaptureDevice.authorizationStatus(for: .video) {
+//        case .authorized:
+//            completion(true)
+//        case .notDetermined:
+//            AVCaptureDevice.requestAccess(for: .video) { granted in
+//                DispatchQueue.main.async {
+//                    completion(granted)
+//                }
+//            }
+//        default:
+//            completion(false)
+//        }
+//    }
 }
 
 // Add a subset of these later
