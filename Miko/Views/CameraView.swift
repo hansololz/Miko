@@ -9,6 +9,7 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
+    @State private var hasCameraPermission: Bool = true
     
     class Coordinator: NSObject {
         var parent: CameraView
@@ -40,6 +41,11 @@ struct CameraView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let cameraViewController = CameraViewController()
         cameraViewController.coordinator = context.coordinator
+        
+        cameraViewController.checkCameraPermission { granted in
+            hasCameraPermission = granted
+         }
+        
         return cameraViewController
     }
     
@@ -176,7 +182,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         containerView.addGestureRecognizer(tapGesture)
     }
     
-    // Action method for tap gesture
     @objc func menuIconTapped() {
         coordinator?.showMenu()
     }
@@ -324,6 +329,21 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func updateOverlayAlpha(_ alpha: CGFloat) {
         overlayView.alpha = alpha
+    }
+    
+    func checkCameraPermission(completion: @escaping (Bool) -> Void) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    completion(granted)
+                }
+            }
+        default:
+            completion(false)
+        }
     }
 }
 
