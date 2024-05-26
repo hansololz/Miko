@@ -36,7 +36,6 @@ struct MenuView: View {
             saveIsFirstEverLocationPermissionRequest()
         }
     }
-//    @State var shouldShowAlertPrompt = !loadIsFirstEverLocationPermissionRequest()
     @State var showingAlert = false
     @StateObject var locationManager = LocationManager()
     
