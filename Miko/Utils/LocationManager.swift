@@ -3,13 +3,10 @@ import CoreLocation
 
 func saveLocationInSearchQueryPreference(preference: Bool) {
     UserDefaults.standard.set(preference, forKey: "locationInSearchQuery")
-    print("Saved preference: \(preference)")
 }
 
-func loadLocationInSearchQueryPreference(key: String) -> Bool {
-    let preference = UserDefaults.standard.bool(forKey: "locationInSearchQuery")
-    print("Loaded preference: \(preference) \(key)")
-    return preference
+func loadLocationInSearchQueryPreference() -> Bool {
+    return UserDefaults.standard.bool(forKey: "locationInSearchQuery")
 }
 
 // LocationManager Class
