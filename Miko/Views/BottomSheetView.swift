@@ -33,13 +33,21 @@ struct BottomSheetView: View {
                         .padding(.all, 20)
                 } else {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
+                        .onAppear {
+                            if locationInSearchQuery {
+                                locationManager.startUpdatingLocation()
+                            } else {
+                                locationManager.stopUpdatingLocation()
+                            }
+                        }
                 }
             }
             .onAppear {
                 sheetOffset = geometry.size.height
                 if locationInSearchQuery {
-                    print("HERE 10")
                     locationManager.startUpdatingLocation()
+                } else {
+                    locationManager.stopUpdatingLocation()
                 }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
