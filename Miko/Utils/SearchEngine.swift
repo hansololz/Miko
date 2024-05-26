@@ -59,18 +59,13 @@ func loadSearchContentPreference() -> SearchContentOption {
     }
 }
 
-private let googleBaseUrl = "https://www.google.com/search"
-private let bingBaseUrl = "https://www.bing.com"
-private let duckDuckGoBaseUrl = "https://duckduckgo.com"
-private let baiduBaseUrl = "https://www.baidu.com";
-
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
     .google: [
-        .all:       { searchText in "\(googleBaseUrl)?q=\(searchText)" },
-        .images:    { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=isch" },
-        .videos:    { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=vid" },
-        .news:      { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=nws" },
-        .shopping:  { searchText in "\(googleBaseUrl)?q=\(searchText)&tbm=shop" },
+        .all:       { searchText in "https://www.google.com/search?q=\(searchText)" },
+        .images:    { searchText in "https://www.google.com/search?q=\(searchText)&tbm=isch" },
+        .videos:    { searchText in "https://www.google.com/search?q=\(searchText)&tbm=vid" },
+        .news:      { searchText in "https://www.google.com/search?q=\(searchText)&tbm=nws" },
+        .shopping:  { searchText in "https://www.google.com/search?q=\(searchText)&tbm=shop" },
     ],
     .brave: [
         .all:       { searchText in "https://search.brave.com/search?source=web&q=\(searchText)" },
@@ -79,21 +74,22 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
         .news:      { searchText in "https://search.brave.com/news?q=\(searchText)" },
     ],
     .bing: [
-        .all:       { searchText in "\(bingBaseUrl)/search?q=\(searchText)" },
-        .images:    { searchText in "\(bingBaseUrl)/images/search?q=\(searchText)" },
-        .videos:    { searchText in "\(bingBaseUrl)/videos/search?q=\(searchText)" },
-        .news:      { searchText in "\(bingBaseUrl)/news/search?q=\(searchText)" },
-        .shopping:  { searchText in "\(bingBaseUrl)/shop/search?q=\(searchText)" },
+        .all:       { searchText in "https://www.bing.com/search?q=\(searchText)" },
+        .images:    { searchText in "https://www.bing.com/images/search?q=\(searchText)" },
+        .videos:    { searchText in "https://www.bing.com/videos/search?q=\(searchText)" },
+        .news:      { searchText in "https://www.bing.com/news/search?q=\(searchText)" },
+        .shopping:  { searchText in "https://www.bing.com/shop/search?q=\(searchText)" },
     ],
     .duckDuckGo: [
-        .all:       { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)" },
-        .images:    { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iax=images&ia=images" },
-        .videos:    { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iax=videos&ia=videos" },
-        .news:      { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=news&ia=news" },
-        .shopping:  { searchText in "\(duckDuckGoBaseUrl)?q=\(searchText)&iar=shopping&ia=shopping" },
+        .all:       { searchText in "https://duckduckgo.com?q=\(searchText)" },
+        .images:    { searchText in "https://duckduckgo.com?q=\(searchText)&iax=images&ia=images" },
+        .videos:    { searchText in "https://duckduckgo.com?q=\(searchText)&iax=videos&ia=videos" },
+        .news:      { searchText in "https://duckduckgo.com?q=\(searchText)&iar=news&ia=news" },
+        .shopping:  { searchText in "https://duckduckgo.com?q=\(searchText)&iar=shopping&ia=shopping" },
     ],
     .baidu: [
-        .all:       { searchText in "\(baiduBaseUrl)/s?wd=\(searchText)" },
+        .all:       { searchText in "https://www.baidu.com/s?wd=\(searchText)" },
+        .images:    { searchText in "https://image.baidu.com/search/index?tn=baiduimage&word=\(searchText)" },
     ],
     .yandex: [
         .all:       { searchText in "https://yandex.com/search?text=\(searchText)" },
