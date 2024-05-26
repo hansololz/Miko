@@ -1,6 +1,17 @@
 import Foundation
 import CoreLocation
 
+func saveLocationInSearchQueryPreference(preference: Bool) {
+    UserDefaults.standard.set(preference, forKey: "locationInSearchQuery")
+    print("Saved preference: \(preference)")
+}
+
+func loadLocationInSearchQueryPreference() -> Bool {
+    let preference = UserDefaults.standard.bool(forKey: "locationInSearchQuery")
+    print("Loaded preference: \(preference)")
+    return preference
+}
+
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
     

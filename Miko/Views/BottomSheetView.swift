@@ -9,6 +9,7 @@ struct BottomSheetView: View {
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
     @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference()
+    @StateObject var locationManager = LocationManager()
     
     var body: some View {
         GeometryReader { geometry in

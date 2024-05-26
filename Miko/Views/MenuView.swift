@@ -30,7 +30,7 @@ struct MenuView: View {
         }
     }
     
-    @State private var useLocationForSearchQuery: Bool = false
+    @State var locationToggle: Bool = loadLocationInSearchQueryPreference()
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -61,8 +61,11 @@ struct MenuView: View {
                 }
                 
                 Section(header: Text("Location")) {
-                    Toggle(isOn: $useLocationForSearchQuery) {
+                    Toggle(isOn: $locationToggle) {
                         Text("Use location in search query")
+                    }
+                    .onChange(of: locationToggle) { old, new in
+                        locationInSearchQuery = new
                     }
                 }
                 
@@ -145,7 +148,7 @@ struct PrivacyPolicyView: View {
             }
             
             Section(header: Text("Contact Us")) {
-                Text("If you have any questions about this privacy policy, please contact us: -By email: nekocam@deezus.com")
+                Text("If you have any questions about this privacy policy, please contact us:\n-By email: nekocam@deezus.com")
                     .textSelection(.enabled)
             }
         }
@@ -157,7 +160,7 @@ struct ContactView: View {
     var body: some View {
         List {
             Section() {
-                Text("If you have any feedback, feature requests, or want to report an issue, please contact us: -By email: nekocam@deezus.com\n\nPlease do not include any personal information. If you are reporting an issue, please help us by including the steps to reproduce the issue.")
+                Text("If you have any feedback, feature requests, or want to report an issue, please contact us:\n-By email: nekocam@deezus.com\n\nPlease do not include any personal information. If you are reporting an issue, please help us by including the steps to reproduce the issue.")
                     .textSelection(.enabled)
             }
         }
