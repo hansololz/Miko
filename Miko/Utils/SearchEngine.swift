@@ -59,6 +59,14 @@ func loadSearchContentPreference() -> SearchContentOption {
     }
 }
 
+func saveLocationInSearchQueryPreference(preference: Bool) {
+    UserDefaults.standard.set(preference, forKey: "locationInSearchQuery")
+}
+
+func loadLocationInSearchQueryPreference() -> Bool {
+    return UserDefaults.standard.bool(forKey: "locationInSearchQuery")
+}
+
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
     .google: [
         .all:       { searchText in "https://www.google.com/search?q=\(searchText)" },

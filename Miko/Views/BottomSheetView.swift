@@ -8,6 +8,7 @@ struct BottomSheetView: View {
     @Binding var sheetOffset: CGFloat
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
+    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference()
     
     var body: some View {
         GeometryReader { geometry in
@@ -19,7 +20,8 @@ struct BottomSheetView: View {
                         searchText: $searchText,
                         sheetOffset: $sheetOffset,
                         searchEngineOption: $searchEngineOption,
-                        searchContentOption: $searchContentOption
+                        searchContentOption: $searchContentOption,
+                        locationInSearchQuery: $locationInSearchQuery
                     )
                 } else if searchText.isEmpty {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText))

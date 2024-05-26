@@ -24,7 +24,13 @@ struct MenuView: View {
             saveSearchContentPreference(option: searchContentOption)
         }
     }
-    //    @State private var isToggleOn: Bool = false
+    @Binding var locationInSearchQuery: Bool {
+        didSet {
+            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
+        }
+    }
+    
+    @State private var useLocationForSearchQuery: Bool = false
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -51,6 +57,12 @@ struct MenuView: View {
                     }
                     NavigationLink(destination: ContactView()) {
                         Label("Contact", systemImage: "envelope")
+                    }
+                }
+                
+                Section(header: Text("Location")) {
+                    Toggle(isOn: $useLocationForSearchQuery) {
+                        Text("Use location in search query")
                     }
                 }
                 
