@@ -56,14 +56,41 @@ func loadSearchContentPreference() -> SearchContentOption {
     }
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String) -> String {
-    if engine == .google {
-        
-    } else if engine == .bing {
-        
-    } else if engine == .duckDuckGo {
-        
-    }
-    
+let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
+    .google: [
+        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
+        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
+        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
+        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
+        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+    ],
+    .bing: [
+        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
+        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
+        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
+        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
+        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+    ],
+    .duckDuckGo: [
+        .all: { searchText in "https://www.google.com/search?q=\(searchText)" },
+        .images: { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
+        .videos: { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
+        .news: { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
+        .shopping: { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" }
+    ]
+]
+
+func getDefaultSearchUrl(searchText: String) -> String  {
     return "https://www.google.com/search?tbm=isch&q=\(searchText)"
+}
+
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String) -> String {
+    let contentOptions = searchEngineDirectory[engine]
+    if contentOptions == nil { return getDefaultSearchUrl(searchText: searchText) }
+    let searchMethod = (contentOptions ?? [:])[content]
+    if searchMethod == nil {
+        return getDefaultSearchUrl(searchText: searchText)
+    } else {
+        return searchMethod!(searchText)
+    }
 }
