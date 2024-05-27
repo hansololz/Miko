@@ -125,7 +125,7 @@ struct MenuView: View {
                 
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
-                        Text("Supported languages")
+                        Text("Supported Languages")
                     }
                 }
             }
@@ -248,11 +248,15 @@ struct SupportedLangaugesView: View {
                         languages.append(.englishUS)
                     }
                     
-                    selectedSearchLanguages = languages
+                    if languages.isEmpty {
+                        selectedSearchLanguages = [.englishUS]
+                    } else {
+                        selectedSearchLanguages = languages
+                    }
                 }
             }
         }
-        .navigationTitle("Select Languages")
+        .navigationTitle("Supported Languages")
     }
 }
 
