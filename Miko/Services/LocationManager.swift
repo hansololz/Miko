@@ -46,7 +46,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func startUpdatingLocation() {
-        print("Started Query")
         lastLocation = nil
         lastUpdateTime = nil
         locationName = ""
@@ -54,7 +53,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func stopUpdatingLocation() {
-        print("Stopped Query")
         lastLocation = nil
         lastUpdateTime = nil
         locationName = ""
@@ -103,10 +101,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             } else if let placemarks = placemarks, let placemark = placemarks.first {
                 if self.locationName != placemark.name ?? "" {
                     self.locationName = placemark.name ?? ""
-                    print("NEW LOCATION \(self.locationName)")
                 }
-                
-                print("OLD LOCATION \(self.locationName)")
             }
         }
     }

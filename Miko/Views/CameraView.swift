@@ -258,16 +258,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             self.handleDetectedText(request: request)
         }
         
-//        request.recognitionLevel = .accurate
-//        request.usesLanguageCorrection = true
-//        request.recognitionLanguages = selectedSearchLanguages
-        
-        request.recognitionLanguages = ["zh-Hans", "zh-Hant", "ja-JP", "ko-KR", "en-US"]
-        
-        selectedSearchLanguages.forEach { language in
-                print("LANGUAGE \(language)")
-        }
-        print("-----------------------")
+        request.recognitionLanguages = selectedSearchLanguages
         
         do {
             try imageRequestHandler.perform([request])
