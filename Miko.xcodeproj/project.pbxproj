@@ -13,7 +13,6 @@
 		630636682C02E4400078935D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630636672C02E4400078935D /* LocationManager.swift */; };
 		637B7EC02C03E4BF00D38381 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637B7EBF2C03E4BF00D38381 /* Camera.swift */; };
 		63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69A2BF899B6001F426E /* MikoApp.swift */; };
-		63F0C69F2BF899B6001F426E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69E2BF899B6001F426E /* Item.swift */; };
 		63F0C6A12BF899B7001F426E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A02BF899B7001F426E /* Assets.xcassets */; };
 		63F0C6A42BF899B7001F426E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A32BF899B7001F426E /* Preview Assets.xcassets */; };
 		63F0C6AE2BF899B7001F426E /* MikoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C6AD2BF899B7001F426E /* MikoTests.swift */; };
@@ -49,7 +48,6 @@
 		637B7EBF2C03E4BF00D38381 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		63F0C6972BF899B6001F426E /* Miko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F0C69A2BF899B6001F426E /* MikoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoApp.swift; sourceTree = "<group>"; };
-		63F0C69E2BF899B6001F426E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		63F0C6A02BF899B7001F426E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63F0C6A32BF899B7001F426E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		63F0C6A92BF899B7001F426E /* MikoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MikoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,7 +168,6 @@
 		63F0C7152BFACF7A001F426E /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				63F0C69E2BF899B6001F426E /* Item.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -312,7 +309,6 @@
 				630636472BFEFBE30078935D /* ViewDefaults.swift in Sources */,
 				63F0C71B2BFB1064001F426E /* CameraView.swift in Sources */,
 				637B7EC02C03E4BF00D38381 /* Camera.swift in Sources */,
-				63F0C69F2BF899B6001F426E /* Item.swift in Sources */,
 				63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */,
 				630636682C02E4400078935D /* LocationManager.swift in Sources */,
 			);
