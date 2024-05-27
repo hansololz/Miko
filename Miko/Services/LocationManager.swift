@@ -101,14 +101,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             } else if let placemarks = placemarks, let placemark = placemarks.first {
                 let newLocationName: String
                 if let areaOfInterest = placemark.areasOfInterest?.first, !areaOfInterest.isEmpty {
-                    print("LOCATION HERE 1")
                     newLocationName = areaOfInterest
                 } else {
-                    print("LOCATION HERE 2")
                     newLocationName = placemark.name ?? ""
                 }
-                
-                print("LOCATION \(self.locationName) | \(newLocationName)")
                 
                 if self.locationName != newLocationName && !newLocationName.isEmpty {
                     self.locationName = newLocationName
