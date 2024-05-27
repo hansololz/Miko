@@ -90,7 +90,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
     var shouldSampleText = true
     var currentZoomFactor: CGFloat = 1.0
-    var selectedSearchLanguages: [String] = ["zh-Hans", "zh-Hant", "ja", "ko", "en"] // Default to English
+    var selectedSearchLanguages: [String] = ["zh-Hans", "zh-Hant", "ja-JP", "ko-KR", "en-US"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -258,9 +258,16 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             self.handleDetectedText(request: request)
         }
         
-        request.recognitionLevel = .accurate
-        request.usesLanguageCorrection = true
-        request.recognitionLanguages = selectedSearchLanguages
+//        request.recognitionLevel = .accurate
+//        request.usesLanguageCorrection = true
+//        request.recognitionLanguages = selectedSearchLanguages
+        
+        request.recognitionLanguages = ["zh-Hans", "zh-Hant", "ja-JP", "ko-KR", "en-US"]
+        
+        selectedSearchLanguages.forEach { language in
+                print("LANGUAGE \(language)")
+        }
+        print("-----------------------")
         
         do {
             try imageRequestHandler.perform([request])

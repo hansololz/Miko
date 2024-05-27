@@ -214,6 +214,8 @@ struct ContactView: View {
     }
 }
 
+// Always push English back to the end of the array. The Camera processes the langauges in order.
+// If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
     @Binding var selectedSearchLanguages: [SearchLanguage] {
         didSet {
@@ -225,15 +227,28 @@ struct SupportedLangaugesView: View {
         List {
             ForEach(SearchLanguage.allCases, id: \.self) { language in
                 LanguageRow(language: language, isSelected: selectedSearchLanguages.contains(language)) { isSelected in
+                    let containsEnglish = selectedSearchLanguages.contains(.englishUS)
+                    var languages = Array(selectedSearchLanguages)
+                    
                     if isSelected {
-                        if !selectedSearchLanguages.contains(language) {
-                            selectedSearchLanguages.append(language)
+                        if !languages.contains(language) {
+                            languages.append(language)
                         }
                     } else {
-                        if let index = selectedSearchLanguages.firstIndex(of: language) {
-                            selectedSearchLanguages.remove(at: index)
+                        if let index = languages.firstIndex(of: language) {
+                            languages.remove(at: index)
                         }
                     }
+                    
+                    if containsEnglish && language != .englishUS {
+                        if let index = languages.firstIndex(of: .englishUS) {
+                            languages.remove(at: index)
+                        }
+                        
+                        languages.append(.englishUS)
+                    }
+                    
+                    selectedSearchLanguages = languages
                 }
             }
         }

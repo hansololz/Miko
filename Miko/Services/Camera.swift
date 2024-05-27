@@ -45,11 +45,8 @@ func loadCameraSearchLanguages() -> [SearchLanguage] {
     let userDefaults = UserDefaults.standard
     if userDefaults.object(forKey: "selectedCameraSearchLanguages") == nil {
         return [
-            .englishUS,
             .chineseSimplified,
-            .chineseTraditional,
-            .koreanSouthKorea,
-            .japaneseJapan
+            .englishUS,
         ]
     } else {
         if let data = userDefaults.data(forKey: "selectedCameraSearchLanguages"),
@@ -57,11 +54,8 @@ func loadCameraSearchLanguages() -> [SearchLanguage] {
             return languages
         }
         return [
-            .englishUS,
             .chineseSimplified,
-            .chineseTraditional,
-            .koreanSouthKorea,
-            .japaneseJapan
+            .englishUS,
         ]
     }
 }
