@@ -186,7 +186,7 @@ struct PrivacyPolicyView: View {
             }
             
             Section(header: Text("Location Access")) {
-                Text("Location access is needed when the \"use location in search query\" is enabled. Data is never sent externally.")
+                Text("Location access is needed when the \"use location in search query\" is enabled. Current location would be added to search query for better results. Data is never sent externally.")
             }
             
             Section(header: Text("Third Party Search Engines")) {
