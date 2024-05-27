@@ -14,6 +14,7 @@ struct CameraView: UIViewControllerRepresentable {
             saveIsFirstEverCameraPermissionRequest()
         }
     }
+    @Binding var selectedSearchLanguages: [SearchLanguage]
     
     class Coordinator: NSObject {
         var parent: CameraView
@@ -51,6 +52,7 @@ struct CameraView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let cameraViewController = CameraViewController()
         cameraViewController.coordinator = context.coordinator
+        cameraViewController.selectedSearchLanguages = selectedSearchLanguages.map { $0.rawValue }
         return cameraViewController
     }
     
@@ -68,6 +70,8 @@ struct CameraView: UIViewControllerRepresentable {
                 let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
                 cameraViewController.updateOverlayAlpha(alpha)
             }
+            
+            cameraViewController.selectedSearchLanguages = selectedSearchLanguages.map { $0.rawValue }
         }
     }
 }
@@ -86,6 +90,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
     var shouldSampleText = true
     var currentZoomFactor: CGFloat = 1.0
+    var selectedSearchLanguages: [String] = ["zh-Hans", "zh-Hant", "ja", "ko", "en"] // Default to English
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -253,8 +258,9 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             self.handleDetectedText(request: request)
         }
         
-        // Specify the recognition languages
-        request.recognitionLanguages = ["zh-Hans", "zh-Hant", "ja", "ko", "en"]
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = true
+        request.recognitionLanguages = selectedSearchLanguages
         
         do {
             try imageRequestHandler.perform([request])
@@ -339,91 +345,4 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     func updateOverlayAlpha(_ alpha: CGFloat) {
         overlayView.alpha = alpha
     }
-    
-//    func checkCameraPermission(completion: @escaping (Bool) -> Void) {
-//        switch AVCaptureDevice.authorizationStatus(for: .video) {
-//        case .authorized:
-//            completion(true)
-//        case .notDetermined:
-//            AVCaptureDevice.requestAccess(for: .video) { granted in
-//                DispatchQueue.main.async {
-//                    completion(granted)
-//                }
-//            }
-//        default:
-//            completion(false)
-//        }
-//    }
 }
-
-// Add a subset of these later
-//Afrikaans: "af"
-//Albanian: "sq"
-//Arabic: "ar"
-//Armenian: "hy"
-//Azerbaijani: "az"
-//Basque: "eu"
-//Belarusian: "be"
-//Bengali: "bn"
-//Bosnian: "bs"
-//Bulgarian: "bg"
-//Catalan: "ca"
-//Chinese (Simplified): "zh-Hans"
-//Chinese (Traditional): "zh-Hant"
-//Croatian: "hr"
-//Czech: "cs"
-//Danish: "da"
-//Dutch: "nl"
-//English: "en"
-//Estonian: "et"
-//Finnish: "fi"
-//French: "fr"
-//Galician: "gl"
-//Georgian: "ka"
-//German: "de"
-//Greek: "el"
-//Gujarati: "gu"
-//Hebrew: "he"
-//Hindi: "hi"
-//Hungarian: "hu"
-//Icelandic: "is"
-//Indonesian: "id"
-//Italian: "it"
-//Japanese: "ja"
-//Kannada: "kn"
-//Kazakh: "kk"
-//Khmer: "km"
-//Korean: "ko"
-//Kyrgyz: "ky"
-//Lao: "lo"
-//Latvian: "lv"
-//Lithuanian: "lt"
-//Macedonian: "mk"
-//Malay: "ms"
-//Maltese: "mt"
-//Marathi: "mr"
-//Mongolian: "mn"
-//Nepali: "ne"
-//Norwegian: "no"
-//Persian: "fa"
-//Polish: "pl"
-//Portuguese: "pt"
-//Punjabi: "pa"
-//Romanian: "ro"
-//Russian: "ru"
-//Serbian: "sr"
-//Sinhala: "si"
-//Slovak: "sk"
-//Slovenian: "sl"
-//Spanish: "es"
-//Swahili: "sw"
-//Swedish: "sv"
-//Tamil: "ta"
-//Telugu: "te"
-//Thai: "th"
-//Turkish: "tr"
-//Ukrainian: "uk"
-//Urdu: "ur"
-//Uzbek: "uz"
-//Vietnamese: "vi"
-//Welsh: "cy"

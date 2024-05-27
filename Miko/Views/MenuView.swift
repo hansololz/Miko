@@ -37,7 +37,7 @@ struct MenuView: View {
         }
     }
     @State var showingAlert = false
-    @State var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages() {
+    @Binding var selectedSearchLanguages: [SearchLanguage] {
         didSet {
             saveCameraSearchLanguages(languages: selectedSearchLanguages)
         }

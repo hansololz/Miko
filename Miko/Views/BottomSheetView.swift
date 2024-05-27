@@ -8,6 +8,7 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
+    @Binding var selectedSearchLanguages: [SearchLanguage]
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
     @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
@@ -27,7 +28,8 @@ struct BottomSheetView: View {
                         sheetOffset: $sheetOffset,
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
-                        locationInSearchQuery: $locationInSearchQuery
+                        locationInSearchQuery: $locationInSearchQuery,
+                        selectedSearchLanguages: $selectedSearchLanguages
                     )
                 } else if searchText.isEmpty {
                     WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))

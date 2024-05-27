@@ -2,40 +2,36 @@ import Foundation
 
 enum SearchLanguage: String, Codable, CaseIterable {
     case englishUS = "en-US"
-    case frenchFrance = "fr-FR"
-    case italianItaly = "it-IT"
-    case germanGermany = "de-DE"
-    case spanishSpain = "es-ES"
-    case portugueseBrazil = "pt-BR"
     case chineseSimplified = "zh-Hans"
     case chineseTraditional = "zh-Hant"
-    case cantoneseSimplified = "yue-Hans"
-    case cantoneseTraditional = "yue-Hant"
-    case koreanSouthKorea = "ko-KR"
+    case frenchFrance = "fr-FR"
+    case germanGermany = "de-DE"
+    case italianItaly = "it-IT"
     case japaneseJapan = "ja-JP"
+    case koreanSouthKorea = "ko-KR"
+    case portugueseBrazil = "pt-BR"
     case russianRussia = "ru-RU"
-    case ukrainianUkraine = "uk-UA"
+    case spanishSpain = "es-ES"
     case thaiThailand = "th-TH"
+    case ukrainianUkraine = "uk-UA"
     case vietnameseVietnam = "vi-VT"
     
     var displayName: String {
         switch self {
-        case .englishUS: return "English (United States)"
-        case .frenchFrance: return "French (France)"
-        case .italianItaly: return "Italian (Italy)"
-        case .germanGermany: return "German (Germany)"
-        case .spanishSpain: return "Spanish (Spain)"
-        case .portugueseBrazil: return "Portuguese (Brazil)"
+        case .englishUS: return "English"
         case .chineseSimplified: return "Chinese (Simplified)"
         case .chineseTraditional: return "Chinese (Traditional)"
-        case .cantoneseSimplified: return "Cantonese (Simplified)"
-        case .cantoneseTraditional: return "Cantonese (Traditional)"
-        case .koreanSouthKorea: return "Korean (South Korea)"
-        case .japaneseJapan: return "Japanese (Japan)"
-        case .russianRussia: return "Russian (Russia)"
-        case .ukrainianUkraine: return "Ukrainian (Ukraine)"
-        case .thaiThailand: return "Thai (Thailand)"
-        case .vietnameseVietnam: return "Vietnamese (Vietnam)"
+        case .frenchFrance: return "French"
+        case .germanGermany: return "German"
+        case .italianItaly: return "Italian"
+        case .japaneseJapan: return "Japanese"
+        case .koreanSouthKorea: return "Korean"
+        case .portugueseBrazil: return "Portuguese"
+        case .russianRussia: return "Russian"
+        case .spanishSpain: return "Spanish"
+        case .thaiThailand: return "Thai"
+        case .ukrainianUkraine: return "Ukrainian"
+        case .vietnameseVietnam: return "Vietnamese"
         }
     }
 }
@@ -51,6 +47,8 @@ func loadCameraSearchLanguages() -> [SearchLanguage] {
         return [
             .englishUS,
             .chineseSimplified,
+            .chineseTraditional,
+            .koreanSouthKorea,
             .japaneseJapan
         ]
     } else {
@@ -61,6 +59,8 @@ func loadCameraSearchLanguages() -> [SearchLanguage] {
         return [
             .englishUS,
             .chineseSimplified,
+            .chineseTraditional,
+            .koreanSouthKorea,
             .japaneseJapan
         ]
     }

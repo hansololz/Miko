@@ -21,6 +21,7 @@ struct ContentView: View {
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
     @State private var showMenu = false
     @State private var isFirstEverCameraPermissionRequest = loadIsFirstEverCameraPermissionRequest()
+    @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
     
     var body: some View {
         VStack {
@@ -30,7 +31,8 @@ struct ContentView: View {
                     showMenu: $showMenu,
                     searchText: $searchText,
                     sheetOffset: $sheetOffset,
-                    isFirstEverCameraPermissionRequest: $isFirstEverCameraPermissionRequest
+                    isFirstEverCameraPermissionRequest: $isFirstEverCameraPermissionRequest,
+                    selectedSearchLanguages: $selectedSearchLanguages
                 )
                 .edgesIgnoringSafeArea(.all)
             } else {
@@ -53,14 +55,20 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $isSheetPresented) {
-            BottomSheetView(selectSheetAnchor: $selectSheetAnchor, showMenu: $showMenu, searchText: $searchText, sheetOffset: $sheetOffset)
-                .presentationDetents([restSheetAnchor, fullSheetAnchor], selection: $selectSheetAnchor)
-                .presentationDragIndicator(.visible)
-                .presentationBackgroundInteraction(
-                    .enabled(upThrough: restSheetAnchor)
-                )
-                .interactiveDismissDisabled()
-                .edgesIgnoringSafeArea(.all)
+            BottomSheetView(
+                selectSheetAnchor: $selectSheetAnchor,
+                showMenu: $showMenu,
+                searchText: $searchText,
+                sheetOffset: $sheetOffset,
+                selectedSearchLanguages: $selectedSearchLanguages
+            )
+            .presentationDetents([restSheetAnchor, fullSheetAnchor], selection: $selectSheetAnchor)
+            .presentationDragIndicator(.visible)
+            .presentationBackgroundInteraction(
+                .enabled(upThrough: restSheetAnchor)
+            )
+            .interactiveDismissDisabled()
+            .edgesIgnoringSafeArea(.all)
         }
         .onChange(of: selectSheetAnchor) { oldDetent, newDetent in
             if newDetent == restSheetAnchor {
