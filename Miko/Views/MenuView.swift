@@ -178,19 +178,19 @@ struct PrivacyPolicyView: View {
     var body: some View {
         List {
             Section(header: Text("App Data")) {
-                Text("The app itself, excluding the search engines, does not store any data externally. App settings data are only stored on device.")
+                Text("The app itself, excluding the search engines, does not store any data externally. App settings data is only stored on the device.")
             }
             
             Section(header: Text("Camera Access")) {
-                Text("Camera access is needed to find text to look up in the search engines. All image data is processed on device and data is never sent externally.")
+                Text("Camera access is needed to find text to look up in the search engines. All image data is processed on the device, and data is never sent externally.")
             }
             
             Section(header: Text("Location Access")) {
-                Text("Location access is needed when the \"use location in search query\" is enabled. Current location would be added to search query for better results. Data is never sent externally.")
+                Text("Location access is needed when the \"use location in search query\" feature is enabled. The current location will be added to the search query for better results. Data is never sent externally.")
             }
             
             Section(header: Text("Third Party Search Engines")) {
-                Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policies.\n\nThe app displays third party search engines as webpages in a browser view.")
+                Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policies.\n\nThe app displays third-party search engines as webpages in a browser view.")
             }
             
             Section(header: Text("Changes to This Privacy Policy")) {
@@ -198,11 +198,11 @@ struct PrivacyPolicyView: View {
             }
             
             Section(header: Text("Acceptance of Terms")) {
-                Text("By using our app, you signify your acceptance of this privacy policy. If you do not agree to this policy, please do not use our app. Your continued use of the app following the posting of changes to this policy will be deemed your acceptance of those changes.")
+                Text("By using our app, you signify your acceptance of this privacy policy. If you do not agree with this policy, please do not use the app. Your continued use of the app following the posting of changes to this policy will be deemed your acceptance of those changes.")
             }
             
             Section(header: Text("Contact Me")) {
-                Text("If you have any questions about this privacy policy, please contact me:\n-By email: david@zhang.email")
+                Text("If you have any questions about this privacy policy, please contact me by email: david@zhang.email.")
                     .textSelection(.enabled)
             }
         }
@@ -214,7 +214,7 @@ struct ContactView: View {
     var body: some View {
         List {
             Section() {
-                Text("If you have any feedback, feature requests, or want to report an issue, please contact me:\n-By email: david@zhang.email\n\nPlease do not include any personal information. If you are reporting an issue, please help me by including the steps to reproduce the issue.")
+                Text("If you have any feedback, feature requests, or want to report an issue, please contact me by email at david@zhang.email.\n\nPlease do not include any personal information. If you are reporting an issue, please help by including the steps to reproduce the issue.")
                     .textSelection(.enabled)
             }
         }

@@ -116,7 +116,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
 // LocationViewModel Class
 class LocationViewModel: ObservableObject {
-    @Published var locationName: String = "Fetching location..."
+    @Published var locationName: String = ""
     private var locationManager = LocationManager()
     
     init() {
