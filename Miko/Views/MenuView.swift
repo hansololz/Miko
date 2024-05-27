@@ -193,8 +193,8 @@ struct PrivacyPolicyView: View {
                 Text("By using our app, you signify your acceptance of this privacy policy. If you do not agree to this policy, please do not use our app. Your continued use of the app following the posting of changes to this policy will be deemed your acceptance of those changes.")
             }
             
-            Section(header: Text("Contact Us")) {
-                Text("If you have any questions about this privacy policy, please contact us:\n-By email: nekocam@deezus.com")
+            Section(header: Text("Contact Me")) {
+                Text("If you have any questions about this privacy policy, please contact me:\n-By email: david@zhang.email")
                     .textSelection(.enabled)
             }
         }
@@ -206,7 +206,7 @@ struct ContactView: View {
     var body: some View {
         List {
             Section() {
-                Text("If you have any feedback, feature requests, or want to report an issue, please contact us:\n-By email: nekocam@deezus.com\n\nPlease do not include any personal information. If you are reporting an issue, please help us by including the steps to reproduce the issue.")
+                Text("If you have any feedback, feature requests, or want to report an issue, please contact me:\n-By email: david@zhang.email\n\nPlease do not include any personal information. If you are reporting an issue, please help me by including the steps to reproduce the issue.")
                     .textSelection(.enabled)
             }
         }
