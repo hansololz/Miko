@@ -181,6 +181,14 @@ struct PrivacyPolicyView: View {
                 Text("The app itself, excluding the search engines, does not store any data externally. App settings data are only stored on device.")
             }
             
+            Section(header: Text("Camera Access")) {
+                Text("Camera access is needed to find text to look up in the search engines. All image data is processed on device and data is never sent externally.")
+            }
+            
+            Section(header: Text("Location Access")) {
+                Text("Location access is needed when the \"use location in search query\" is enabled. Data is never sent externally.")
+            }
+            
             Section(header: Text("Third Party Search Engines")) {
                 Text("Third-party search engines used by this app may store data in browser cookies or externally. This data is controlled solely by the search engines, and you should follow their terms of use and privacy policies.\n\nThe app displays third party search engines as webpages in a browser view.")
             }

@@ -99,8 +99,19 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 print("Error in reverse geocoding: \(error)")
                 self.locationName = ""
             } else if let placemarks = placemarks, let placemark = placemarks.first {
-                if self.locationName != placemark.name ?? "" {
-                    self.locationName = placemark.name ?? ""
+                let newLocationName: String
+                if let areaOfInterest = placemark.areasOfInterest?.first, !areaOfInterest.isEmpty {
+                    print("LOCATION HERE 1")
+                    newLocationName = areaOfInterest
+                } else {
+                    print("LOCATION HERE 2")
+                    newLocationName = placemark.name ?? ""
+                }
+                
+                print("LOCATION \(self.locationName) | \(newLocationName)")
+                
+                if self.locationName != newLocationName && !newLocationName.isEmpty {
+                    self.locationName = newLocationName
                 }
             }
         }
