@@ -341,6 +341,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func updateOverlayAlpha(_ alpha: CGFloat) {
-        overlayView.alpha = alpha
+        overlayView?.alpha = alpha
     }
 }
