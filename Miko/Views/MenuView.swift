@@ -256,7 +256,7 @@ struct SupportedLangaugesView: View {
                 }
             }
         }
-        .navigationTitle("Supported Languages")
+        .navigationTitle("Languages")
     }
 }
 
