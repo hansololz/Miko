@@ -122,7 +122,7 @@ struct MenuView: View {
                         }
                     }
                     NavigationLink(destination: PrivacyPolicyView()) {
-                        Label("Privacy Policy", systemImage: "doc")
+                        Label("Privacy Policy", systemImage: "lock.doc")
                     }
                     NavigationLink(destination: ContactView()) {
                         Label("Contact", systemImage: "envelope")
