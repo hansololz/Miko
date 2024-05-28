@@ -57,18 +57,9 @@ struct MenuView: View {
     var body: some View {
         NavigationView {
             List {
-                Section {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("App Version: \(appVersion)")
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    NavigationLink(destination: PrivacyPolicyView()) {
-                        Label("Privacy Policy", systemImage: "doc")
-                    }
-                    NavigationLink(destination: ContactView()) {
-                        Label("Contact", systemImage: "envelope")
+                Section(header: Text("Languages")) {
+                    NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
+                        Label("Supported Languages", systemImage: "character.bubble")
                     }
                 }
                 
@@ -123,9 +114,18 @@ struct MenuView: View {
                     getSearchContentOption(engine: searchEngineOption, option: .shopping)
                 }
                 
-                Section(header: Text("Languages")) {
-                    NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
-                        Label("Supported Languages", systemImage: "character.bubble")
+                Section(header: Text("Info")) {
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text("App Version: \(appVersion)")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    NavigationLink(destination: PrivacyPolicyView()) {
+                        Label("Privacy Policy", systemImage: "doc")
+                    }
+                    NavigationLink(destination: ContactView()) {
+                        Label("Contact", systemImage: "envelope")
                     }
                 }
             }
