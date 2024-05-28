@@ -114,7 +114,7 @@ struct MenuView: View {
                     getSearchContentOption(engine: searchEngineOption, option: .shopping)
                 }
                 
-                Section(header: Text("Info")) {
+                Section(header: Text("Information")) {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("App Version: \(appVersion)")
@@ -202,7 +202,7 @@ struct PrivacyPolicyView: View {
             }
             
             Section(header: Text("Contact Me")) {
-                Text("If you have any questions about this privacy policy, please contact me by email: cam@hansololz.com.")
+                Text("If you have any questions about this privacy policy, please contact me by email: search@hansololz.com.")
                     .textSelection(.enabled)
             }
         }
@@ -214,7 +214,7 @@ struct ContactView: View {
     var body: some View {
         List {
             Section() {
-                Text("If you have any feedback, feature requests, or want to report an issue, please contact me by email at cam@hansololz.com.\n\nPlease do not include any personal information. If you are reporting an issue, please help by including the steps to reproduce the issue.")
+                Text("If you have any feedback, feature requests, or want to report an issue, please contact me by email at search@hansololz.com.\n\nPlease do not include any personal information. If you are reporting an issue, please help by including the steps to reproduce the issue.")
                     .textSelection(.enabled)
             }
         }
