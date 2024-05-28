@@ -65,10 +65,10 @@ struct MenuView: View {
                         }
                     }
                     NavigationLink(destination: PrivacyPolicyView()) {
-                        Text("Privacy Policy")
+                        Label("Privacy Policy", systemImage: "doc")
                     }
                     NavigationLink(destination: ContactView()) {
-                        Text("Contact")
+                        Label("Contact", systemImage: "envelope")
                     }
                 }
                 
@@ -125,7 +125,7 @@ struct MenuView: View {
                 
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
-                        Text("Supported Languages")
+                        Label("Supported Languages", systemImage: "character.bubble")
                     }
                 }
             }
