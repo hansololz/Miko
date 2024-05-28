@@ -136,6 +136,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
+        
+//        timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(captureFrame), userInfo: nil, repeats: true)
     }
     
     func addViewfinderIconOverlay() {
@@ -233,11 +235,13 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     func processSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
         if !shouldSampleText { return }
         
-        let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
+        let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 250_000
         
         if (currentTime - cameraSampleDelay) > lastTextProcessedTimestamp {
+            print("TIME \(Date()) PROCESSED")
             lastTextProcessedTimestamp = currentTime
         } else {
+            print("TIME \(Date()) SKIPPED")
             return
         }
         
