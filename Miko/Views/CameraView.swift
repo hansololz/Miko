@@ -17,6 +17,7 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var selectedSearchLanguages: [SearchLanguage]
     
     class Coordinator: NSObject {
+        var lastTextUpdateTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
         var parent: CameraView
         
         init(parent: CameraView) {
@@ -24,6 +25,10 @@ struct CameraView: UIViewControllerRepresentable {
         }
         
         func updateSearchText(_ text: String) {
+            let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
+            if text.isEmpty || self.parent.searchText == text || currentTime - cameraTextUpdateDelay < lastTextUpdateTimestamp { return }
+            lastTextUpdateTimestamp = currentTime
+            
             DispatchQueue.main.async {
                 if !text.isEmpty && self.parent.searchText != text && self.parent.selectSheetAnchor == restSheetAnchor {
                     self.parent.searchText = text
@@ -87,7 +92,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var menuIconView: UIImageView!
     var motionManager: CMMotionManager!
     var isDeviceMoving = false
-    var lastTextProcessedTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
+    var lastSampleProcessTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
     var shouldSampleText = true
     var currentZoomFactor: CGFloat = 1.0
     var selectedSearchLanguages: [String] = ["en-US"]
@@ -235,11 +240,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
         
-        if (currentTime - cameraSampleDelay) > lastTextProcessedTimestamp {
-            print("TIME \(Date()) PROCESSED")
-            lastTextProcessedTimestamp = currentTime
+        if (currentTime - cameraSampleDelay) > lastSampleProcessTimestamp {
+//            print("TIME \(Date()) PROCESSED")
+            lastSampleProcessTimestamp = currentTime
         } else {
-            print("TIME \(Date()) SKIPPED")
+//            print("TIME \(Date()) SKIPPED")
             return
         }
         
