@@ -2,10 +2,8 @@ import SwiftUI
 
 var shouldShowAlertPrompt = false
 
-struct MenuView: View {
+struct SettingsView: View {
     @Binding var selectSheetAnchor: PresentationDetent
-    @Binding var showMenu: Bool
-    @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     @Binding var searchEngineOption: SearchEngineOption {
         didSet {

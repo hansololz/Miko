@@ -19,6 +19,7 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
+    @State private var showSettings = false
     @State private var showMenu = false
     @State private var isFirstEverCameraPermissionRequest = loadIsFirstEverCameraPermissionRequest()
     @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
@@ -28,6 +29,7 @@ struct ContentView: View {
             if isSheetPresented {
                 CameraView(
                     selectSheetAnchor: $selectSheetAnchor,
+                    showSettings: $showSettings,
                     showMenu: $showMenu,
                     searchText: $searchText,
                     sheetOffset: $sheetOffset,
@@ -57,6 +59,7 @@ struct ContentView: View {
         .sheet(isPresented: $isSheetPresented) {
             BottomSheetView(
                 selectSheetAnchor: $selectSheetAnchor,
+                showSettings: $showSettings,
                 showMenu: $showMenu,
                 searchText: $searchText,
                 sheetOffset: $sheetOffset,
@@ -74,6 +77,7 @@ struct ContentView: View {
             if newDetent == restSheetAnchor {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     showMenu = false
+                    showSettings = false
                 }
             }
         }

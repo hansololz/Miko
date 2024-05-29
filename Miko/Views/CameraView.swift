@@ -6,6 +6,7 @@ import UIKit
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var selectSheetAnchor: PresentationDetent
+    @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
@@ -24,19 +25,28 @@ struct CameraView: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        func updateSearchText(_ text: String) {
+        func updateSearchText(_ text: String, onTextUpdateCallback: () -> Void) {
             let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
-            if text.isEmpty || self.parent.searchText == text || currentTime - cameraTextUpdateDelay < lastTextUpdateTimestamp { return }
+            if text.isEmpty || self.parent.searchText == text || self.parent.selectSheetAnchor != restSheetAnchor || currentTime - cameraTextUpdateDelay < lastTextUpdateTimestamp { return }
             lastTextUpdateTimestamp = currentTime
             
+            if self.parent.searchText.isEmpty {
+                onTextUpdateCallback()
+            }
+            
             DispatchQueue.main.async {
-                if !text.isEmpty && self.parent.searchText != text && self.parent.selectSheetAnchor == restSheetAnchor {
-                    self.parent.searchText = text
-                }
+                self.parent.searchText = text
             }
         }
         
         func showMenu() {
+            DispatchQueue.main.async {
+                self.parent.showMenu = true
+                self.parent.selectSheetAnchor = fullSheetAnchor
+            }
+        }
+        
+        func showSettings() {
             DispatchQueue.main.async {
                 self.parent.showMenu = true
                 self.parent.selectSheetAnchor = fullSheetAnchor
@@ -89,6 +99,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
     var viewfinderIconView: UIImageView!
+    var settingsIconView: UIImageView!
     var menuIconView: UIImageView!
     var motionManager: CMMotionManager!
     var isDeviceMoving = false
@@ -134,7 +145,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         addViewfinderIconOverlay()
         addSettingsIconOverlay()
-//        addMenuIconOverlay()
         
         setupMotionManager()
         setupPinchGesture()
@@ -163,7 +173,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func addSettingsIconOverlay() {
-        let menuIcon = UIImage(systemName: "switch.2")
+        let settingsIcon = UIImage(systemName: "switch.2")
         
         // Create a container view
         let containerView = UIView()
@@ -172,11 +182,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.addSubview(containerView)
         
         // Create the icon view
-        menuIconView = UIImageView(image: menuIcon)
-        menuIconView.translatesAutoresizingMaskIntoConstraints = false
-        menuIconView.contentMode = .scaleAspectFit
-        menuIconView.tintColor = .white
-        containerView.addSubview(menuIconView)
+        settingsIconView = UIImageView(image: settingsIcon)
+        settingsIconView.translatesAutoresizingMaskIntoConstraints = false
+        settingsIconView.contentMode = .scaleAspectFit
+        settingsIconView.tintColor = .white
+        containerView.addSubview(settingsIconView)
         
         let iconSize: CGFloat = 30
         let touchAreaSize: CGFloat = 90 // Increase this value to make the touch area larger
@@ -191,14 +201,14 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         // Center the icon view inside the container view
         NSLayoutConstraint.activate([
-            menuIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
-            menuIconView.widthAnchor.constraint(equalToConstant: iconSize),
-            menuIconView.heightAnchor.constraint(equalToConstant: iconSize)
+            settingsIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            settingsIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
+            settingsIconView.widthAnchor.constraint(equalToConstant: iconSize),
+            settingsIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
         
         // Add tap gesture recognizer to the container view
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingsIconTapped))
         containerView.addGestureRecognizer(tapGesture)
     }
     
@@ -242,6 +252,10 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         containerView.addGestureRecognizer(tapGesture)
     }
     
+    @objc func settingsIconTapped() {
+        coordinator?.showSettings()
+    }
+    
     @objc func menuIconTapped() {
         coordinator?.showMenu()
     }
@@ -282,10 +296,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
         
         if (currentTime - cameraSampleDelay) > lastSampleProcessTimestamp {
-//            print("TIME \(Date()) PROCESSED")
             lastSampleProcessTimestamp = currentTime
         } else {
-//            print("TIME \(Date()) SKIPPED")
             return
         }
         
@@ -359,7 +371,9 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 }
             }
             
-            self.coordinator?.updateSearchText(topText)
+            self.coordinator?.updateSearchText(topText) {
+                self.addMenuIconOverlay()
+            }
         }
     }
     

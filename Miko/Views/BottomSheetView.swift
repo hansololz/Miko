@@ -5,6 +5,7 @@ struct BottomSheetView: View {
     @StateObject var locationManager = LocationManager()
     
     @Binding var selectSheetAnchor: PresentationDetent
+    @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
@@ -21,10 +22,8 @@ struct BottomSheetView: View {
         GeometryReader { geometry in
             ZStack {
                 if showMenu {
-                    MenuView(
+                    SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
-                        showMenu: $showMenu,
-                        searchText: $searchText,
                         sheetOffset: $sheetOffset,
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
