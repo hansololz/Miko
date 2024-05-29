@@ -189,19 +189,19 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         containerView.addSubview(settingsIconView)
         
         let iconSize: CGFloat = 30
-        let touchAreaSize: CGFloat = 90 // Increase this value to make the touch area larger
+        let touchAreaSize: CGFloat = 60 // Increase this value to make the touch area larger
         
         // Constraints for the container view
         NSLayoutConstraint.activate([
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 30),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize / 2)),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize * (2/3))),
             containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
             containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
         ])
         
         // Center the icon view inside the container view
         NSLayoutConstraint.activate([
-            settingsIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            settingsIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             settingsIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
             settingsIconView.widthAnchor.constraint(equalToConstant: iconSize),
             settingsIconView.heightAnchor.constraint(equalToConstant: iconSize)
@@ -229,12 +229,12 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         containerView.addSubview(menuIconView)
         
         let iconSize: CGFloat = 30
-        let touchAreaSize: CGFloat = 90 // Increase this value to make the touch area larger
+        let touchAreaSize: CGFloat = 60 // Increase this value to make the touch area larger
         
         // Constraints for the container view
         NSLayoutConstraint.activate([
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 30),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize / 2)),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize * (2/3))),
             containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
             containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
         ])
