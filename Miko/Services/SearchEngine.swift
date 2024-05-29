@@ -62,10 +62,10 @@ func loadSearchContentPreference() -> SearchContentOption {
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -> String]] = [
     .google: [
         .all:       { searchText in "https://www.google.com/search?q=\(searchText)" },
-        .images:    { searchText in "https://www.google.com/search?q=\(searchText)&tbm=isch" },
-        .videos:    { searchText in "https://www.google.com/search?q=\(searchText)&tbm=vid" },
-        .news:      { searchText in "https://www.google.com/search?q=\(searchText)&tbm=nws" },
-        .shopping:  { searchText in "https://www.google.com/search?q=\(searchText)&tbm=shop" },
+        .images:    { searchText in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
+        .videos:    { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
+        .news:      { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
+        .shopping:  { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" },
     ],
     .brave: [
         .all:       { searchText in "https://search.brave.com/search?source=web&q=\(searchText)" },
@@ -82,10 +82,10 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
     ],
     .duckDuckGo: [
         .all:       { searchText in "https://duckduckgo.com?q=\(searchText)" },
-        .images:    { searchText in "https://duckduckgo.com?q=\(searchText)&iax=images&ia=images" },
-        .videos:    { searchText in "https://duckduckgo.com?q=\(searchText)&iax=videos&ia=videos" },
-        .news:      { searchText in "https://duckduckgo.com?q=\(searchText)&iar=news&ia=news" },
-        .shopping:  { searchText in "https://duckduckgo.com?q=\(searchText)&iar=shopping&ia=shopping" },
+        .images:    { searchText in "https://duckduckgo.com?iax=images&ia=images&q=\(searchText)" },
+        .videos:    { searchText in "https://duckduckgo.com?iax=videos&ia=videos&q=\(searchText)" },
+        .news:      { searchText in "https://duckduckgo.com?iar=news&ia=news&q=\(searchText)" },
+        .shopping:  { searchText in "https://duckduckgo.com?iar=shopping&ia=shopping&q=\(searchText)" },
     ],
     .baidu: [
         .all:       { searchText in "https://www.baidu.com/s?wd=\(searchText)" },
