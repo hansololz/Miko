@@ -62,14 +62,14 @@ struct MenuView: View {
                         Button(action: {
                             shareText(text: searchText)
                         }) {
-                            Label("Share Text", systemImage: "doc.on.doc")
+                            Label("Share Text", systemImage: "square.and.arrow.up")
                         }
                         
                         if !locationName.isEmpty {
                             Button(action: {
                                 shareText(text: "\(searchText), \(locationName)")
                             }) {
-                                Label("Share Text Without Location", systemImage: "doc.on.doc")
+                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
                             }
                         }
                         
@@ -83,7 +83,7 @@ struct MenuView: View {
                                 )
                             )
                         }) {
-                            Label("Share URL", systemImage: "doc.on.doc")
+                            Label("Share URL", systemImage: "square.and.arrow.up")
                         }
                         
                         if !locationName.isEmpty {
@@ -97,11 +97,10 @@ struct MenuView: View {
                                     )
                                 )
                             }) {
-                                Label("Share URL Without Location", systemImage: "doc.on.doc")
+                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
                             }
                         }
                     }
-                    
                 }
                 .navigationTitle("Options")
                 .navigationBarItems(leading: Button("Done") {
@@ -138,6 +137,16 @@ struct MenuView: View {
     }
     
     private func shareText(text: String) {
-
-    }
+            let activityController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                var viewController = windowScene.windows.first?.rootViewController
+                
+                while let presentedViewController = viewController?.presentedViewController {
+                    viewController = presentedViewController
+                }
+                
+                viewController?.present(activityController, animated: true, completion: nil)
+            }
+        }
 }
