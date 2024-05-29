@@ -103,7 +103,15 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 if let areaOfInterest = placemark.areasOfInterest?.first, !areaOfInterest.isEmpty {
                     newLocationName = areaOfInterest
                 } else {
-                    newLocationName = placemark.name ?? ""
+                    if placemark.name != nil && placemark.locality != nil {
+                        newLocationName = "\(placemark.name ?? ""), \(placemark.locality ?? "")"
+                    } else if placemark.name != nil {
+                        newLocationName = placemark.name ?? ""
+                    } else if placemark.locality != nil {
+                        newLocationName = placemark.locality ?? ""
+                    } else {
+                        newLocationName = ""
+                    }
                 }
                 
                 if self.locationName != newLocationName && !newLocationName.isEmpty {

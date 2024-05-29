@@ -15,6 +15,17 @@ struct MenuView: View {
         NavigationView {
             ZStack {
                 List {
+                    Section(header: Text("Search Query")) {
+                        Text("Search Text: \(searchText)")
+                        
+//                        if !locationName.isEmpty {
+                            Text("Location: \(locationName)")
+//                        }
+                        
+                        Text("Search Engine: \(searchEngineOption.displayName)")
+                        Text("Search Content: \(searchContentOption.displayName)")
+                    }
+                    
                     Section(header: Text("Copy")) {
                         Button(action: {
                             copyToClipboard(text: searchText)
