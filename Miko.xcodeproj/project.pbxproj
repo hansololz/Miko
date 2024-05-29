@@ -12,6 +12,7 @@
 		630636652C02B10B0078935D /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630636642C02B10B0078935D /* SearchEngine.swift */; };
 		630636682C02E4400078935D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630636672C02E4400078935D /* LocationManager.swift */; };
 		637B7EC02C03E4BF00D38381 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637B7EBF2C03E4BF00D38381 /* Camera.swift */; };
+		63A90B702C0703F900DD5BFB /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A90B6F2C0703F900DD5BFB /* MenuView.swift */; };
 		63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C69A2BF899B6001F426E /* MikoApp.swift */; };
 		63F0C6A12BF899B7001F426E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A02BF899B7001F426E /* Assets.xcassets */; };
 		63F0C6A42BF899B7001F426E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63F0C6A32BF899B7001F426E /* Preview Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		630636642C02B10B0078935D /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		630636672C02E4400078935D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		637B7EBF2C03E4BF00D38381 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		63A90B6F2C0703F900DD5BFB /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		63F0C6972BF899B6001F426E /* Miko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miko.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F0C69A2BF899B6001F426E /* MikoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MikoApp.swift; sourceTree = "<group>"; };
 		63F0C6A02BF899B7001F426E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				63F0C7132BFABDBA001F426E /* ContentView.swift */,
 				630636612C0299770078935D /* SettingsView.swift */,
 				630636462BFEFBE30078935D /* ViewDefaults.swift */,
+				63A90B6F2C0703F900DD5BFB /* MenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */,
 				63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */,
 				630636472BFEFBE30078935D /* ViewDefaults.swift in Sources */,
+				63A90B702C0703F900DD5BFB /* MenuView.swift in Sources */,
 				63F0C71B2BFB1064001F426E /* CameraView.swift in Sources */,
 				637B7EC02C03E4BF00D38381 /* Camera.swift in Sources */,
 				63F0C69B2BF899B6001F426E /* MikoApp.swift in Sources */,

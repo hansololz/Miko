@@ -48,7 +48,7 @@ struct CameraView: UIViewControllerRepresentable {
         
         func showSettings() {
             DispatchQueue.main.async {
-                self.parent.showMenu = true
+                self.parent.showSettings = true
                 self.parent.selectSheetAnchor = fullSheetAnchor
             }
         }

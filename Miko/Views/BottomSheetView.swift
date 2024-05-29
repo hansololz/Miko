@@ -22,9 +22,14 @@ struct BottomSheetView: View {
         GeometryReader { geometry in
             ZStack {
                 if showMenu {
+                    MenuView(
+                        locationName: locationManager.locationName,
+                        selectSheetAnchor: $selectSheetAnchor,
+                        searchText: $searchText
+                    )
+                } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
-                        sheetOffset: $sheetOffset,
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
                         locationInSearchQuery: $locationInSearchQuery,

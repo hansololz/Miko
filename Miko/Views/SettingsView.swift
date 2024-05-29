@@ -4,7 +4,6 @@ var shouldShowAlertPrompt = false
 
 struct SettingsView: View {
     @Binding var selectSheetAnchor: PresentationDetent
-    @Binding var sheetOffset: CGFloat
     @Binding var searchEngineOption: SearchEngineOption {
         didSet {
             saveSearchEnginePreference(option: searchEngineOption)
