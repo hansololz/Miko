@@ -1,68 +1,125 @@
 import SwiftUI
+import UIKit
 
 struct MenuView: View {
     let locationName: String
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var searchText: String
+    @Binding var searchEngineOption: SearchEngineOption
+    @Binding var searchContentOption: SearchContentOption
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
-
+    
     var body: some View {
         NavigationView {
             ZStack {
                 List {
                     Section(header: Text("Copy")) {
                         Button(action: {
-                            copyToClipboard(text: "Sample text to copy")
+                            copyToClipboard(text: searchText)
                         }) {
                             Label("Copy Text", systemImage: "doc.on.doc")
                         }
                         
-                        Button(action: {
-                            copyToClipboard(text: "Text without location")
-                        }) {
-                            Label("Copy Text Without Location", systemImage: "doc.on.doc")
+                        if !locationName.isEmpty {
+                            Button(action: {
+                                copyToClipboard(text: "\(searchText), \(locationName)")
+                            }) {
+                                Label("Copy Text Without Location", systemImage: "doc.on.doc")
+                            }
                         }
                         
                         Button(action: {
-                            copyToClipboard(text: "https://example.com")
+                            copyToClipboard(
+                                text: getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: ""
+                                )
+                            )
                         }) {
                             Label("Copy URL", systemImage: "doc.on.doc")
                         }
                         
-                        Button(action: {
-                            copyToClipboard(text: "https://example.com without location")
-                        }) {
-                            Label("Copy URL Without Location", systemImage: "doc.on.doc")
+                        if !locationName.isEmpty {
+                            Button(action: {
+                                copyToClipboard(
+                                    text: getSearchUrl(
+                                        engine: searchEngineOption,
+                                        content: searchContentOption,
+                                        searchText: searchText,
+                                        locationName: locationName
+                                    )
+                                )
+                            }) {
+                                Label("Copy URL Without Location", systemImage: "doc.on.doc")
+                            }
                         }
                     }
                     
                     Section(header: Text("Share")) {
-                        Label("Share Text", systemImage: "square.and.arrow.up")
-                        Label("Share Text Without Location", systemImage: "square.and.arrow.up")
-                        Label("Share URL", systemImage: "square.and.arrow.up")
-                        Label("Share URL Without Location", systemImage: "square.and.arrow.up")
+                        Button(action: {
+                            shareText(text: searchText)
+                        }) {
+                            Label("Share Text", systemImage: "doc.on.doc")
+                        }
+                        
+                        if !locationName.isEmpty {
+                            Button(action: {
+                                shareText(text: "\(searchText), \(locationName)")
+                            }) {
+                                Label("Share Text Without Location", systemImage: "doc.on.doc")
+                            }
+                        }
+                        
+                        Button(action: {
+                            shareText(
+                                text: getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: ""
+                                )
+                            )
+                        }) {
+                            Label("Share URL", systemImage: "doc.on.doc")
+                        }
+                        
+                        if !locationName.isEmpty {
+                            Button(action: {
+                                shareText(
+                                    text: getSearchUrl(
+                                        engine: searchEngineOption,
+                                        content: searchContentOption,
+                                        searchText: searchText,
+                                        locationName: locationName
+                                    )
+                                )
+                            }) {
+                                Label("Share URL Without Location", systemImage: "doc.on.doc")
+                            }
+                        }
                     }
+                    
                 }
-                .navigationTitle(searchText)
+                .navigationTitle("Options")
                 .navigationBarItems(leading: Button("Done") {
                     selectSheetAnchor = restSheetAnchor
                 })
                 
-//                if showCopiedMessage {
-                    VStack {
-                        Spacer()
-                        Text("Text copied to clipboard")
-                            .padding()
-                            .background(Color.black.opacity(0.8))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding(.bottom, 20)
-                            .opacity(copiedMessageOpacity)
-                            .animation(.easeInOut, value: copiedMessageOpacity)
-                    }
-                    .animation(.easeInOut, value: showCopiedMessage)
-//                }
+                VStack {
+                    Spacer()
+                    Text("Text copied to clipboard")
+                        .padding()
+                        .background(Color.black.opacity(0.8))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding(.bottom, 20)
+                        .opacity(copiedMessageOpacity)
+                        .animation(.easeInOut, value: copiedMessageOpacity)
+                }
+                .animation(.easeInOut, value: showCopiedMessage)
             }
         }
     }
@@ -78,5 +135,9 @@ struct MenuView: View {
                 copiedMessageOpacity = 0.0
             }
         }
+    }
+    
+    private func shareText(text: String) {
+
     }
 }

@@ -25,7 +25,9 @@ struct BottomSheetView: View {
                     MenuView(
                         locationName: locationManager.locationName,
                         selectSheetAnchor: $selectSheetAnchor,
-                        searchText: $searchText
+                        searchText: $searchText,
+                        searchEngineOption: $searchEngineOption,
+                        searchContentOption: $searchContentOption
                     )
                 } else if showSettings {
                     SettingsView(
@@ -36,14 +38,14 @@ struct BottomSheetView: View {
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
                 } else if searchText.isEmpty {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationName: locationManager.locationName))
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationManager: locationManager))
+                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationName: locationManager.locationName))
                         .onAppear {
                             if locationManager.isAuthorized() && locationInSearchQuery {
                                 locationManager.startUpdatingLocation()
