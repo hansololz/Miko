@@ -27,8 +27,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var lastLocation: CLLocation?
     private var lastUpdateTime: Date?
     private var authorizedCallback: (() -> Void)?
-    
-    @Published var location: CLLocation? {
+    private var location: CLLocation? {
         didSet {
             if let location = location {
                 fetchLocationName(from: location)
@@ -46,16 +45,16 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func startUpdatingLocation() {
-        lastLocation = nil
-        lastUpdateTime = nil
-        locationName = ""
+//        lastLocation = nil
+//        lastUpdateTime = nil
+//        locationName = ""
         locationManager.startUpdatingLocation()
     }
     
     func stopUpdatingLocation() {
-        lastLocation = nil
-        lastUpdateTime = nil
-        locationName = ""
+//        lastLocation = nil
+//        lastUpdateTime = nil
+//        locationName = ""
         locationManager.stopUpdatingLocation()
     }
     
@@ -97,7 +96,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             guard let self = self else { return }
             if let error = error {
                 print("Error in reverse geocoding: \(error)")
-                self.locationName = ""
+//                self.locationName = ""
             } else if let placemarks = placemarks, let placemark = placemarks.first {
                 let newLocationName: String
                 if let areaOfInterest = placemark.areasOfInterest?.first, !areaOfInterest.isEmpty {
@@ -114,7 +113,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                     }
                 }
                 
+                print("LOCATION NEW \(newLocationName)")
                 if self.locationName != newLocationName && !newLocationName.isEmpty {
+                    print("LOCATION UDPATED \(newLocationName)")
                     self.locationName = newLocationName
                 }
             }

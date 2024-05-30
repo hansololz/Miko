@@ -2,14 +2,13 @@ import SwiftUI
 import WebKit
 
 struct BottomSheetView: View {
-    @StateObject var locationManager = LocationManager()
-    
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     @Binding var selectedSearchLanguages: [SearchLanguage]
+    @StateObject private var locationManager = LocationManager()
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
     @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
@@ -23,12 +22,15 @@ struct BottomSheetView: View {
             ZStack {
                 if showMenu {
                     MenuView(
-                        locationName: locationManager.locationName,
+                        locationName: locationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption
                     )
+                    .onAppear {
+                        locationManager.stopUpdatingLocation()
+                    }
                 } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
@@ -37,15 +39,30 @@ struct BottomSheetView: View {
                         locationInSearchQuery: $locationInSearchQuery,
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
+                    .onAppear {
+                        locationManager.stopUpdatingLocation()
+                    }
                 } else if searchText.isEmpty {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationName: locationManager.locationName))
+                    let url = getSearchUrl(
+                        engine: searchEngineOption,
+                        content: searchContentOption,
+                        searchText: searchText,
+                        locationName: ""
+                    )
+                    WebView(urlString: url)
                         .opacity(0)
                     Text("Point the camera at text you want to look up.")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
-                    WebView(urlString: getSearchUrl(engine: searchEngineOption, content: searchContentOption, searchText: searchText, locationName: locationManager.locationName))
+                    let url = getSearchUrl(
+                        engine: searchEngineOption,
+                        content: searchContentOption,
+                        searchText: searchText,
+                        locationName: locationInSearchQuery ? locationManager.locationName : ""
+                    )
+                    WebView(urlString: url)
                         .onAppear {
                             if locationManager.isAuthorized() && locationInSearchQuery {
                                 locationManager.startUpdatingLocation()
@@ -57,7 +74,6 @@ struct BottomSheetView: View {
             }
             .onAppear {
                 sheetOffset = geometry.size.height
-                
                 if locationManager.isAuthorized() && locationInSearchQuery {
                     locationManager.startUpdatingLocation()
                 } else {
