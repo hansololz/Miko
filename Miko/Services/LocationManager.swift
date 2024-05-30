@@ -45,12 +45,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func startUpdatingLocation() {
-        print("GEO LOCATION START")
         locationManager.startUpdatingLocation()
     }
     
     func stopUpdatingLocation() {
-        print("GEO LOCATION STOP")
         locationManager.stopUpdatingLocation()
     }
     
