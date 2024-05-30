@@ -96,7 +96,7 @@ struct MenuView: View {
                                 }
                             }
                         }) {
-                            Label("Open in Browser", systemImage: "safari")
+                            Label("Open in Safari", systemImage: "safari")
                         }
                         
                         if !locationName.isEmpty {
@@ -113,7 +113,7 @@ struct MenuView: View {
                                     }
                                 }
                             }) {
-                                Label("Open in Browser Without Location", systemImage: "safari")
+                                Label("Open in Safari Without Location", systemImage: "safari")
                             }
                         }
                     }
