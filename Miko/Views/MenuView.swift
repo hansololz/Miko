@@ -80,47 +80,47 @@ struct MenuView: View {
                         }
                     }
                     
-                    Section(header: Text("Share")) {
-                        Button(action: {
-                            shareText(text: searchText)
-                        }) {
-                            Label("Share Text", systemImage: "square.and.arrow.up")
-                        }
-                        
-                        if !locationName.isEmpty {
-                            Button(action: {
-                                shareText(text: "\(searchText), \(locationName)")
-                            }) {
-                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                        
-                        Button(action: {
-                            let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
-                                searchText: searchText,
-                                locationName: locationName
-                            )
-                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-                        }) {
-                            Label("Share URL", systemImage: "square.and.arrow.up")
-                        }
-                        
-                        if !locationName.isEmpty {
-                            Button(action: {
-                                let url = getSearchUrl(
-                                    engine: searchEngineOption,
-                                    content: searchContentOption,
-                                    searchText: searchText,
-                                    locationName: locationName
-                                )
-                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-                            }) {
-                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                    }
+//                    Section(header: Text("Share")) {
+//                        Button(action: {
+//                            shareText(text: searchText)
+//                        }) {
+//                            Label("Share Text", systemImage: "square.and.arrow.up")
+//                        }
+//                        
+//                        if !locationName.isEmpty {
+//                            Button(action: {
+//                                shareText(text: "\(searchText), \(locationName)")
+//                            }) {
+//                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
+//                            }
+//                        }
+//                        
+//                        Button(action: {
+//                            let url = getSearchUrl(
+//                                engine: searchEngineOption,
+//                                content: searchContentOption,
+//                                searchText: searchText,
+//                                locationName: locationName
+//                            )
+//                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+//                        }) {
+//                            Label("Share URL", systemImage: "square.and.arrow.up")
+//                        }
+//                        
+//                        if !locationName.isEmpty {
+//                            Button(action: {
+//                                let url = getSearchUrl(
+//                                    engine: searchEngineOption,
+//                                    content: searchContentOption,
+//                                    searchText: searchText,
+//                                    locationName: locationName
+//                                )
+//                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+//                            }) {
+//                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
+//                            }
+//                        }
+//                    }
                 }
                 .navigationTitle("Options")
                 .navigationBarItems(leading: Button("Done") {

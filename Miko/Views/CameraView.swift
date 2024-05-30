@@ -162,14 +162,14 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     @objc func willEnterForeground() {
-        print("START CAMERA CAPTURE")
+        print("CAMERA CAPTURE START")
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
     }
     
     @objc func didEnterBackground() {
-        print("STOP CAMERA CAPTURE")
+        print("CAMERA CAPTURE STOP")
         DispatchQueue.global(qos: .background).async {
             self.captureSession.stopRunning()
         }
