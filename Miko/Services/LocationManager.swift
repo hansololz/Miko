@@ -45,16 +45,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func startUpdatingLocation() {
-//        lastLocation = nil
-//        lastUpdateTime = nil
-//        locationName = ""
+        print("GEO LOCATION START")
         locationManager.startUpdatingLocation()
     }
     
     func stopUpdatingLocation() {
-//        lastLocation = nil
-//        lastUpdateTime = nil
-//        locationName = ""
+        print("GEO LOCATION STOP")
         locationManager.stopUpdatingLocation()
     }
     
@@ -76,11 +72,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             print("Location permission granted.")
-            // Perform any action needed when permission is granted
-            startUpdatingLocation()
         case .denied, .restricted:
             print("Location permission denied or restricted.")
-            // Handle the case when permission is denied or restricted
         case .notDetermined:
             print("Location permission not determined.")
         @unknown default:
@@ -96,7 +89,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             guard let self = self else { return }
             if let error = error {
                 print("Error in reverse geocoding: \(error)")
-//                self.locationName = ""
             } else if let placemarks = placemarks, let placemark = placemarks.first {
                 let newLocationName: String
                 if let areaOfInterest = placemark.areasOfInterest?.first, !areaOfInterest.isEmpty {
@@ -113,28 +105,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                     }
                 }
                 
-                print("LOCATION NEW \(newLocationName)")
                 if self.locationName != newLocationName && !newLocationName.isEmpty {
-                    print("LOCATION UDPATED \(newLocationName)")
                     self.locationName = newLocationName
                 }
             }
         }
-    }
-}
-
-// LocationViewModel Class
-class LocationViewModel: ObservableObject {
-    @Published var locationName: String = ""
-    private var locationManager = LocationManager()
-    
-    init() {
-        locationManager.$locationName
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$locationName)
-    }
-    
-    func startUpdatingLocation() {
-        locationManager.startUpdatingLocation()
     }
 }

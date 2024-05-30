@@ -28,9 +28,6 @@ struct BottomSheetView: View {
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption
                     )
-                    .onAppear {
-                        locationManager.stopUpdatingLocation()
-                    }
                 } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
@@ -39,9 +36,6 @@ struct BottomSheetView: View {
                         locationInSearchQuery: $locationInSearchQuery,
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
-                    .onAppear {
-                        locationManager.stopUpdatingLocation()
-                    }
                 } else if searchText.isEmpty {
                     let url = getSearchUrl(
                         engine: searchEngineOption,
@@ -63,26 +57,25 @@ struct BottomSheetView: View {
                         locationName: locationInSearchQuery ? locationManager.locationName : ""
                     )
                     WebView(urlString: url)
-                        .onAppear {
-                            if locationManager.isAuthorized() && locationInSearchQuery {
-                                locationManager.startUpdatingLocation()
-                            } else {
-                                locationManager.stopUpdatingLocation()
-                            }
-                        }
                 }
             }
             .onAppear {
-                sheetOffset = geometry.size.height
-                if locationManager.isAuthorized() && locationInSearchQuery {
-                    locationManager.startUpdatingLocation()
-                } else {
-                    locationInSearchQuery = false
-                }
+                toggleLocationUpdate()
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
                 sheetOffset = newValue
             }
+            .onChange(of: selectSheetAnchor) { oldValue, newValue in
+                toggleLocationUpdate()
+            }
+        }
+    }
+    
+    private func toggleLocationUpdate() {
+        if selectSheetAnchor == restSheetAnchor && locationManager.isAuthorized() && locationInSearchQuery {
+            locationManager.startUpdatingLocation()
+        } else {
+            locationManager.stopUpdatingLocation()
         }
     }
 }

@@ -37,9 +37,6 @@ struct MenuView: View {
                             Text("\(searchContentOption.displayName)")
                         }
                     }
-                    .onAppear {
-                        print("HERE \(locationName)")
-                    }
                     
                     Section(header: Text("Copy")) {
                         Button(action: {
