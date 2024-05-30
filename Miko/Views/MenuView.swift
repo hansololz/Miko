@@ -10,6 +10,8 @@ struct MenuView: View {
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -80,47 +82,84 @@ struct MenuView: View {
                         }
                     }
                     
-//                    Section(header: Text("Share")) {
-//                        Button(action: {
-//                            shareText(text: searchText)
-//                        }) {
-//                            Label("Share Text", systemImage: "square.and.arrow.up")
-//                        }
-//                        
-//                        if !locationName.isEmpty {
-//                            Button(action: {
-//                                shareText(text: "\(searchText), \(locationName)")
-//                            }) {
-//                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
-//                            }
-//                        }
-//                        
-//                        Button(action: {
-//                            let url = getSearchUrl(
-//                                engine: searchEngineOption,
-//                                content: searchContentOption,
-//                                searchText: searchText,
-//                                locationName: locationName
-//                            )
-//                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-//                        }) {
-//                            Label("Share URL", systemImage: "square.and.arrow.up")
-//                        }
-//                        
-//                        if !locationName.isEmpty {
-//                            Button(action: {
-//                                let url = getSearchUrl(
-//                                    engine: searchEngineOption,
-//                                    content: searchContentOption,
-//                                    searchText: searchText,
-//                                    locationName: locationName
-//                                )
-//                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-//                            }) {
-//                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
-//                            }
-//                        }
-//                    }
+                    Section(header: Text("Browser")) {
+                        Button(action: {
+                            let url = getSearchUrl(
+                                engine: searchEngineOption,
+                                content: searchContentOption,
+                                searchText: searchText,
+                                locationName: locationName
+                            )
+                            if let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                                if let urlObject = URL(string: encodedUrl) {
+                                    openURL(urlObject)
+                                }
+                            }
+                        }) {
+                            Label("Open in Browser", systemImage: "safari")
+                        }
+                        
+                        if !locationName.isEmpty {
+                            Button(action: {
+                                let url = getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: ""
+                                )
+                                if let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                                    if let urlObject = URL(string: encodedUrl) {
+                                        openURL(urlObject)
+                                    }
+                                }
+                            }) {
+                                Label("Open in Browser Without Location", systemImage: "safari")
+                            }
+                        }
+                    }
+                    
+                    
+                    //                    Section(header: Text("Share")) {
+                    //                        Button(action: {
+                    //                            shareText(text: searchText)
+                    //                        }) {
+                    //                            Label("Share Text", systemImage: "square.and.arrow.up")
+                    //                        }
+                    //
+                    //                        if !locationName.isEmpty {
+                    //                            Button(action: {
+                    //                                shareText(text: "\(searchText), \(locationName)")
+                    //                            }) {
+                    //                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
+                    //                            }
+                    //                        }
+                    //
+                    //                        Button(action: {
+                    //                            let url = getSearchUrl(
+                    //                                engine: searchEngineOption,
+                    //                                content: searchContentOption,
+                    //                                searchText: searchText,
+                    //                                locationName: locationName
+                    //                            )
+                    //                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                    //                        }) {
+                    //                            Label("Share URL", systemImage: "square.and.arrow.up")
+                    //                        }
+                    //
+                    //                        if !locationName.isEmpty {
+                    //                            Button(action: {
+                    //                                let url = getSearchUrl(
+                    //                                    engine: searchEngineOption,
+                    //                                    content: searchContentOption,
+                    //                                    searchText: searchText,
+                    //                                    locationName: locationName
+                    //                                )
+                    //                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                    //                            }) {
+                    //                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
+                    //                            }
+                    //                        }
+                    //                    }
                 }
                 .navigationTitle("Options")
                 .navigationBarItems(leading: Button("Done") {
