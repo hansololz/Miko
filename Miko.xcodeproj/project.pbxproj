@@ -22,6 +22,7 @@
 		63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7132BFABDBA001F426E /* ContentView.swift */; };
 		63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C7182BFB0860001F426E /* BottomSheetView.swift */; };
 		63F0C71B2BFB1064001F426E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0C71A2BFB1064001F426E /* CameraView.swift */; };
+		63FC3E072C08767A00DF7319 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FC3E062C08767A00DF7319 /* Bookmark.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		63F0C7132BFABDBA001F426E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		63F0C7182BFB0860001F426E /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		63F0C71A2BFB1064001F426E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		63FC3E062C08767A00DF7319 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 		63F0C7152BFACF7A001F426E /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				63FC3E062C08767A00DF7319 /* Bookmark.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			files = (
 				630636622C0299770078935D /* SettingsView.swift in Sources */,
 				630636652C02B10B0078935D /* SearchEngine.swift in Sources */,
+				63FC3E072C08767A00DF7319 /* Bookmark.swift in Sources */,
 				63F0C7192BFB0860001F426E /* BottomSheetView.swift in Sources */,
 				63F0C7142BFABDBA001F426E /* ContentView.swift in Sources */,
 				630636472BFEFBE30078935D /* ViewDefaults.swift in Sources */,

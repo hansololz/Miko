@@ -1,6 +1,6 @@
 import Foundation
 
-enum SearchEngineOption: String, CaseIterable {
+enum SearchEngineOption: String, Codable, CaseIterable {
     case google = "Google"
     case bing = "Bing"
     case brave = "Brave"
@@ -17,7 +17,7 @@ enum SearchEngineOption: String, CaseIterable {
     }
 }
 
-enum SearchContentOption: String, CaseIterable {
+enum SearchContentOption: String, Codable, CaseIterable {
     case all = "All"
     case images = "Images"
     case videos = "Videos"
