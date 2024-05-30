@@ -152,6 +152,27 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func willEnterForeground() {
+        print("START CAMERA CAPTURE")
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
+    }
+    
+    @objc func didEnterBackground() {
+        print("STOP CAMERA CAPTURE")
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.stopRunning()
+        }
     }
     
     func addViewfinderIconOverlay() {
