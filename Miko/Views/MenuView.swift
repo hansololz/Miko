@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 import UIKit
 
@@ -16,15 +15,27 @@ struct MenuView: View {
             ZStack {
                 List {
                     Section(header: Text("Search Query")) {
-                        Text("Search Text: \(searchText)")
+                        HStack {
+                            Text("Text:").bold()
+                            Text("\(searchText)")
+                        }
                         
-//                        if !locationName.isEmpty {
+                        if !locationName.isEmpty {
+                            HStack {
+                                Text("Location:").bold()
+                                Text("\(locationName)")
+                            }
+                        }
                         
-                            Text("Location: \(locationName)")
-//                        }
+                        HStack {
+                            Text("Search Engine:").bold()
+                            Text("\(searchEngineOption.displayName)")
+                        }
                         
-                        Text("Search Engine: \(searchEngineOption.displayName)")
-                        Text("Search Content: \(searchContentOption.displayName)")
+                        HStack {
+                            Text("Search Content:").bold()
+                            Text("\(searchContentOption.displayName)")
+                        }
                     }
                     .onAppear {
                         print("HERE \(locationName)")
@@ -46,26 +57,26 @@ struct MenuView: View {
                         }
                         
                         Button(action: {
-//                            let url = getSearchUrl(
-//                                engine: searchEngineOption,
-//                                content: searchContentOption,
-//                                searchText: searchText,
-//                                locationManager: locationManager
-//                            )
-//                            copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                            let url = getSearchUrl(
+                                engine: searchEngineOption,
+                                content: searchContentOption,
+                                searchText: searchText,
+                                locationName: locationName
+                            )
+                            copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                         }) {
                             Label("Copy URL", systemImage: "doc.on.doc")
                         }
                         
                         if !locationName.isEmpty {
                             Button(action: {
-//                                let url = getSearchUrl(
-//                                    engine: searchEngineOption,
-//                                    content: searchContentOption,
-//                                    searchText: searchText,
-//                                    locationManager: locationManager
-//                                )
-//                                copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                let url = getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: locationName
+                                )
+                                copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
                                 Label("Copy URL Without Location", systemImage: "doc.on.doc")
                             }
@@ -88,26 +99,26 @@ struct MenuView: View {
                         }
                         
                         Button(action: {
-//                            let url = getSearchUrl(
-//                                engine: searchEngineOption,
-//                                content: searchContentOption,
-//                                searchText: searchText,
-//                                locationManager: locationManager
-//                            )
-//                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                            let url = getSearchUrl(
+                                engine: searchEngineOption,
+                                content: searchContentOption,
+                                searchText: searchText,
+                                locationName: locationName
+                            )
+                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                         }) {
                             Label("Share URL", systemImage: "square.and.arrow.up")
                         }
                         
                         if !locationName.isEmpty {
                             Button(action: {
-//                                let url = getSearchUrl(
-//                                    engine: searchEngineOption,
-//                                    content: searchContentOption,
-//                                    searchText: searchText,
-//                                    locationManager: locationManager
-//                                )
-//                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                let url = getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: locationName
+                                )
+                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
                                 Label("Share URL Without Location", systemImage: "square.and.arrow.up")
                             }

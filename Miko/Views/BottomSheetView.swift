@@ -87,7 +87,6 @@ struct BottomSheetView: View {
     }
 }
 
-
 struct WebView: UIViewRepresentable {
     let urlString: String
     
