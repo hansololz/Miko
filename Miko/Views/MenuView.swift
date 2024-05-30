@@ -10,8 +10,6 @@ struct MenuView: View {
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
-    @Environment(\.openURL) var openURL
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -120,42 +118,6 @@ struct MenuView: View {
                                 shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
                                 Label("Share URL Without Location", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                    }
-                    
-                    Section(header: Text("Browser")) {
-                        Button(action: {
-                            let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
-                                searchText: searchText,
-                                locationName: locationName
-                            )
-                            if let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                                if let urlObject = URL(string: encodedUrl) {
-                                    openURL(urlObject)
-                                }
-                            }
-                        }) {
-                            Label("Open in Safari", systemImage: "safari")
-                        }
-                        
-                        if !locationName.isEmpty {
-                            Button(action: {
-                                let url = getSearchUrl(
-                                    engine: searchEngineOption,
-                                    content: searchContentOption,
-                                    searchText: searchText,
-                                    locationName: ""
-                                )
-                                if let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                                    if let urlObject = URL(string: encodedUrl) {
-                                        openURL(urlObject)
-                                    }
-                                }
-                            }) {
-                                Label("Open in Safari Without Location", systemImage: "safari")
                             }
                         }
                     }
