@@ -49,7 +49,7 @@ struct MenuView: View {
                             Button(action: {
                                 copyToClipboard(text: "\(searchText), \(locationName)")
                             }) {
-                                Label("Copy Text Without Location", systemImage: "doc.on.doc")
+                                Label("Copy Text With Location", systemImage: "doc.on.doc")
                             }
                         }
                         
@@ -58,7 +58,7 @@ struct MenuView: View {
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
-                                locationName: locationName
+                                locationName: ""
                             )
                             copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                         }) {
@@ -75,7 +75,7 @@ struct MenuView: View {
                                 )
                                 copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
-                                Label("Copy URL Without Location", systemImage: "doc.on.doc")
+                                Label("Copy URL With Location", systemImage: "doc.on.doc")
                             }
                         }
                     }
@@ -91,7 +91,7 @@ struct MenuView: View {
                             Button(action: {
                                 shareText(text: "\(searchText), \(locationName)")
                             }) {
-                                Label("Share Text Without Location", systemImage: "square.and.arrow.up")
+                                Label("Share Text With Location", systemImage: "square.and.arrow.up")
                             }
                         }
 
@@ -100,7 +100,7 @@ struct MenuView: View {
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
-                                locationName: locationName
+                                locationName: ""
                             )
                             shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                         }) {
@@ -117,7 +117,7 @@ struct MenuView: View {
                                 )
                                 shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
-                                Label("Share URL Without Location", systemImage: "square.and.arrow.up")
+                                Label("Share URL With Location", systemImage: "square.and.arrow.up")
                             }
                         }
                     }
