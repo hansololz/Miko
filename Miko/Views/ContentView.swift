@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 import AVFoundation
 
@@ -15,6 +16,9 @@ func loadIsFirstEverCameraPermissionRequest() -> Bool {
 }
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var bookmarks: [Bookmark]
+    
     @State private var isSheetPresented = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor

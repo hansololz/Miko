@@ -20,5 +20,6 @@ struct MikoApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(sharedModelContainer)
     }
 }

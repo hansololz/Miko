@@ -1,7 +1,11 @@
+import SwiftData
 import SwiftUI
 import UIKit
 
 struct MenuView: View {
+//    @Environment(\.modelContext) private var modelContext
+//    @Query private var bookmarks: [Bookmark]
+    
     let locationName: String
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var searchText: String
@@ -14,7 +18,7 @@ struct MenuView: View {
         NavigationView {
             ZStack {
                 List {
-                    Section(header: Text("Search Query")) {
+                    Section(header: Text("Query")) {
                         HStack {
                             Text("Text:").bold()
                             Text("\(searchText)")
@@ -122,7 +126,7 @@ struct MenuView: View {
                         }
                     }
                 }
-                .navigationTitle("Options")
+                .navigationTitle("Search Query")
                 .navigationBarItems(leading: Button("Done") {
                     selectSheetAnchor = restSheetAnchor
                 })
