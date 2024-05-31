@@ -66,6 +66,12 @@ struct MenuView: View {
                                 Label("Bookmark", systemImage: "bookmark")
                             }
                         }
+                        
+                        NavigationLink {
+                            BookmarksView()
+                        } label: {
+                            Label("View All Bookmarks", systemImage: "bookmark")
+                        }
                     }
                     
                     Section(header: Text("Copy")) {
@@ -116,7 +122,7 @@ struct MenuView: View {
                         }) {
                             Label("Share Text", systemImage: "square.and.arrow.up")
                         }
-
+                        
                         if !locationName.isEmpty {
                             Button(action: {
                                 shareText(text: "\(searchText), \(locationName)")
@@ -124,7 +130,7 @@ struct MenuView: View {
                                 Label("Share Text With Location", systemImage: "square.and.arrow.up")
                             }
                         }
-
+                        
                         Button(action: {
                             let url = getSearchUrl(
                                 engine: searchEngineOption,
@@ -136,7 +142,7 @@ struct MenuView: View {
                         }) {
                             Label("Share URL", systemImage: "square.and.arrow.up")
                         }
-
+                        
                         if !locationName.isEmpty {
                             Button(action: {
                                 let url = getSearchUrl(
@@ -209,3 +215,59 @@ struct MenuView: View {
         })
     }
 }
+
+struct BookmarksView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var bookmarks: [Bookmark]
+
+    var body: some View {
+        List {
+            ForEach(bookmarks) { bookmark in
+                NavigationLink {
+                    Text("Item at \(bookmark.createdTime, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                } label: {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Text:").bold()
+                            Text("\(bookmark.searchText)")
+                        }
+                        if !bookmark.locationName.isEmpty {
+                            HStack {
+                                Text("Location:").bold()
+                                Text("\(bookmark.locationName)")
+                            }
+                        }
+                        HStack {
+                            Text("Search Engine:").bold()
+                            Text("\(bookmark.searchEngine.displayName)")
+                        }
+                        HStack {
+                            Text("Search Content:").bold()
+                            Text("\(bookmark.searchContent.displayName)")
+                        }
+                        HStack {
+                            Text("Created Time:").bold()
+                            Text(bookmark.createdTime, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        }
+                    }
+                }
+            }
+            .onDelete(perform: deleteItems)
+        }
+        .navigationTitle("Bookmarks")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+        }
+    }
+
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(bookmarks[index])
+            }
+        }
+    }
+}
+
