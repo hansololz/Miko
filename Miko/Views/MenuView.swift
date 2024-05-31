@@ -3,9 +3,6 @@ import SwiftUI
 import UIKit
 
 struct MenuView: View {
-//    @Environment(\.modelContext) private var modelContext
-//    @Query private var bookmarks: [Bookmark]
-    
     let locationName: String
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var searchText: String
@@ -13,6 +10,9 @@ struct MenuView: View {
     @Binding var searchContentOption: SearchContentOption
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
+    
+    @Environment(\.modelContext) private var modelContext
+    @Query private var bookmarks: [Bookmark]
     
     var body: some View {
         NavigationView {
@@ -39,6 +39,32 @@ struct MenuView: View {
                         HStack {
                             Text("Search Content:").bold()
                             Text("\(searchContentOption.displayName)")
+                        }
+                    }
+                    
+                    Section(header: Text("Bookmark")) {
+                        if findBookmark() != nil {
+                            Button(action: {
+                                if let bookmark = findBookmark() {
+                                    modelContext.delete(bookmark)
+                                }
+                            }) {
+                                Label("Bookmark", systemImage: "bookmark.fill")
+                            }
+                        } else {
+                            Button(action: {
+                                modelContext.insert(
+                                    Bookmark(
+                                        createdTime: Date.now,
+                                        searchText: searchText,
+                                        locationName: locationName,
+                                        searchEngine: searchEngineOption,
+                                        searchContent: searchContentOption
+                                    )
+                                )
+                            }) {
+                                Label("Bookmark", systemImage: "bookmark")
+                            }
                         }
                     }
                     
@@ -172,5 +198,14 @@ struct MenuView: View {
             
             viewController?.present(activityController, animated: true, completion: nil)
         }
+    }
+    
+    private func findBookmark() -> Bookmark? {
+        return bookmarks.first(where: {
+            $0.searchText == searchText &&
+            $0.locationName == locationName &&
+            $0.searchEngine == searchEngineOption &&
+            $0.searchContent == searchContentOption
+        })
     }
 }
