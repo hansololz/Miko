@@ -8,7 +8,7 @@ let fullSheetAnchor = PresentationDetent.fraction(0.999)
 
 // Delay between each time the text updates, in miliseconds
 let cameraSampleDelay: UInt64 = 500
-let cameraTextUpdateDelay: UInt64 = 2000
+let cameraTextUpdateDelay: UInt64 = 1500
 
 // The maximum amount of movement users are allow to make while searching for text.
 // App will stop looking for text if the use is moving their phone a lot.
