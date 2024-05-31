@@ -166,10 +166,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     @objc func didEnterBackground() {
-//        print("CAMERA CAPTURE STOP")
-//        DispatchQueue.global(qos: .background).async {
-//            self.captureSession.stopRunning()
-//        }
+        self.captureSession.stopRunning()
     }
     
     func addViewfinderIconOverlay() {
@@ -411,10 +408,14 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
+        captureSession.stopRunning()
         shouldSampleText = false
     }
     
     func resumeCamera() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession.startRunning()
+        }
         shouldSampleText = true
     }
     
