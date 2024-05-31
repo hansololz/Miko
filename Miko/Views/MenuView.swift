@@ -416,7 +416,7 @@ struct BookmarkView: View {
                     }
                 }
             }
-            .navigationTitle("Search Query")
+            .navigationTitle("Bookmark")
             
             VStack {
                 Spacer()
