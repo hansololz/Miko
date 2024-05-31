@@ -78,7 +78,7 @@ struct MenuView: View {
                         NavigationLink {
                             BookmarksView()
                         } label: {
-                            Label("View All Bookmarks", systemImage: "bookmark")
+                            Label("View All Bookmarks", systemImage: "list.star")
                         }
                     }
                     
