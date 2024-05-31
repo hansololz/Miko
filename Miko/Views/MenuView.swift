@@ -228,7 +228,7 @@ struct MenuView: View {
 
 struct BookmarksView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var bookmarks: [Bookmark]
+    @Query(sort: \Bookmark.createdTime, order: .reverse) private var bookmarks: [Bookmark]
 
     var body: some View {
         List {
