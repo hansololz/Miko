@@ -61,6 +61,9 @@ struct BottomSheetView: View {
             }
             .onAppear {
                 toggleLocationUpdate()
+                if !locationManager.isAuthorized() {
+                    locationInSearchQuery = false
+                }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
                 sheetOffset = newValue
