@@ -25,14 +25,10 @@ struct CameraView: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        func updateSearchText(_ text: String, onTextUpdateCallback: () -> Void) {
+        func updateSearchText(_ text: String) {
             let currentTime: UInt64 = DispatchTime.now().uptimeNanoseconds / 1_000_000
             if text.isEmpty || self.parent.searchText == text || self.parent.selectSheetAnchor != restSheetAnchor || currentTime - cameraTextUpdateDelay < lastTextUpdateTimestamp { return }
             lastTextUpdateTimestamp = currentTime
-            
-            if self.parent.searchText.isEmpty {
-                onTextUpdateCallback()
-            }
             
             DispatchQueue.main.async {
                 self.parent.searchText = text
@@ -145,6 +141,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         addViewfinderIconOverlay()
         addSettingsIconOverlay()
+        addMenuIconOverlay()
         
         setupMotionManager()
         setupPinchGesture()
@@ -392,9 +389,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
                 }
             }
             
-            self.coordinator?.updateSearchText(topText) {
-                self.addMenuIconOverlay()
-            }
+            self.coordinator?.updateSearchText(topText)
         }
     }
     

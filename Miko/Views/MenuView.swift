@@ -18,52 +18,60 @@ struct MenuView: View {
         NavigationView {
             ZStack {
                 List {
-                    Section(header: Text("Query")) {
-                        HStack {
-                            Text("Text:").bold()
-                            Text("\(searchText)")
+                    if searchText.isEmpty {
+                        Section() {
+                            Text("No text found for search query. Point the camera at text you want to look up.")
                         }
-                        
-                        if !locationName.isEmpty {
-                            HStack {
-                                Text("Location:").bold()
-                                Text("\(locationName)")
+                    } else {
+                        Section(header: Text("Query")) {
+                            HStack(alignment: .top) {
+                                Text("Text:").bold()
+                                Text("\(searchText)")
                             }
-                        }
-                        
-                        HStack {
-                            Text("Search Engine:").bold()
-                            Text("\(searchEngineOption.displayName)")
-                        }
-                        
-                        HStack {
-                            Text("Search Content:").bold()
-                            Text("\(searchContentOption.displayName)")
+                            
+                            if !locationName.isEmpty {
+                                HStack(alignment: .top) {
+                                    Text("Location:").bold()
+                                    Text("\(locationName)")
+                                }
+                            }
+                            
+                            HStack(alignment: .top) {
+                                Text("Search Engine:").bold()
+                                Text("\(searchEngineOption.displayName)")
+                            }
+                            
+                            HStack(alignment: .top) {
+                                Text("Search Content:").bold()
+                                Text("\(searchContentOption.displayName)")
+                            }
                         }
                     }
                     
-                    Section(header: Text("Bookmark")) {
-                        if findBookmark() != nil {
-                            Button(action: {
-                                if let bookmark = findBookmark() {
-                                    modelContext.delete(bookmark)
+                    Section(header: Text("Bookmarks")) {
+                        if !searchText.isEmpty {
+                            if findBookmark() != nil {
+                                Button(action: {
+                                    if let bookmark = findBookmark() {
+                                        modelContext.delete(bookmark)
+                                    }
+                                }) {
+                                    Label("Bookmark", systemImage: "bookmark.fill")
                                 }
-                            }) {
-                                Label("Bookmark", systemImage: "bookmark.fill")
-                            }
-                        } else {
-                            Button(action: {
-                                modelContext.insert(
-                                    Bookmark(
-                                        createdTime: Date.now,
-                                        searchText: searchText,
-                                        locationName: locationName,
-                                        searchEngine: searchEngineOption,
-                                        searchContent: searchContentOption
+                            } else {
+                                Button(action: {
+                                    modelContext.insert(
+                                        Bookmark(
+                                            createdTime: Date.now,
+                                            searchText: searchText,
+                                            locationName: locationName,
+                                            searchEngine: searchEngineOption,
+                                            searchContent: searchContentOption
+                                        )
                                     )
-                                )
-                            }) {
-                                Label("Bookmark", systemImage: "bookmark")
+                                }) {
+                                    Label("Bookmark", systemImage: "bookmark")
+                                }
                             }
                         }
                         
@@ -74,86 +82,88 @@ struct MenuView: View {
                         }
                     }
                     
-                    Section(header: Text("Copy")) {
-                        Button(action: {
-                            copyToClipboard(text: searchText)
-                        }) {
-                            Label("Copy Text", systemImage: "doc.on.doc")
-                        }
-                        
-                        if !locationName.isEmpty {
+                    if !searchText.isEmpty {
+                        Section(header: Text("Copy")) {
                             Button(action: {
-                                copyToClipboard(text: "\(searchText), \(locationName)")
+                                copyToClipboard(text: searchText)
                             }) {
-                                Label("Copy Text With Location", systemImage: "doc.on.doc")
+                                Label("Copy Text", systemImage: "doc.on.doc")
                             }
-                        }
-                        
-                        Button(action: {
-                            let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
-                                searchText: searchText,
-                                locationName: ""
-                            )
-                            copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-                        }) {
-                            Label("Copy URL", systemImage: "doc.on.doc")
-                        }
-                        
-                        if !locationName.isEmpty {
+                            
+                            if !locationName.isEmpty {
+                                Button(action: {
+                                    copyToClipboard(text: "\(searchText), \(locationName)")
+                                }) {
+                                    Label("Copy Text With Location", systemImage: "doc.on.doc")
+                                }
+                            }
+                            
                             Button(action: {
                                 let url = getSearchUrl(
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
-                                    locationName: locationName
+                                    locationName: ""
                                 )
                                 copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
-                                Label("Copy URL With Location", systemImage: "doc.on.doc")
+                                Label("Copy URL", systemImage: "doc.on.doc")
+                            }
+                            
+                            if !locationName.isEmpty {
+                                Button(action: {
+                                    let url = getSearchUrl(
+                                        engine: searchEngineOption,
+                                        content: searchContentOption,
+                                        searchText: searchText,
+                                        locationName: locationName
+                                    )
+                                    copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                }) {
+                                    Label("Copy URL With Location", systemImage: "doc.on.doc")
+                                }
                             }
                         }
-                    }
-                    
-                    Section(header: Text("Share")) {
-                        Button(action: {
-                            shareText(text: searchText)
-                        }) {
-                            Label("Share Text", systemImage: "square.and.arrow.up")
-                        }
                         
-                        if !locationName.isEmpty {
+                        Section(header: Text("Share")) {
                             Button(action: {
-                                shareText(text: "\(searchText), \(locationName)")
+                                shareText(text: searchText)
                             }) {
-                                Label("Share Text With Location", systemImage: "square.and.arrow.up")
+                                Label("Share Text", systemImage: "square.and.arrow.up")
                             }
-                        }
-                        
-                        Button(action: {
-                            let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
-                                searchText: searchText,
-                                locationName: ""
-                            )
-                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
-                        }) {
-                            Label("Share URL", systemImage: "square.and.arrow.up")
-                        }
-                        
-                        if !locationName.isEmpty {
+                            
+                            if !locationName.isEmpty {
+                                Button(action: {
+                                    shareText(text: "\(searchText), \(locationName)")
+                                }) {
+                                    Label("Share Text With Location", systemImage: "square.and.arrow.up")
+                                }
+                            }
+                            
                             Button(action: {
                                 let url = getSearchUrl(
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
-                                    locationName: locationName
+                                    locationName: ""
                                 )
                                 shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
                             }) {
-                                Label("Share URL With Location", systemImage: "square.and.arrow.up")
+                                Label("Share URL", systemImage: "square.and.arrow.up")
+                            }
+                            
+                            if !locationName.isEmpty {
+                                Button(action: {
+                                    let url = getSearchUrl(
+                                        engine: searchEngineOption,
+                                        content: searchContentOption,
+                                        searchText: searchText,
+                                        locationName: locationName
+                                    )
+                                    shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                }) {
+                                    Label("Share URL With Location", systemImage: "square.and.arrow.up")
+                                }
                             }
                         }
                     }
@@ -234,25 +244,25 @@ struct BookmarksView: View {
                     )
                 } label: {
                     VStack(alignment: .leading) {
-                        HStack {
+                        HStack(alignment: .top) {
                             Text("Text:").bold()
                             Text("\(bookmark.searchText)")
                         }
                         if !bookmark.locationName.isEmpty {
-                            HStack {
+                            HStack(alignment: .top) {
                                 Text("Location:").bold()
                                 Text("\(bookmark.locationName)")
                             }
                         }
-                        HStack {
+                        HStack(alignment: .top) {
                             Text("Search Engine:").bold()
                             Text("\(bookmark.searchEngine.displayName)")
                         }
-                        HStack {
+                        HStack(alignment: .top) {
                             Text("Search Content:").bold()
                             Text("\(bookmark.searchContent.displayName)")
                         }
-                        HStack {
+                        HStack(alignment: .top) {
                             Text("Created Time:").bold()
                             Text(bookmark.createdTime, format: Date.FormatStyle(date: .numeric, time: .standard))
                         }
@@ -294,29 +304,29 @@ struct BookmarkView: View {
         ZStack {
             List {
                 Section(header: Text("Query")) {
-                    HStack {
+                    HStack(alignment: .top) {
                         Text("Text:").bold()
                         Text("\(searchText)")
                     }
                     
                     if !locationName.isEmpty {
-                        HStack {
+                        HStack(alignment: .top) {
                             Text("Location:").bold()
                             Text("\(locationName)")
                         }
                     }
                     
-                    HStack {
+                    HStack(alignment: .top) {
                         Text("Search Engine:").bold()
                         Text("\(searchEngineOption.displayName)")
                     }
                     
-                    HStack {
+                    HStack(alignment: .top) {
                         Text("Search Content:").bold()
                         Text("\(searchContentOption.displayName)")
                     }
                     
-                    HStack {
+                    HStack(alignment: .top) {
                         Text("Created Time:").bold()
                         Text(createdTime, format: Date.FormatStyle(date: .numeric, time: .standard))
                     }
@@ -407,9 +417,6 @@ struct BookmarkView: View {
                 }
             }
             .navigationTitle("Search Query")
-            //                .navigationBarItems(leading: Button("Done") {
-            //                    selectSheetAnchor = restSheetAnchor
-            //                })
             
             VStack {
                 Spacer()
