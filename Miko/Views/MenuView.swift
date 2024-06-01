@@ -170,6 +170,36 @@ struct MenuView: View {
                                 }
                             }
                         }
+                        
+                        Section(header: Text("Browser")) {
+                            Button(action: {
+                                if let url = getSearchUrl(
+                                    engine: searchEngineOption,
+                                    content: searchContentOption,
+                                    searchText: searchText,
+                                    locationName: ""
+                                ) {
+                                    UIApplication.shared.open(url)
+                                }
+                            }) {
+                                Label("Open In Browser", systemImage: "square.and.arrow.up")
+                            }
+                            
+                            if !locationName.isEmpty {
+                                Button(action: {
+                                    if let url = getSearchUrl(
+                                        engine: searchEngineOption,
+                                        content: searchContentOption,
+                                        searchText: searchText,
+                                        locationName: locationName
+                                    ) {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }) {
+                                    Label("Open In Browser With Location", systemImage: "square.and.arrow.up")
+                                }
+                            }
+                        }
                     }
                 }
                 .navigationTitle("Search Query")
@@ -420,6 +450,36 @@ struct BookmarkView: View {
                             }
                         }) {
                             Label("Share URL With Location", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                }
+                
+                Section(header: Text("Browser")) {
+                    Button(action: {
+                        if let url = getSearchUrl(
+                            engine: searchEngineOption,
+                            content: searchContentOption,
+                            searchText: searchText,
+                            locationName: ""
+                        ) {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        Label("Open In Browser", systemImage: "square.and.arrow.up")
+                    }
+                    
+                    if !locationName.isEmpty {
+                        Button(action: {
+                            if let url = getSearchUrl(
+                                engine: searchEngineOption,
+                                content: searchContentOption,
+                                searchText: searchText,
+                                locationName: locationName
+                            ) {
+                                UIApplication.shared.open(url)
+                            }
+                        }) {
+                            Label("Open In Browser With Location", systemImage: "square.and.arrow.up")
                         }
                     }
                 }
