@@ -99,26 +99,28 @@ struct MenuView: View {
                             }
                             
                             Button(action: {
-                                let url = getSearchUrl(
+                                if let url = getSearchUrl(
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
                                     locationName: ""
-                                )
-                                copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                ) {
+                                    copyToClipboard(text: url.absoluteString)
+                                }
                             }) {
                                 Label("Copy URL", systemImage: "doc.on.doc")
                             }
                             
                             if !locationName.isEmpty {
                                 Button(action: {
-                                    let url = getSearchUrl(
+                                    if let url = getSearchUrl(
                                         engine: searchEngineOption,
                                         content: searchContentOption,
                                         searchText: searchText,
                                         locationName: locationName
-                                    )
-                                    copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                    ) {
+                                        copyToClipboard(text: url.absoluteString)
+                                    }
                                 }) {
                                     Label("Copy URL With Location", systemImage: "doc.on.doc")
                                 }
@@ -141,26 +143,28 @@ struct MenuView: View {
                             }
                             
                             Button(action: {
-                                let url = getSearchUrl(
+                                if let url = getSearchUrl(
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
                                     locationName: ""
-                                )
-                                shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                ) {
+                                    shareText(text: url.absoluteString)
+                                }
                             }) {
                                 Label("Share URL", systemImage: "square.and.arrow.up")
                             }
                             
                             if !locationName.isEmpty {
                                 Button(action: {
-                                    let url = getSearchUrl(
+                                    if let url = getSearchUrl(
                                         engine: searchEngineOption,
                                         content: searchContentOption,
                                         searchText: searchText,
                                         locationName: locationName
-                                    )
-                                    shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                                    ) {
+                                        shareText(text: url.absoluteString)
+                                    }
                                 }) {
                                     Label("Share URL With Location", systemImage: "square.and.arrow.up")
                                 }
@@ -229,7 +233,7 @@ struct MenuView: View {
 struct BookmarksView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Bookmark.createdTime, order: .reverse) private var bookmarks: [Bookmark]
-
+    
     var body: some View {
         List {
             ForEach(bookmarks) { bookmark in
@@ -348,26 +352,28 @@ struct BookmarkView: View {
                     }
                     
                     Button(action: {
-                        let url = getSearchUrl(
+                        if let url = getSearchUrl(
                             engine: searchEngineOption,
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: ""
-                        )
-                        copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                        ) {
+                            copyToClipboard(text: url.absoluteString)
+                        }
                     }) {
                         Label("Copy URL", systemImage: "doc.on.doc")
                     }
                     
                     if !locationName.isEmpty {
                         Button(action: {
-                            let url = getSearchUrl(
+                            if let url = getSearchUrl(
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName
-                            )
-                            copyToClipboard(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                            ) {
+                                copyToClipboard(text: url.absoluteString)
+                            }
                         }) {
                             Label("Copy URL With Location", systemImage: "doc.on.doc")
                         }
@@ -390,26 +396,28 @@ struct BookmarkView: View {
                     }
                     
                     Button(action: {
-                        let url = getSearchUrl(
+                        if let url = getSearchUrl(
                             engine: searchEngineOption,
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: ""
-                        )
-                        shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                        ) {
+                            shareText(text: url.absoluteString)
+                        }
                     }) {
                         Label("Share URL", systemImage: "square.and.arrow.up")
                     }
                     
                     if !locationName.isEmpty {
                         Button(action: {
-                            let url = getSearchUrl(
+                            if let url = getSearchUrl(
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName
-                            )
-                            shareText(text: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? searchText)
+                            ) {
+                                shareText(text: url.absoluteString)
+                            }
                         }) {
                             Label("Share URL With Location", systemImage: "square.and.arrow.up")
                         }
@@ -460,4 +468,3 @@ struct BookmarkView: View {
         }
     }
 }
-

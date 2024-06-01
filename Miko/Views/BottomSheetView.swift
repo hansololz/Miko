@@ -37,26 +37,28 @@ struct BottomSheetView: View {
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
                 } else if searchText.isEmpty {
-                    let url = getSearchUrl(
+                    if let url = getSearchUrl(
                         engine: searchEngineOption,
                         content: searchContentOption,
                         searchText: searchText,
                         locationName: ""
-                    )
-                    WebView(urlString: url)
-                        .opacity(0)
+                    ) {
+                        WebView(url: url)
+                            .opacity(0)
+                    }
                     Text("Point the camera at text you want to look up.")
                         .frame(maxWidth: .infinity, alignment: .center)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
-                    let url = getSearchUrl(
+                    if let url = getSearchUrl(
                         engine: searchEngineOption,
                         content: searchContentOption,
                         searchText: searchText,
                         locationName: locationInSearchQuery ? locationManager.locationName : ""
-                    )
-                    WebView(urlString: url)
+                    ) {
+                        WebView(url: url)
+                    }
                 }
             }
             .onAppear {
@@ -84,7 +86,7 @@ struct BottomSheetView: View {
 }
 
 struct WebView: UIViewRepresentable {
-    let urlString: String
+    let url: URL
     
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
@@ -94,7 +96,6 @@ struct WebView: UIViewRepresentable {
         }
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            // Execute JavaScript to scroll to the top of the page
             webView.evaluateJavaScript("window.scrollTo(0, 0);", completionHandler: nil)
         }
     }
@@ -110,7 +111,6 @@ struct WebView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        guard let url = URL(string: urlString) else { return }
         let request = URLRequest(url: url)
         uiView.load(request)
     }

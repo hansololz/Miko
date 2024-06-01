@@ -99,11 +99,11 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
     
 ]
 
-func getDefaultSearchUrl(searchText: String) -> String  {
-    return "https://www.google.com/search?tbm=isch&q=\(searchText)"
+func getDefaultSearchUrl(searchText: String) -> URL? {
+    return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String) -> String {
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
@@ -113,9 +113,11 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
     let contentOptions = searchEngineDirectory[engine]
     if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }
     let searchMethod = (contentOptions ?? [:])[content]
-    if searchMethod == nil {
-        return getDefaultSearchUrl(searchText: query)
-    } else {
-        return searchMethod!(query)
+    let urlString = searchMethod!(query)
+
+    if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+        return URL(string: encodedUrlString)
     }
+    
+    return nil
 }
