@@ -485,7 +485,7 @@
 				DEVELOPMENT_TEAM = PX3G5CKSU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Neko Cam";
+				INFOPLIST_KEY_CFBundleDisplayName = SnapSearch;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Requesting Camera Access";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Requesting location access to add location data into search query";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -522,7 +522,7 @@
 				DEVELOPMENT_TEAM = PX3G5CKSU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Neko Cam";
+				INFOPLIST_KEY_CFBundleDisplayName = SnapSearch;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Requesting Camera Access";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Requesting location access to add location data into search query";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
