@@ -16,6 +16,8 @@ struct BottomSheetView: View {
             saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
         }
     }
+    @State private var resetMenu: Bool = false
+    @State private var resetSettings: Bool = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -28,6 +30,7 @@ struct BottomSheetView: View {
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption
                     )
+                    .id(resetMenu)
                 } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
@@ -36,6 +39,7 @@ struct BottomSheetView: View {
                         locationInSearchQuery: $locationInSearchQuery,
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
+                    .id(resetSettings)
                 } else if searchText.isEmpty {
                     if let url = getSearchUrl(
                         engine: searchEngineOption,
@@ -72,6 +76,16 @@ struct BottomSheetView: View {
             }
             .onChange(of: selectSheetAnchor) { oldValue, newValue in
                 toggleLocationUpdate()
+            }
+            .onChange(of: showMenu) { oldValue, newValue in
+                if !newValue {
+                    resetMenu.toggle()
+                }
+            }
+            .onChange(of: showSettings) { oldValue, newValue in
+                if !newValue {
+                    resetSettings.toggle()
+                }
             }
         }
     }
