@@ -408,16 +408,10 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession.stopRunning()
-        }
         shouldSampleText = false
     }
     
     func resumeCamera() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession.startRunning()
-        }
         shouldSampleText = true
     }
     
