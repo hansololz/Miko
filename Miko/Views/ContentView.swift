@@ -19,7 +19,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
     
-    @State private var isSheetPresented = false
+    @State private var isCameraReady = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
@@ -30,7 +30,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            if isSheetPresented {
+            if isCameraReady {
                 CameraView(
                     selectSheetAnchor: $selectSheetAnchor,
                     showSettings: $showSettings,
@@ -60,7 +60,7 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(isPresented: $isSheetPresented) {
+        .sheet(isPresented: $isCameraReady) {
             BottomSheetView(
                 selectSheetAnchor: $selectSheetAnchor,
                 showSettings: $showSettings,
@@ -93,15 +93,15 @@ struct ContentView: View {
     private func checkCameraPermission() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            isSheetPresented = true
+            isCameraReady = true
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 DispatchQueue.main.async {
-                    isSheetPresented = granted
+                    isCameraReady = granted
                 }
             }
         default:
-            isSheetPresented = false
+            isCameraReady = false
         }
     }
 }
