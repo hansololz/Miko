@@ -69,8 +69,10 @@ struct CameraView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if let cameraViewController = uiViewController as? CameraViewController {
             if selectSheetAnchor == restSheetAnchor {
+                cameraViewController.isSheetAtRest = true
                 cameraViewController.resumeCamera()
             } else {
+                cameraViewController.isSheetAtRest = false
                 cameraViewController.pauseCamera()
             }
             
@@ -94,6 +96,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     var shouldSampleText = true
     var currentZoomFactor: CGFloat = 1.0
     var selectedSearchLanguages: [String] = ["en-US"]
+    var isSheetAtRest = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,9 +147,13 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     @objc func willEnterForeground() {
-        print("CAMERA CAPTURE START")
-        DispatchQueue.global(qos: .background).async {
-            self.captureSession.startRunning()
+        if isSheetAtRest {
+            print("CAMERA CAPTURE START")
+            DispatchQueue.global(qos: .background).async {
+                self.captureSession.startRunning()
+            }
+        } else {
+            print("CAMERA CAPTURE NOT STARTED, SHEET NOT AT TEST")
         }
     }
     
@@ -393,10 +400,18 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     }
     
     func pauseCamera() {
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.stopRunning()
+        }
+        print("CAMERA PAUSE")
         shouldSampleText = false
     }
     
     func resumeCamera() {
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
+        print("CAMERA START")
         shouldSampleText = true
     }
 }

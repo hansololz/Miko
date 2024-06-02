@@ -50,6 +50,8 @@ struct ContentView: View {
                                 let truncatedOffset = max(min(offsetFloat, cameraFadeOutHeight), cameraFadeInHeight)
                                 let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
                                 cameraOverlayAlpha = alpha
+                                
+//                                print("ALPHA: \(sheetOffset) | \(alpha)")
                             }
                         }
                 }
