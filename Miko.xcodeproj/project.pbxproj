@@ -485,7 +485,7 @@
 				DEVELOPMENT_TEAM = PX3G5CKSU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = SnapSearch;
+				INFOPLIST_KEY_CFBundleDisplayName = SnapFind;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Requesting Camera Access";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Requesting location access to add location data into search query";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -499,7 +499,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hansololz.search;
+				PRODUCT_BUNDLE_IDENTIFIER = hansololz.find;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -522,7 +522,7 @@
 				DEVELOPMENT_TEAM = PX3G5CKSU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = SnapSearch;
+				INFOPLIST_KEY_CFBundleDisplayName = SnapFind;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Requesting Camera Access";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Requesting location access to add location data into search query";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -536,7 +536,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hansololz.search;
+				PRODUCT_BUNDLE_IDENTIFIER = hansololz.find;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
