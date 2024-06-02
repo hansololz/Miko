@@ -27,19 +27,32 @@ struct ContentView: View {
     @State private var showMenu = false
     @State private var isFirstEverCameraPermissionRequest = loadIsFirstEverCameraPermissionRequest()
     @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
+    @State private var cameraOverlayAlpha = 0.0
     
     var body: some View {
         VStack {
             if isCameraReady {
-                CameraView(
-                    selectSheetAnchor: $selectSheetAnchor,
-                    showSettings: $showSettings,
-                    showMenu: $showMenu,
-                    searchText: $searchText,
-                    sheetOffset: $sheetOffset,
-                    isFirstEverCameraPermissionRequest: $isFirstEverCameraPermissionRequest,
-                    selectedSearchLanguages: $selectedSearchLanguages
-                )
+                ZStack {
+                    CameraView(
+                        selectSheetAnchor: $selectSheetAnchor,
+                        showSettings: $showSettings,
+                        showMenu: $showMenu,
+                        searchText: $searchText,
+                        isFirstEverCameraPermissionRequest: $isFirstEverCameraPermissionRequest,
+                        selectedSearchLanguages: $selectedSearchLanguages
+                    )
+                    Rectangle()
+                        .fill(.black)
+                        .opacity(cameraOverlayAlpha)
+                        .onChange(of: sheetOffset) { newValue, oldValue in
+                            if (sheetOffset != 0.0) {
+                                let offsetFloat = (UIScreen.main.bounds.height - sheetOffset)/UIScreen.main.bounds.height
+                                let truncatedOffset = max(min(offsetFloat, cameraFadeOutHeight), cameraFadeInHeight)
+                                let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
+                                cameraOverlayAlpha = alpha
+                            }
+                        }
+                }
                 .edgesIgnoringSafeArea(.all)
             } else {
                 if isFirstEverCameraPermissionRequest {

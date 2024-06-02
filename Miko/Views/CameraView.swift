@@ -9,7 +9,6 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
-    @Binding var sheetOffset: CGFloat
     @Binding var isFirstEverCameraPermissionRequest: Bool {
         didSet {
             saveIsFirstEverCameraPermissionRequest()
@@ -75,13 +74,6 @@ struct CameraView: UIViewControllerRepresentable {
                 cameraViewController.pauseCamera()
             }
             
-            if (sheetOffset != 0.0) {
-                let offsetFloat = (UIScreen.main.bounds.height - sheetOffset)/UIScreen.main.bounds.height
-                let truncatedOffset = max(min(offsetFloat, cameraFadeOutHeight), cameraFadeInHeight)
-                let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
-                cameraViewController.updateOverlayAlpha(alpha)
-            }
-            
             cameraViewController.selectedSearchLanguages = selectedSearchLanguages.map { $0.rawValue }
         }
     }
@@ -90,7 +82,6 @@ struct CameraView: UIViewControllerRepresentable {
 class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
-    var overlayView: UIView!
     var timer: Timer?
     var lastSampleBuffer: CMSampleBuffer?
     weak var coordinator: CameraView.Coordinator?
@@ -132,12 +123,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         previewLayer.frame = view.layer.frame
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
-        
-        // Add overlay view
-        overlayView = UIView(frame: view.bounds)
-        overlayView.backgroundColor = .black
-        overlayView.alpha = 0.0
-        view.addSubview(overlayView)
         
         addViewfinderIconOverlay()
         addSettingsIconOverlay()
@@ -413,9 +398,5 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func resumeCamera() {
         shouldSampleText = true
-    }
-    
-    func updateOverlayAlpha(_ alpha: CGFloat) {
-        overlayView?.alpha = alpha
     }
 }
