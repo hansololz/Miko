@@ -130,6 +130,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         addViewfinderIconOverlay()
         addSettingsIconOverlay()
         addMenuIconOverlay()
+        addDoubleTapGesture()
         
         setupMotionManager()
         setupPinchGesture()
@@ -148,15 +149,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     @objc func willEnterForeground() {
         if isSheetAtRest {
-            print("CAMERA CAPTURE START")
             DispatchQueue.global(qos: .background).async {
-                print("CAMERA CAPTURE START \(self.captureSession.isRunning)")
                 if !self.captureSession.isRunning {
                     self.captureSession.startRunning()
                 }
             }
-        } else {
-            print("CAMERA CAPTURE NOT STARTED, SHEET NOT AT TEST")
         }
     }
     
@@ -260,6 +257,35 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         // Add tap gesture recognizer to the container view
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
         containerView.addGestureRecognizer(tapGesture)
+    }
+    
+    func addDoubleTapGesture() {
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+         doubleTapGesture.numberOfTapsRequired = 2
+         view.addGestureRecognizer(doubleTapGesture)
+    }
+    
+    @objc func handleDoubleTap(_ sender: UITapGestureRecognizer) {
+        print("Double-tap detected")
+        guard let device = AVCaptureDevice.default(for: .video) else { return }
+        
+        if device.videoZoomFactor == 1.0 {
+            do {
+                try device.lockForConfiguration()
+                device.ramp(toVideoZoomFactor: 2.0, withRate: 16.0)
+                device.unlockForConfiguration()
+            } catch {
+                print("Error locking configuration: \(error)")
+            }
+        } else {
+            do {
+                try device.lockForConfiguration()
+                device.ramp(toVideoZoomFactor: 1.0, withRate: 16.0)
+                device.unlockForConfiguration()
+            } catch {
+                print("Error locking configuration: \(error)")
+            }
+        }
     }
     
     @objc func settingsIconTapped() {
