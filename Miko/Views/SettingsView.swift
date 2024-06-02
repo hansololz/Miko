@@ -126,7 +126,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Neko Cam")
+            .navigationTitle("SnapBrowse")
             .navigationBarItems(leading: Button("Done") {
                 selectSheetAnchor = restSheetAnchor
             })
