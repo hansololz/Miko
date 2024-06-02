@@ -150,7 +150,10 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         if isSheetAtRest {
             print("CAMERA CAPTURE START")
             DispatchQueue.global(qos: .background).async {
-                self.captureSession.startRunning()
+                print("CAMERA CAPTURE START \(self.captureSession.isRunning)")
+                if !self.captureSession.isRunning {
+                    self.captureSession.startRunning()
+                }
             }
         } else {
             print("CAMERA CAPTURE NOT STARTED, SHEET NOT AT TEST")
@@ -401,7 +404,9 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func pauseCamera() {
         DispatchQueue.global(qos: .background).async {
-            self.captureSession.stopRunning()
+            if self.captureSession.isRunning {
+                self.captureSession.stopRunning()
+            }
         }
         print("CAMERA PAUSE")
         shouldSampleText = false
