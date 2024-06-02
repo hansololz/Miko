@@ -126,7 +126,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("SnapBrowse")
+            .navigationTitle("Settings")
             .navigationBarItems(leading: Button("Done") {
                 selectSheetAnchor = restSheetAnchor
             })
