@@ -150,9 +150,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     @objc func willEnterForeground() {
         if isSheetAtRest {
             DispatchQueue.global(qos: .background).async {
-                if !self.captureSession.isRunning {
-                    self.captureSession.startRunning()
-                }
+                self.captureSession.startRunning()
             }
         }
     }
