@@ -18,11 +18,22 @@ struct BottomSheetView: View {
     }
     @State private var resetMenu: Bool = false
     @State private var resetSettings: Bool = false
+    @State private var isInternetAvailable: Bool = true
+    let monitor = NWPathMonitor()
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                if showMenu {
+                if !isInternetAvailable {
+                    HStack {
+                        Spacer()
+                        Text("Internet not available. Please check your connection.")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
+                        Spacer()
+                    }
+                } else if showMenu {
                     MenuView(
                         locationName: locationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
@@ -66,6 +77,14 @@ struct BottomSheetView: View {
                 }
             }
             .onAppear {
+                monitor.pathUpdateHandler = { path in
+                    DispatchQueue.main.async {
+                        self.isInternetAvailable = path.status == .satisfied
+                    }
+                }
+                let queue = DispatchQueue(label: "NetworkMonitor")
+                monitor.start(queue: queue)
+                
                 toggleLocationUpdate()
                 if !locationManager.isAuthorized() {
                     locationInSearchQuery = false
