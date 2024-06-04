@@ -57,22 +57,22 @@ struct ContentView: View {
                 }
                 .edgesIgnoringSafeArea(.all)
             } else {
-                if isFirstEverCameraPermissionRequest {
-                    Color.white
-                        .edgesIgnoringSafeArea(.all)
-                } else {
-                    Text("Camera access is required for finding text to look up. Please enable access for this app.")
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
-                    Button(action: {
-                        if let appSettings = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(appSettings)
-                        }
-                    }) {
-                        Text("Go to Settings")
+//                if isFirstEverCameraPermissionRequest {
+//                    Color.white
+//                        .edgesIgnoringSafeArea(.all)
+//                } else {
+                Text("Camera access is required for finding text to show search results for. Please enable access for this app.")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
+                Button(action: {
+                    if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(appSettings)
                     }
+                }) {
+                    Text("Go to Settings")
                 }
+//                }
             }
         }
         .sheet(isPresented: $isCameraReady) {
