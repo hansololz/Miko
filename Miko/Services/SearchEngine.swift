@@ -111,7 +111,7 @@ struct TranslatePreference {
     let to: TranslateLanguage
 }
 
-let defaultTranslatePreference = TranslatePreference(
+private let defaultTranslatePreference = TranslatePreference(
     from: .english,
     to: .chineseSimplified
 )
@@ -147,19 +147,19 @@ func saveTranslateLanguagePreference(preference: TranslatePreference) {
     UserDefaults.standard.set(preference.to.rawValue, forKey: "translateToLanguage")
 }
 
-func loadTranslateToLanguagePreference() -> TranslatePreference {
-//    if let savedFrom = UserDefaults.standard.string(forKey: "translateFromLanguage") {
-//        if let from = TranslateLanguage.from(savedFrom) {
-//            if let savedTo = UserDefaults.standard.string(forKey: "translateToLanguage") {
-//                if let to = TranslateLanguage.from(savedTo) {
-//                    return TranslatePreference(
-//                        from: from,
-//                        to: to
-//                    )
-//                }
-//            }
-//        }
-//    }
+func loadTranslateLanguagePreference() -> TranslatePreference {
+    if let savedFrom = UserDefaults.standard.string(forKey: "translateFromLanguage") {
+        if let from = TranslateLanguage.from(savedFrom) {
+            if let savedTo = UserDefaults.standard.string(forKey: "translateToLanguage") {
+                if let to = TranslateLanguage.from(savedTo) {
+                    return TranslatePreference(
+                        from: from,
+                        to: to
+                    )
+                }
+            }
+        }
+    }
     return defaultTranslatePreference
 }
 
@@ -208,7 +208,7 @@ func getDefaultSearchUrl(searchText: String) -> URL? {
     return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String) -> URL? {
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String, translatePreference: TranslatePreference) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
@@ -218,9 +218,7 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
     let contentOptions = searchEngineDirectory[engine]
     if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }
     let searchMethod = (contentOptions ?? [:])[content]
-    let urlString = searchMethod!(query, defaultTranslatePreference)
-    
-    print("TRANSLATE \(defaultTranslatePreference.from) | \(defaultTranslatePreference.to)") 
+    let urlString = searchMethod!(query, translatePreference)
 
     if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
         return URL(string: encodedUrlString)

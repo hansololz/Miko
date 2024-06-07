@@ -8,6 +8,7 @@ struct MenuView: View {
     @Binding var searchText: String
     @Binding var searchEngineOption: SearchEngineOption
     @Binding var searchContentOption: SearchContentOption
+    @Binding var translatePreference: TranslatePreference
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
@@ -76,7 +77,7 @@ struct MenuView: View {
                         }
                         
                         NavigationLink {
-                            BookmarksView()
+                            BookmarksView(translatePerference: $translatePreference)
                         } label: {
                             Label("View All Bookmarks", systemImage: "list.star")
                         }
@@ -103,7 +104,8 @@ struct MenuView: View {
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
-                                    locationName: ""
+                                    locationName: "",
+                                    translatePreference: translatePreference
                                 ) {
                                     copyToClipboard(text: url.absoluteString)
                                 }
@@ -117,7 +119,8 @@ struct MenuView: View {
                                         engine: searchEngineOption,
                                         content: searchContentOption,
                                         searchText: searchText,
-                                        locationName: locationName
+                                        locationName: locationName,
+                                        translatePreference: translatePreference
                                     ) {
                                         copyToClipboard(text: url.absoluteString)
                                     }
@@ -147,7 +150,8 @@ struct MenuView: View {
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
-                                    locationName: ""
+                                    locationName: "",
+                                    translatePreference: translatePreference
                                 ) {
                                     shareText(text: url.absoluteString)
                                 }
@@ -161,7 +165,8 @@ struct MenuView: View {
                                         engine: searchEngineOption,
                                         content: searchContentOption,
                                         searchText: searchText,
-                                        locationName: locationName
+                                        locationName: locationName,
+                                        translatePreference: translatePreference
                                     ) {
                                         shareText(text: url.absoluteString)
                                     }
@@ -177,7 +182,8 @@ struct MenuView: View {
                                     engine: searchEngineOption,
                                     content: searchContentOption,
                                     searchText: searchText,
-                                    locationName: ""
+                                    locationName: "",
+                                    translatePreference: translatePreference
                                 ) {
                                     UIApplication.shared.open(url)
                                 }
@@ -191,7 +197,8 @@ struct MenuView: View {
                                         engine: searchEngineOption,
                                         content: searchContentOption,
                                         searchText: searchText,
-                                        locationName: locationName
+                                        locationName: locationName,
+                                        translatePreference: translatePreference
                                     ) {
                                         UIApplication.shared.open(url)
                                     }
@@ -263,6 +270,7 @@ struct MenuView: View {
 struct BookmarksView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Bookmark.createdTime, order: .reverse) private var bookmarks: [Bookmark]
+    @Binding var translatePerference: TranslatePreference
     
     var body: some View {
         List {
@@ -273,8 +281,8 @@ struct BookmarksView: View {
                         locationName: bookmark.locationName,
                         searchEngineOption: bookmark.searchEngine,
                         searchContentOption: bookmark.searchContent,
-                        createdTime: bookmark.createdTime
-                        
+                        createdTime: bookmark.createdTime,
+                        translatePerference: translatePerference
                     )
                 } label: {
                     VStack(alignment: .leading) {
@@ -328,6 +336,7 @@ struct BookmarkView: View {
     var searchEngineOption: SearchEngineOption
     var searchContentOption: SearchContentOption
     var createdTime: Date
+    var translatePerference: TranslatePreference
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
@@ -386,7 +395,8 @@ struct BookmarkView: View {
                             engine: searchEngineOption,
                             content: searchContentOption,
                             searchText: searchText,
-                            locationName: ""
+                            locationName: "",
+                            translatePreference: translatePerference
                         ) {
                             copyToClipboard(text: url.absoluteString)
                         }
@@ -400,7 +410,8 @@ struct BookmarkView: View {
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
-                                locationName: locationName
+                                locationName: locationName,
+                                translatePreference: translatePerference
                             ) {
                                 copyToClipboard(text: url.absoluteString)
                             }
@@ -430,7 +441,8 @@ struct BookmarkView: View {
                             engine: searchEngineOption,
                             content: searchContentOption,
                             searchText: searchText,
-                            locationName: ""
+                            locationName: "",
+                            translatePreference: translatePerference
                         ) {
                             shareText(text: url.absoluteString)
                         }
@@ -444,7 +456,8 @@ struct BookmarkView: View {
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
-                                locationName: locationName
+                                locationName: locationName,
+                                translatePreference: translatePerference
                             ) {
                                 shareText(text: url.absoluteString)
                             }
@@ -460,7 +473,8 @@ struct BookmarkView: View {
                             engine: searchEngineOption,
                             content: searchContentOption,
                             searchText: searchText,
-                            locationName: ""
+                            locationName: "",
+                            translatePreference: translatePerference
                         ) {
                             UIApplication.shared.open(url)
                         }
@@ -474,7 +488,8 @@ struct BookmarkView: View {
                                 engine: searchEngineOption,
                                 content: searchContentOption,
                                 searchText: searchText,
-                                locationName: locationName
+                                locationName: locationName,
+                                translatePreference: translatePerference
                             ) {
                                 UIApplication.shared.open(url)
                             }

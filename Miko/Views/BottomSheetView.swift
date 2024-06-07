@@ -16,6 +16,11 @@ struct BottomSheetView: View {
             saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
         }
     }
+    @State private var translatePreference: TranslatePreference = loadTranslateLanguagePreference() {
+        didSet {
+            saveTranslateLanguagePreference(preference: translatePreference)
+        }
+    }
     @State private var resetMenu: Bool = false
     @State private var resetSettings: Bool = false
     @State private var isInternetAvailable: Bool = true
@@ -39,7 +44,8 @@ struct BottomSheetView: View {
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
                         searchEngineOption: $searchEngineOption,
-                        searchContentOption: $searchContentOption
+                        searchContentOption: $searchContentOption,
+                        translatePreference: $translatePreference
                     )
                     .id(resetMenu)
                 } else if showSettings {
@@ -48,7 +54,8 @@ struct BottomSheetView: View {
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
                         locationInSearchQuery: $locationInSearchQuery,
-                        selectedSearchLanguages: $selectedSearchLanguages
+                        selectedSearchLanguages: $selectedSearchLanguages,
+                        translatePreference: $translatePreference
                     )
                     .id(resetSettings)
                 } else if searchText.isEmpty {
@@ -56,7 +63,8 @@ struct BottomSheetView: View {
                         engine: searchEngineOption,
                         content: searchContentOption,
                         searchText: searchText,
-                        locationName: ""
+                        locationName: "",
+                        translatePreference: translatePreference
                     ) {
                         WebView(url: url)
                             .opacity(0)
@@ -70,7 +78,8 @@ struct BottomSheetView: View {
                         engine: searchEngineOption,
                         content: searchContentOption,
                         searchText: searchText,
-                        locationName: locationInSearchQuery ? locationManager.locationName : ""
+                        locationName: locationInSearchQuery ? locationManager.locationName : "",
+                        translatePreference: translatePreference
                     ) {
                         WebView(url: url)
                     }

@@ -40,6 +40,7 @@ struct SettingsView: View {
         }
     }
     @StateObject var locationManager = LocationManager()
+    @Binding var translatePreference: TranslatePreference
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
