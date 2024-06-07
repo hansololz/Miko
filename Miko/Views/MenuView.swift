@@ -48,11 +48,15 @@ struct MenuView: View {
                             }
                             
                             if searchContentOption == .translate {
-                                HStack(alignment: .top) {
-                                    Text("From:").bold()
-                                    Text("\(translatePreference.from.displayName),")
-                                    Text("To:").bold()
-                                    Text("\(translatePreference.to.displayName)")
+                                VStack(alignment: .leading) {
+                                    HStack(alignment: .top) {
+                                        Text("From:").bold()
+                                        Text("\(translatePreference.from.displayName),")
+                                    }
+                                    HStack(alignment: .top) {
+                                        Text("To:").bold()
+                                        Text("\(translatePreference.to.displayName)")
+                                    }
                                 }
                             }
                         }
@@ -86,7 +90,7 @@ struct MenuView: View {
                         }
                         
                         NavigationLink {
-                            BookmarksView(translatePerference: $translatePreference)
+                            BookmarksView(translatePreference: $translatePreference)
                         } label: {
                             Label("View All Bookmarks", systemImage: "list.star")
                         }
@@ -279,7 +283,7 @@ struct MenuView: View {
 struct BookmarksView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Bookmark.createdTime, order: .reverse) private var bookmarks: [Bookmark]
-    @Binding var translatePerference: TranslatePreference
+    @Binding var translatePreference: TranslatePreference
     
     var body: some View {
         List {
@@ -291,7 +295,7 @@ struct BookmarksView: View {
                         searchEngineOption: bookmark.searchEngine,
                         searchContentOption: bookmark.searchContent,
                         createdTime: bookmark.createdTime,
-                        translatePerference: translatePerference
+                        translatePreference: translatePreference
                     )
                 } label: {
                     VStack(alignment: .leading) {
@@ -312,6 +316,18 @@ struct BookmarksView: View {
                         HStack(alignment: .top) {
                             Text("Search Content:").bold()
                             Text("\(bookmark.searchContent.displayName)")
+                        }
+                        if bookmark.searchContent == .translate {
+                            VStack(alignment: .leading) {
+                                HStack(alignment: .top) {
+                                    Text("From:").bold()
+                                    Text("\(translatePreference.from.displayName),")
+                                }
+                                HStack(alignment: .top) {
+                                    Text("To:").bold()
+                                    Text("\(translatePreference.to.displayName)")
+                                }
+                            }
                         }
                         HStack(alignment: .top) {
                             Text("Created Time:").bold()
@@ -345,7 +361,7 @@ struct BookmarkView: View {
     var searchEngineOption: SearchEngineOption
     var searchContentOption: SearchContentOption
     var createdTime: Date
-    var translatePerference: TranslatePreference
+    var translatePreference: TranslatePreference
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
@@ -378,6 +394,19 @@ struct BookmarkView: View {
                         Text("\(searchContentOption.displayName)")
                     }
                     
+                    if searchContentOption == .translate {
+                        VStack(alignment: .leading) {
+                            HStack(alignment: .top) {
+                                Text("From:").bold()
+                                Text("\(translatePreference.from.displayName),")
+                            }
+                            HStack(alignment: .top) {
+                                Text("To:").bold()
+                                Text("\(translatePreference.to.displayName)")
+                            }
+                        }
+                    }
+                    
                     HStack(alignment: .top) {
                         Text("Created Time:").bold()
                         Text(createdTime, format: Date.FormatStyle(date: .numeric, time: .standard))
@@ -405,7 +434,7 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePerference
+                            translatePreference: translatePreference
                         ) {
                             copyToClipboard(text: url.absoluteString)
                         }
@@ -420,7 +449,7 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePerference
+                                translatePreference: translatePreference
                             ) {
                                 copyToClipboard(text: url.absoluteString)
                             }
@@ -451,7 +480,7 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePerference
+                            translatePreference: translatePreference
                         ) {
                             shareText(text: url.absoluteString)
                         }
@@ -466,7 +495,7 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePerference
+                                translatePreference: translatePreference
                             ) {
                                 shareText(text: url.absoluteString)
                             }
@@ -483,7 +512,7 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePerference
+                            translatePreference: translatePreference
                         ) {
                             UIApplication.shared.open(url)
                         }
@@ -498,7 +527,7 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePerference
+                                translatePreference: translatePreference
                             ) {
                                 UIApplication.shared.open(url)
                             }

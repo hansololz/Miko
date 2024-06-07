@@ -116,7 +116,7 @@ struct SettingsView: View {
                 if searchContentOption == .translate {
                     Section(header: Text("Translate")) {
                         NavigationLink(destination: TranslateSettingsView(translatePreference: $translatePreference)) {
-                            Label("Choose Language", systemImage: "character")
+                            Label("Choose Language", systemImage: "character.bubble")
                         }
                     }
                 }
@@ -299,7 +299,7 @@ struct TranslateSettingsView: View {
                     isFrom: true,
                     translatePreference: $translatePreference
                 )) {
-                    Label(translatePreference.from.displayName, systemImage: "character")
+                    Label(translatePreference.from.displayName, systemImage: "character.bubble")
                 }
             }
             
@@ -308,11 +308,21 @@ struct TranslateSettingsView: View {
                     isFrom: false,
                     translatePreference: $translatePreference
                 )) {
-                    Label(translatePreference.to.displayName, systemImage: "character")
+                    Label(translatePreference.to.displayName, systemImage: "character.bubble")
                 }
             }
         }
         .navigationBarTitle("Translate")
+        .toolbar {
+            Button(action: {
+                translatePreference = TranslatePreference(
+                    from: translatePreference.to,
+                    to: translatePreference.from
+                )
+            }) {
+                Image(systemName: "arrow.up.arrow.down")
+            }
+        }
     }
 }
 
