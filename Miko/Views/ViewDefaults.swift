@@ -1,6 +1,7 @@
 import SwiftUI
 
-let bottomSheetAnchor = 0.50
+let bottomSheetAnchor = 0.60
+let cameraViewButtonLocation = 1 - bottomSheetAnchor
 let viewFinderCenterY = (1.0 - bottomSheetAnchor) / 2
 
 let restSheetAnchor = PresentationDetent.fraction(bottomSheetAnchor)

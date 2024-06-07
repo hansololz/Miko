@@ -199,7 +199,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         // Constraints for the container view
         NSLayoutConstraint.activate([
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize * (2/3))),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - (touchAreaSize * (2/3))),
             containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
             containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
         ])
@@ -207,7 +207,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         // Center the icon view inside the container view
         NSLayoutConstraint.activate([
             settingsIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            settingsIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
+            settingsIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - iconSize),
             settingsIconView.widthAnchor.constraint(equalToConstant: iconSize),
             settingsIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
@@ -239,7 +239,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         // Constraints for the container view
         NSLayoutConstraint.activate([
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - (touchAreaSize * (2/3))),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - (touchAreaSize * (2/3))),
             containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
             containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
         ])
@@ -247,7 +247,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         // Center the icon view inside the container view
         NSLayoutConstraint.activate([
             menuIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -75),
-            menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * 0.5) - iconSize),
+            menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - iconSize),
             menuIconView.widthAnchor.constraint(equalToConstant: iconSize),
             menuIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
