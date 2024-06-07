@@ -23,6 +23,7 @@ enum SearchContentOption: String, Codable, CaseIterable {
     case videos = "Videos"
     case news = "News"
     case shopping = "Shopping"
+    case translate = "Translate"
     
     var displayName: String {
         return self.rawValue
@@ -66,6 +67,7 @@ let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String) -
         .videos:    { searchText in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
         .news:      { searchText in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
         .shopping:  { searchText in "https://www.google.com/search?tbm=shop&q=\(searchText)" },
+        .translate: { searchText in "https://translate.google.com/?sl=en&tl=zh-CN&text=\(searchText)" },
     ],
     .brave: [
         .all:       { searchText in "https://search.brave.com/search?source=web&q=\(searchText)" },

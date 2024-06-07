@@ -109,6 +109,7 @@ struct SettingsView: View {
                     getSearchContentOption(engine: searchEngineOption, option: .videos)
                     getSearchContentOption(engine: searchEngineOption, option: .news)
                     getSearchContentOption(engine: searchEngineOption, option: .shopping)
+                    getSearchContentOption(engine: searchEngineOption, option: .translate)
                 }
                 
                 Section(header: Text("Information")) {
