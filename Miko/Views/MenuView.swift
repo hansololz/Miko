@@ -46,6 +46,15 @@ struct MenuView: View {
                                 Text("Search Content:").bold()
                                 Text("\(searchContentOption.displayName)")
                             }
+                            
+                            if searchContentOption == .translate {
+                                HStack(alignment: .top) {
+                                    Text("From:").bold()
+                                    Text("\(translatePreference.from.displayName),")
+                                    Text("To:").bold()
+                                    Text("\(translatePreference.to.displayName)")
+                                }
+                            }
                         }
                     }
                     
