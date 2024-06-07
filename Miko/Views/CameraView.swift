@@ -9,11 +9,6 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
-    @Binding var isFirstEverCameraPermissionRequest: Bool {
-        didSet {
-            saveIsFirstEverCameraPermissionRequest()
-        }
-    }
     @Binding var selectedSearchLanguages: [SearchLanguage]
     
     class Coordinator: NSObject {
@@ -45,12 +40,6 @@ struct CameraView: UIViewControllerRepresentable {
             DispatchQueue.main.async {
                 self.parent.showSettings = true
                 self.parent.selectSheetAnchor = fullSheetAnchor
-            }
-        }
-        
-        func updateIsFirstEverCameraPermissionRequest() {
-            DispatchQueue.main.async {
-                self.parent.isFirstEverCameraPermissionRequest = true
             }
         }
     }
@@ -100,8 +89,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.coordinator?.updateIsFirstEverCameraPermissionRequest()
         
         captureSession = AVCaptureSession()
         captureSession.sessionPreset = .photo

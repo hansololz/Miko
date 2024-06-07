@@ -2,19 +2,6 @@ import SwiftData
 import SwiftUI
 import AVFoundation
 
-func saveIsFirstEverCameraPermissionRequest() {
-    UserDefaults.standard.set(false, forKey: "isFirstEverCameraPermissionRequest")
-}
-
-func loadIsFirstEverCameraPermissionRequest() -> Bool {
-    let userDefaults = UserDefaults.standard
-    if userDefaults.object(forKey: "isFirstEverCameraPermissionRequest") == nil {
-        return true
-    } else {
-        return userDefaults.bool(forKey: "isFirstEverCameraPermissionRequest")
-    }
-}
-
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
@@ -25,7 +12,6 @@ struct ContentView: View {
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
     @State private var showSettings = false
     @State private var showMenu = false
-    @State private var isFirstEverCameraPermissionRequest = loadIsFirstEverCameraPermissionRequest()
     @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
     @State private var cameraOverlayAlpha = 0.0
     
@@ -38,7 +24,6 @@ struct ContentView: View {
                         showSettings: $showSettings,
                         showMenu: $showMenu,
                         searchText: $searchText,
-                        isFirstEverCameraPermissionRequest: $isFirstEverCameraPermissionRequest,
                         selectedSearchLanguages: $selectedSearchLanguages
                     )
                     Rectangle()
@@ -50,17 +35,11 @@ struct ContentView: View {
                                 let truncatedOffset = max(min(offsetFloat, cameraFadeOutHeight), cameraFadeInHeight)
                                 let alpha = (truncatedOffset - cameraFadeInHeight)/fadeInAndOutHeightDifference
                                 cameraOverlayAlpha = alpha
-                                
-//                                print("ALPHA: \(sheetOffset) | \(alpha)")
                             }
                         }
                 }
                 .edgesIgnoringSafeArea(.all)
             } else {
-//                if isFirstEverCameraPermissionRequest {
-//                    Color.white
-//                        .edgesIgnoringSafeArea(.all)
-//                } else {
                 Text("Camera access is required for finding text to show search results for. Please enable access for this app.")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .multilineTextAlignment(.center)
@@ -72,7 +51,6 @@ struct ContentView: View {
                 }) {
                     Text("Go to Settings")
                 }
-//                }
             }
         }
         .sheet(isPresented: $isCameraReady) {
