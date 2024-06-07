@@ -121,7 +121,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         
         setupMotionManager()
         setupPinchGesture()
-    
+        
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
@@ -246,8 +246,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     
     func addDoubleTapGesture() {
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-         doubleTapGesture.numberOfTapsRequired = 2
-         view.addGestureRecognizer(doubleTapGesture)
+        doubleTapGesture.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapGesture)
     }
     
     @objc func handleDoubleTap(_ sender: UITapGestureRecognizer) {

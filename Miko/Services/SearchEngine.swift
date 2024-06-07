@@ -219,7 +219,7 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
     if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }
     let searchMethod = (contentOptions ?? [:])[content]
     let urlString = searchMethod!(query, translatePreference)
-
+    
     if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
         return URL(string: encodedUrlString)
     }
