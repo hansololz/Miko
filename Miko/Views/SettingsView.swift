@@ -113,6 +113,14 @@ struct SettingsView: View {
                     getSearchContentOption(engine: searchEngineOption, option: .translate)
                 }
                 
+                if searchContentOption == .translate {
+                    Section(header: Text("Translate")) {
+                        NavigationLink(destination: TranslateSettingsView(translatePreference: $translatePreference)) {
+                            Label("Choose Language", systemImage: "character")
+                        }
+                    }
+                }
+                
                 Section(header: Text("Information")) {
                     HStack {
                         VStack(alignment: .leading) {
@@ -148,7 +156,6 @@ struct SettingsView: View {
                 }
             }
         }
-        .cornerRadius(10)
     }
     
     @ViewBuilder
@@ -282,3 +289,66 @@ struct LanguageRow: View {
     }
 }
 
+struct TranslateSettingsView: View {
+    @Binding var translatePreference: TranslatePreference
+    
+    var body: some View {
+        List {
+            Section(header: Text("From")) {
+                NavigationLink(destination: TranslateLanguageSelectionView(
+                    isFrom: true,
+                    translatePreference: $translatePreference
+                )) {
+                    Label(translatePreference.from.displayName, systemImage: "character")
+                }
+            }
+            
+            Section(header: Text("To")) {
+                NavigationLink(destination: TranslateLanguageSelectionView(
+                    isFrom: false,
+                    translatePreference: $translatePreference
+                )) {
+                    Label(translatePreference.to.displayName, systemImage: "character")
+                }
+            }
+        }
+        .navigationBarTitle("Translate")
+    }
+}
+
+struct TranslateLanguageSelectionView: View {
+    let isFrom: Bool
+    @Binding var translatePreference: TranslatePreference {
+        didSet {
+            saveTranslateLanguagePreference(preference: translatePreference)
+        }
+    }
+    
+    var body: some View {
+        List(TranslateLanguage.allCases, id: \.self) { language in
+            Button(action: {
+                if (isFrom) {
+                    translatePreference = TranslatePreference(
+                        from: language,
+                        to: translatePreference.to
+                    )
+                } else {
+                    translatePreference = TranslatePreference(
+                        from: translatePreference.from,
+                        to: language
+                    )
+                }
+            }) {
+                HStack {
+                    Text(language.displayName)
+                    Spacer()
+                    if (isFrom && language == translatePreference.from) || (!isFrom && language == translatePreference.to) {
+                        Image(systemName: "checkmark")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+        }
+        .navigationBarTitle("Languages")
+    }
+}

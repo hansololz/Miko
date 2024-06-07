@@ -70,8 +70,8 @@ enum TranslateLanguage: String, Codable, CaseIterable {
         switch self {
         case .arabic: return "Arabic"
         case .bengali: return "Bengali"
-        case .chineseSimplified: return "Chinese"
-        case .chineseTraditional: return "Chinese"
+        case .chineseSimplified: return "Chinese (Simplified)"
+        case .chineseTraditional: return "Chinese (Traditional)"
         case .dutch: return "Dutch"
         case .english: return "English"
         case .french: return "French"
