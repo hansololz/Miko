@@ -74,17 +74,31 @@ struct MenuView: View {
                                 }
                             } else {
                                 Button(action: {
-                                    modelContext.insert(
-                                        Bookmark(
-                                            createdTime: Date.now,
-                                            searchText: searchText,
-                                            locationName: locationName,
-                                            searchEngine: searchEngineOption,
-                                            searchContent: searchContentOption,
-                                            translateFromLanguage: translatePreference.from,
-                                            translateToLanguage: translatePreference.to
+                                    if searchContentOption == .translate {
+                                        modelContext.insert(
+                                            Bookmark(
+                                                createdTime: Date.now,
+                                                searchText: searchText,
+                                                locationName: locationName,
+                                                searchEngine: searchEngineOption,
+                                                searchContent: searchContentOption,
+                                                translateFromLanguage: translatePreference.from,
+                                                translateToLanguage: translatePreference.to
+                                            )
                                         )
-                                    )
+                                    } else {
+                                        modelContext.insert(
+                                            Bookmark(
+                                                createdTime: Date.now,
+                                                searchText: searchText,
+                                                locationName: locationName,
+                                                searchEngine: searchEngineOption,
+                                                searchContent: searchContentOption,
+                                                translateFromLanguage: nil,
+                                                translateToLanguage: nil
+                                            )
+                                        )
+                                    }
                                 }) {
                                     Label("Bookmark", systemImage: "bookmark")
                                 }
