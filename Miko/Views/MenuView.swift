@@ -80,7 +80,9 @@ struct MenuView: View {
                                             searchText: searchText,
                                             locationName: locationName,
                                             searchEngine: searchEngineOption,
-                                            searchContent: searchContentOption
+                                            searchContent: searchContentOption,
+                                            translateFromLanguage: translatePreference.from,
+                                            translateToLanguage: translatePreference.to
                                         )
                                     )
                                 }) {
@@ -90,7 +92,7 @@ struct MenuView: View {
                         }
                         
                         NavigationLink {
-                            BookmarksView(translatePreference: $translatePreference)
+                            BookmarksView()
                         } label: {
                             Label("View All Bookmarks", systemImage: "list.star")
                         }
@@ -275,7 +277,9 @@ struct MenuView: View {
             $0.searchText == searchText &&
             $0.locationName == locationName &&
             $0.searchEngine == searchEngineOption &&
-            $0.searchContent == searchContentOption
+            $0.searchContent == searchContentOption &&
+            $0.translateFromLanguage == translatePreference.from &&
+            $0.translateToLanguage == translatePreference.to
         })
     }
 }
@@ -283,7 +287,6 @@ struct MenuView: View {
 struct BookmarksView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Bookmark.createdTime, order: .reverse) private var bookmarks: [Bookmark]
-    @Binding var translatePreference: TranslatePreference
     
     var body: some View {
         List {
@@ -295,7 +298,10 @@ struct BookmarksView: View {
                         searchEngineOption: bookmark.searchEngine,
                         searchContentOption: bookmark.searchContent,
                         createdTime: bookmark.createdTime,
-                        translatePreference: translatePreference
+                        translatePreference: TranslatePreference(
+                            from: bookmark.translateFromLanguage ?? .english,
+                            to: bookmark.translateToLanguage ?? .chineseSimplified
+                        )
                     )
                 } label: {
                     VStack(alignment: .leading) {
@@ -321,11 +327,11 @@ struct BookmarksView: View {
                             VStack(alignment: .leading) {
                                 HStack(alignment: .top) {
                                     Text("From:").bold()
-                                    Text("\(translatePreference.from.displayName),")
+                                    Text("\((bookmark.translateFromLanguage ?? .english) .displayName),")
                                 }
                                 HStack(alignment: .top) {
                                     Text("To:").bold()
-                                    Text("\(translatePreference.to.displayName)")
+                                    Text("\((bookmark.translateToLanguage ?? .chineseSimplified).displayName)")
                                 }
                             }
                         }
