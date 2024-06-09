@@ -4,6 +4,7 @@ import SwiftData
 @Model
 final class SettingsProfile {
     var createdTime: Date
+    var name: String
     var supportLanguages: [SearchLanguage]
     var useLocationInSearchQuery: Bool
     var searchEngineOption: SearchEngineOption
@@ -13,6 +14,7 @@ final class SettingsProfile {
     
     init(
         createdTime: Date,
+        name: String,
         supportLanguages: [SearchLanguage],
         useLocationInSearchQuery: Bool,
         searchEngineOption: SearchEngineOption,
@@ -21,6 +23,7 @@ final class SettingsProfile {
         toTranslateLanguage: TranslateLanguage
     ) {
         self.createdTime = createdTime
+        self.name = name
         self.supportLanguages = supportLanguages
         self.useLocationInSearchQuery = useLocationInSearchQuery
         self.searchEngineOption = searchEngineOption
@@ -33,6 +36,7 @@ final class SettingsProfile {
 func createDefaultSettingsProfile() -> SettingsProfile {
     return SettingsProfile(
         createdTime: Date.now,
+        name: "Settings Profile",
         supportLanguages: [SearchLanguage.englishUS],
         useLocationInSearchQuery: false,
         searchEngineOption: .google,
