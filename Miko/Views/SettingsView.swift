@@ -24,9 +24,9 @@ struct SettingsView: View {
             saveSearchContentPreference(option: searchContentOption)
         }
     }
-    @Binding var locationInSearchQuery: Bool {
+    @State var useLocationInSearchQuery: Bool {
         didSet {
-            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
+            settingsProfile.useLocationInSearchQuery = useLocationInSearchQuery
         }
     }
     @State var isFirstEverLocationPermissionRequest: Bool = loadIsFirstEverLocationPermissionRequest() {
@@ -56,7 +56,6 @@ struct SettingsView: View {
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(
                         settingsProfile: $settingsProfile,
-                        modelContext: modelContext,
                         selectedSearchLanguages: settingsProfile.supportLanguages
                     )) {
                         Label("Supported Languages", systemImage: "character.bubble")
@@ -64,15 +63,15 @@ struct SettingsView: View {
                 }
                 
                 Section(header: Text("Location")) {
-                    Toggle(isOn: $locationInSearchQuery) {
+                    Toggle(isOn: $useLocationInSearchQuery) {
                         Text("Use location in search query")
                     }
-                    .onChange(of: locationInSearchQuery) { old, new in
+                    .onChange(of: useLocationInSearchQuery) { old, new in
                         if isFirstEverLocationPermissionRequest {
                             if !locationManager.isAuthorized() {
                                 locationManager.requestAuthorization {
                                     shouldShowAlertPrompt = true
-                                    locationInSearchQuery = locationManager.isAuthorized()
+                                    useLocationInSearchQuery = locationManager.isAuthorized()
                                 }
                             }
                             
@@ -80,10 +79,10 @@ struct SettingsView: View {
                         } else if shouldShowAlertPrompt {
                             shouldShowAlertPrompt = false
                         } else if !locationManager.isAuthorized() {
-                            locationInSearchQuery = false
+                            useLocationInSearchQuery = false
                             showingAlert = true
                         } else {
-                            locationInSearchQuery = new
+                            useLocationInSearchQuery = new
                         }
                     }
                     .alert(isPresented: $showingAlert) {
@@ -234,13 +233,9 @@ struct ContactView: View {
 // If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
     @Binding var settingsProfile: SettingsProfile
-    var modelContext: ModelContext
     @State var selectedSearchLanguages: [SearchLanguage] {
         didSet {
             settingsProfile.supportLanguages = selectedSearchLanguages
-//            settingsProfile = settingsProfile
-//            try! modelContext.save()
-//            saveCameraSearchLanguages(languages: selectedSearchLanguages)
         }
     }
     

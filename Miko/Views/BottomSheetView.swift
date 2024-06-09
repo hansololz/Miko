@@ -15,11 +15,11 @@ struct BottomSheetView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
-    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
-        didSet {
-            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
-        }
-    }
+//    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
+//        didSet {
+//            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
+//        }
+//    }
     @State private var translatePreference: TranslatePreference = loadTranslateLanguagePreference() {
         didSet {
             saveTranslateLanguagePreference(preference: translatePreference)
@@ -44,7 +44,7 @@ struct BottomSheetView: View {
                     }
                 } else if showMenu {
                     MenuView(
-                        locationName: locationInSearchQuery ? locationManager.locationName : "",
+                        locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
                         searchEngineOption: $searchEngineOption,
@@ -57,7 +57,7 @@ struct BottomSheetView: View {
                         selectSheetAnchor: $selectSheetAnchor,
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
-                        locationInSearchQuery: $locationInSearchQuery,
+                        useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
                         translatePreference: $translatePreference,
                         settingsProfile: $settingsProfile,
                         modelContext: modelContext
@@ -83,7 +83,7 @@ struct BottomSheetView: View {
                         engine: searchEngineOption,
                         content: searchContentOption,
                         searchText: searchText,
-                        locationName: locationInSearchQuery ? locationManager.locationName : "",
+                        locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
                         translatePreference: translatePreference
                     ) {
                         WebView(url: url)
@@ -101,7 +101,7 @@ struct BottomSheetView: View {
                 
                 toggleLocationUpdate()
                 if !locationManager.isAuthorized() {
-                    locationInSearchQuery = false
+                    settingsProfile.useLocationInSearchQuery = false
                 }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
@@ -124,7 +124,7 @@ struct BottomSheetView: View {
     }
     
     private func toggleLocationUpdate() {
-        if selectSheetAnchor == restSheetAnchor && locationManager.isAuthorized() && locationInSearchQuery {
+        if selectSheetAnchor == restSheetAnchor && locationManager.isAuthorized() && settingsProfile.useLocationInSearchQuery {
             locationManager.startUpdatingLocation()
         } else {
             locationManager.stopUpdatingLocation()
