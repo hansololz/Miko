@@ -1,6 +1,6 @@
 import Foundation
 
-enum SearchEngineOption: String, Codable, CaseIterable {
+enum SearchEngine: String, Codable, CaseIterable {
     case google = "Google"
     case bing = "Bing"
     case brave = "Brave"
@@ -12,12 +12,12 @@ enum SearchEngineOption: String, Codable, CaseIterable {
         return self.rawValue
     }
     
-    static func from(_ value: String) -> SearchEngineOption? {
-        return SearchEngineOption(rawValue: value)
+    static func from(_ value: String) -> SearchEngine? {
+        return SearchEngine(rawValue: value)
     }
 }
 
-enum SearchContentOption: String, Codable, CaseIterable {
+enum SearchContent: String, Codable, CaseIterable {
     case all = "All"
     case images = "Images"
     case videos = "Videos"
@@ -29,8 +29,8 @@ enum SearchContentOption: String, Codable, CaseIterable {
         return self.rawValue
     }
     
-    static func from(_ value: String) -> SearchContentOption? {
-        return SearchContentOption(rawValue: value)
+    static func from(_ value: String) -> SearchContent? {
+        return SearchContent(rawValue: value)
     }
 }
 
@@ -106,7 +106,7 @@ enum TranslateLanguage: String, Codable, CaseIterable {
     }
 }
 
-let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String, TranslateLanguage?, TranslateLanguage?) -> String]] = [
+let searchEngineDirectory: [SearchEngine: [SearchContent: (String, TranslateLanguage?, TranslateLanguage?) -> String]] = [
     .google: [
         .all:       { searchText, from, to in "https://www.google.com/search?q=\(searchText)" },
         .images:    { searchText, from, to in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
@@ -151,7 +151,7 @@ func getDefaultSearchUrl(searchText: String) -> URL? {
     return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String, settingsProfile: SettingsProfile) -> URL? {
+func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: String, locationName: String, settingsProfile: SettingsProfile) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
@@ -172,8 +172,8 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
 }
 
 func getSearchUrl(
-    engine: SearchEngineOption,
-    content: SearchContentOption,
+    engine: SearchEngine,
+    content: SearchContent,
     searchText: String,
     locationName: String,
     from: TranslateLanguage?,

@@ -7,8 +7,8 @@ final class SettingsProfile {
     var name: String
     var supportLanguages: [SearchLanguage]
     var useLocationInSearchQuery: Bool
-    var searchEngineOption: SearchEngineOption
-    var searchContentOption: SearchContentOption
+    var searchEngine: SearchEngine
+    var searchContent: SearchContent
     var fromTranslateLanguage: TranslateLanguage
     var toTranslateLanguage: TranslateLanguage
     
@@ -17,8 +17,8 @@ final class SettingsProfile {
         name: String,
         supportLanguages: [SearchLanguage],
         useLocationInSearchQuery: Bool,
-        searchEngineOption: SearchEngineOption,
-        searchContentOption: SearchContentOption,
+        searchEngine: SearchEngine,
+        searchContent: SearchContent,
         fromTranslateLanguage: TranslateLanguage,
         toTranslateLanguage: TranslateLanguage
     ) {
@@ -26,8 +26,8 @@ final class SettingsProfile {
         self.name = name
         self.supportLanguages = supportLanguages
         self.useLocationInSearchQuery = useLocationInSearchQuery
-        self.searchEngineOption = searchEngineOption
-        self.searchContentOption = searchContentOption
+        self.searchEngine = searchEngine
+        self.searchContent = searchContent
         self.fromTranslateLanguage = fromTranslateLanguage
         self.toTranslateLanguage = toTranslateLanguage
     }
@@ -39,8 +39,8 @@ func createDefaultSettingsProfile() -> SettingsProfile {
         name: "Settings Profile",
         supportLanguages: [.englishUS],
         useLocationInSearchQuery: false,
-        searchEngineOption: .google,
-        searchContentOption:.images,
+        searchEngine: .google,
+        searchContent:.images,
         fromTranslateLanguage: .english,
         toTranslateLanguage:.chineseSimplified
     )

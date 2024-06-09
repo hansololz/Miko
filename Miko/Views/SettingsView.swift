@@ -5,20 +5,20 @@ var shouldShowAlertPrompt = false
 
 struct SettingsView: View {
     @Binding var selectSheetAnchor: PresentationDetent
-    @State var searchEngineOption: SearchEngineOption {
+    @State var searchEngine: SearchEngine {
         didSet {
-            settingsProfile.searchEngineOption = searchEngineOption
+            settingsProfile.searchEngine = searchEngine
             
-            if let searchEngineMethods = searchEngineDirectory[searchEngineOption], let searchMehtod = searchEngineMethods[searchContentOption] {
+            if let searchEngineMethods = searchEngineDirectory[searchEngine], let searchMehtod = searchEngineMethods[searchContent] {
                 
             } else {
-                searchContentOption = .images
+                searchContent = .images
             }
         }
     }
-    @State var searchContentOption: SearchContentOption {
+    @State var searchContent: SearchContent {
         didSet {
-            settingsProfile.searchContentOption = searchContentOption
+            settingsProfile.searchContent = searchContent
         }
     }
     @State var useLocationInSearchQuery: Bool {
@@ -36,7 +36,7 @@ struct SettingsView: View {
     @Binding var settingsProfile: SettingsProfile
     var modelContext: ModelContext
     
-    var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
+    var searchEngines: [SearchEngine] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -97,20 +97,20 @@ struct SettingsView: View {
                 
                 Section(header: Text("Search Engine")) {
                     ForEach(searchEngines, id: \.self) { option in
-                        getSearchEngineOption(option: option)
+                        getSearchEngine(option: option)
                     }
                 }
                 
                 Section(header: Text("Search Content")) {
-                    getSearchContentOption(engine: searchEngineOption, option: .all)
-                    getSearchContentOption(engine: searchEngineOption, option: .images)
-                    getSearchContentOption(engine: searchEngineOption, option: .videos)
-                    getSearchContentOption(engine: searchEngineOption, option: .news)
-                    getSearchContentOption(engine: searchEngineOption, option: .shopping)
-                    getSearchContentOption(engine: searchEngineOption, option: .translate)
+                    getSearchContent(engine: searchEngine, option: .all)
+                    getSearchContent(engine: searchEngine, option: .images)
+                    getSearchContent(engine: searchEngine, option: .videos)
+                    getSearchContent(engine: searchEngine, option: .news)
+                    getSearchContent(engine: searchEngine, option: .shopping)
+                    getSearchContent(engine: searchEngine, option: .translate)
                 }
                 
-                if searchContentOption == .translate {
+                if searchContent == .translate {
                     Section(header: Text("Translate")) {
                         NavigationLink(destination: TranslateSettingsView(
                             settingsProfile: $settingsProfile,
@@ -144,14 +144,14 @@ struct SettingsView: View {
         }
     }
     
-    private func getSearchEngineOption(option: SearchEngineOption) -> some View {
+    private func getSearchEngine(option: SearchEngine) -> some View {
         Button(action: {
-            searchEngineOption = option
+            searchEngine = option
         }) {
             HStack {
                 Text(option.displayName)
                 Spacer()
-                if searchEngineOption == option {
+                if searchEngine == option {
                     Image(systemName: "checkmark")
                         .foregroundColor(.blue)
                 }
@@ -160,17 +160,17 @@ struct SettingsView: View {
     }
     
     @ViewBuilder
-    private func getSearchContentOption(engine: SearchEngineOption, option: SearchContentOption) -> some View {
+    private func getSearchContent(engine: SearchEngine, option: SearchContent) -> some View {
         let contentOptions = searchEngineDirectory[engine] ?? [:]
         
         if contentOptions[option] != nil {
             Button(action: {
-                searchContentOption = option
+                searchContent = option
             }) {
                 HStack {
                     Text(option.displayName)
                     Spacer()
-                    if searchContentOption == option {
+                    if searchContent == option {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
                     }

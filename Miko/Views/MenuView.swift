@@ -37,15 +37,15 @@ struct MenuView: View {
                             
                             HStack(alignment: .top) {
                                 Text("Search Engine:").bold()
-                                Text("\(settingsProfile.searchEngineOption.displayName)")
+                                Text("\(settingsProfile.searchEngine.displayName)")
                             }
                             
                             HStack(alignment: .top) {
                                 Text("Search Content:").bold()
-                                Text("\(settingsProfile.searchContentOption.displayName)")
+                                Text("\(settingsProfile.searchContent.displayName)")
                             }
                             
-                            if settingsProfile.searchContentOption == .translate {
+                            if settingsProfile.searchContent == .translate {
                                 VStack(alignment: .leading) {
                                     HStack(alignment: .top) {
                                         Text("From:").bold()
@@ -72,14 +72,14 @@ struct MenuView: View {
                                 }
                             } else {
                                 Button(action: {
-                                    if settingsProfile.searchContentOption == .translate {
+                                    if settingsProfile.searchContent == .translate {
                                         modelContext.insert(
                                             Bookmark(
                                                 createdTime: Date.now,
                                                 searchText: searchText,
                                                 locationName: locationName,
-                                                searchEngine: settingsProfile.searchEngineOption,
-                                                searchContent: settingsProfile.searchContentOption,
+                                                searchEngine: settingsProfile.searchEngine,
+                                                searchContent: settingsProfile.searchContent,
                                                 translateFromLanguage: settingsProfile.fromTranslateLanguage,
                                                 translateToLanguage: settingsProfile.toTranslateLanguage
                                             )
@@ -90,8 +90,8 @@ struct MenuView: View {
                                                 createdTime: Date.now,
                                                 searchText: searchText,
                                                 locationName: locationName,
-                                                searchEngine: settingsProfile.searchEngineOption,
-                                                searchContent: settingsProfile.searchContentOption,
+                                                searchEngine: settingsProfile.searchEngine,
+                                                searchContent: settingsProfile.searchContent,
                                                 translateFromLanguage: nil,
                                                 translateToLanguage: nil
                                             )
@@ -128,8 +128,8 @@ struct MenuView: View {
                             
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: settingsProfile.searchEngineOption,
-                                    content: settingsProfile.searchContentOption,
+                                    engine: settingsProfile.searchEngine,
+                                    content: settingsProfile.searchContent,
                                     searchText: searchText,
                                     locationName: "",
                                     settingsProfile: settingsProfile
@@ -143,8 +143,8 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: settingsProfile.searchEngineOption,
-                                        content: settingsProfile.searchContentOption,
+                                        engine: settingsProfile.searchEngine,
+                                        content: settingsProfile.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
                                         settingsProfile: settingsProfile
@@ -174,8 +174,8 @@ struct MenuView: View {
                             
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: settingsProfile.searchEngineOption,
-                                    content: settingsProfile.searchContentOption,
+                                    engine: settingsProfile.searchEngine,
+                                    content: settingsProfile.searchContent,
                                     searchText: searchText,
                                     locationName: "",
                                     settingsProfile: settingsProfile
@@ -189,8 +189,8 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: settingsProfile.searchEngineOption,
-                                        content: settingsProfile.searchContentOption,
+                                        engine: settingsProfile.searchEngine,
+                                        content: settingsProfile.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
                                         settingsProfile: settingsProfile
@@ -206,8 +206,8 @@ struct MenuView: View {
                         Section(header: Text("Browser")) {
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: settingsProfile.searchEngineOption,
-                                    content: settingsProfile.searchContentOption,
+                                    engine: settingsProfile.searchEngine,
+                                    content: settingsProfile.searchContent,
                                     searchText: searchText,
                                     locationName: "",
                                     settingsProfile: settingsProfile
@@ -221,8 +221,8 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: settingsProfile.searchEngineOption,
-                                        content: settingsProfile.searchContentOption,
+                                        engine: settingsProfile.searchEngine,
+                                        content: settingsProfile.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
                                         settingsProfile: settingsProfile
@@ -289,15 +289,15 @@ struct MenuView: View {
             if $0.searchContent == .translate {
                 $0.searchText == searchText &&
                 $0.locationName == locationName &&
-                $0.searchEngine == settingsProfile.searchEngineOption &&
-                $0.searchContent == settingsProfile.searchContentOption &&
+                $0.searchEngine == settingsProfile.searchEngine &&
+                $0.searchContent == settingsProfile.searchContent &&
                 $0.translateFromLanguage == settingsProfile.fromTranslateLanguage &&
                 $0.translateToLanguage == settingsProfile.toTranslateLanguage
             } else {
                 $0.searchText == searchText &&
                 $0.locationName == locationName &&
-                $0.searchEngine == settingsProfile.searchEngineOption &&
-                $0.searchContent == settingsProfile.searchContentOption
+                $0.searchEngine == settingsProfile.searchEngine &&
+                $0.searchContent == settingsProfile.searchContent
             }
         })
     }
@@ -314,8 +314,8 @@ struct BookmarksView: View {
                     BookmarkView(
                         searchText: bookmark.searchText,
                         locationName: bookmark.locationName,
-                        searchEngineOption: bookmark.searchEngine,
-                        searchContentOption: bookmark.searchContent,
+                        searchEngine: bookmark.searchEngine,
+                        searchContent: bookmark.searchContent,
                         createdTime: bookmark.createdTime,
                         from: bookmark.translateFromLanguage,
                         to: bookmark.translateToLanguage
@@ -381,8 +381,8 @@ struct BookmarksView: View {
 struct BookmarkView: View {
     var searchText: String
     var locationName: String
-    var searchEngineOption: SearchEngineOption
-    var searchContentOption: SearchContentOption
+    var searchEngine: SearchEngine
+    var searchContent: SearchContent
     var createdTime: Date
     var from: TranslateLanguage?
     var to: TranslateLanguage?
@@ -407,15 +407,15 @@ struct BookmarkView: View {
                     
                     HStack(alignment: .top) {
                         Text("Search Engine:").bold()
-                        Text("\(searchEngineOption.displayName)")
+                        Text("\(searchEngine.displayName)")
                     }
                     
                     HStack(alignment: .top) {
                         Text("Search Content:").bold()
-                        Text("\(searchContentOption.displayName)")
+                        Text("\(searchContent.displayName)")
                     }
                     
-                    if searchContentOption == .translate {
+                    if searchContent == .translate {
                         if let fromString = from?.displayName, let toString = to?.displayName {
                             VStack(alignment: .leading) {
                                 HStack(alignment: .top) {
@@ -453,8 +453,8 @@ struct BookmarkView: View {
                     
                     Button(action: {
                         if let url = getSearchUrl(
-                            engine: searchEngineOption,
-                            content: searchContentOption,
+                            engine: searchEngine,
+                            content: searchContent,
                             searchText: searchText,
                             locationName: "",
                             from: from,
@@ -469,8 +469,8 @@ struct BookmarkView: View {
                     if !locationName.isEmpty {
                         Button(action: {
                             if let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
+                                engine: searchEngine,
+                                content: searchContent,
                                 searchText: searchText,
                                 locationName: locationName,
                                 from: from,
@@ -501,8 +501,8 @@ struct BookmarkView: View {
                     
                     Button(action: {
                         if let url = getSearchUrl(
-                            engine: searchEngineOption,
-                            content: searchContentOption,
+                            engine: searchEngine,
+                            content: searchContent,
                             searchText: searchText,
                             locationName: "",
                             from: from,
@@ -517,8 +517,8 @@ struct BookmarkView: View {
                     if !locationName.isEmpty {
                         Button(action: {
                             if let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
+                                engine: searchEngine,
+                                content: searchContent,
                                 searchText: searchText,
                                 locationName: locationName,
                                 from: from,
@@ -535,8 +535,8 @@ struct BookmarkView: View {
                 Section(header: Text("Browser")) {
                     Button(action: {
                         if let url = getSearchUrl(
-                            engine: searchEngineOption,
-                            content: searchContentOption,
+                            engine: searchEngine,
+                            content: searchContent,
                             searchText: searchText,
                             locationName: "",
                             from: from,
@@ -551,8 +551,8 @@ struct BookmarkView: View {
                     if !locationName.isEmpty {
                         Button(action: {
                             if let url = getSearchUrl(
-                                engine: searchEngineOption,
-                                content: searchContentOption,
+                                engine: searchEngine,
+                                content: searchContent,
                                 searchText: searchText,
                                 locationName: locationName,
                                 from: from,

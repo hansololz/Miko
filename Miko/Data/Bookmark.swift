@@ -6,8 +6,8 @@ final class Bookmark {
     var createdTime: Date
     var searchText: String
     var locationName: String
-    var searchEngine: SearchEngineOption
-    var searchContent: SearchContentOption
+    var searchEngine: SearchEngine
+    var searchContent: SearchContent
     var translateFromLanguage: TranslateLanguage? // Not part of inital schema
     var translateToLanguage: TranslateLanguage? // Not part of inital schema
 
@@ -15,8 +15,8 @@ final class Bookmark {
         createdTime: Date,
         searchText: String,
         locationName: String,
-        searchEngine: SearchEngineOption,
-        searchContent: SearchContentOption,
+        searchEngine: SearchEngine,
+        searchContent: SearchContent,
         translateFromLanguage: TranslateLanguage? = nil,
         translateToLanguage: TranslateLanguage? = nil
     ) {

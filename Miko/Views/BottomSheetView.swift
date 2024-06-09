@@ -40,8 +40,8 @@ struct BottomSheetView: View {
                 } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
-                        searchEngineOption: settingsProfile.searchEngineOption,
-                        searchContentOption: settingsProfile.searchContentOption,
+                        searchEngine: settingsProfile.searchEngine,
+                        searchContent: settingsProfile.searchContent,
                         useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
                         settingsProfile: $settingsProfile,
                         modelContext: modelContext
@@ -49,8 +49,8 @@ struct BottomSheetView: View {
                     .id(resetSettings)
                 } else if searchText.isEmpty {
                     if let url = getSearchUrl(
-                        engine: settingsProfile.searchEngineOption,
-                        content: settingsProfile.searchContentOption,
+                        engine: settingsProfile.searchEngine,
+                        content: settingsProfile.searchContent,
                         searchText: searchText,
                         locationName: "",
                         settingsProfile: settingsProfile
@@ -64,8 +64,8 @@ struct BottomSheetView: View {
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
                     if let url = getSearchUrl(
-                        engine: settingsProfile.searchEngineOption,
-                        content: settingsProfile.searchContentOption,
+                        engine: settingsProfile.searchEngine,
+                        content: settingsProfile.searchContent,
                         searchText: searchText,
                         locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
                         settingsProfile: settingsProfile
