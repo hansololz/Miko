@@ -13,8 +13,8 @@ struct BottomSheetView: View {
     var modelContext: ModelContext
     
     @StateObject private var locationManager = LocationManager()
-    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
-    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
+//    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
+//    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
 //    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
 //        didSet {
 //            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
@@ -47,9 +47,10 @@ struct BottomSheetView: View {
                         locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
-                        searchEngineOption: $searchEngineOption,
-                        searchContentOption: $searchContentOption,
-                        translatePreference: $translatePreference
+//                        searchEngineOption: $searchEngineOption,
+//                        searchContentOption: $searchContentOption,
+                        translatePreference: $translatePreference,
+                        settingsProfile: $settingsProfile
                     )
                     .id(resetMenu)
                 } else if showSettings {
@@ -64,11 +65,11 @@ struct BottomSheetView: View {
                     .id(resetSettings)
                 } else if searchText.isEmpty {
                     if let url = getSearchUrl(
-                        engine: searchEngineOption,
-                        content: searchContentOption,
+                        engine: settingsProfile.searchEngineOption,
+                        content: settingsProfile.searchContentOption,
                         searchText: searchText,
                         locationName: "",
-                        translatePreference: translatePreference
+                        settingsProfile: settingsProfile
                     ) {
                         WebView(url: url)
                             .opacity(0)
@@ -79,11 +80,11 @@ struct BottomSheetView: View {
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
                     if let url = getSearchUrl(
-                        engine: searchEngineOption,
-                        content: searchContentOption,
+                        engine: settingsProfile.searchEngineOption,
+                        content: settingsProfile.searchContentOption,
                         searchText: searchText,
                         locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
-                        translatePreference: translatePreference
+                        settingsProfile: settingsProfile
                     ) {
                         WebView(url: url)
                     }

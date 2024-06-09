@@ -6,11 +6,10 @@ struct MenuView: View {
     let locationName: String
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var searchText: String
-    @Binding var searchEngineOption: SearchEngineOption
-    @Binding var searchContentOption: SearchContentOption
     @Binding var translatePreference: TranslatePreference
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
+    @Binding var settingsProfile: SettingsProfile
     
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
@@ -39,15 +38,15 @@ struct MenuView: View {
                             
                             HStack(alignment: .top) {
                                 Text("Search Engine:").bold()
-                                Text("\(searchEngineOption.displayName)")
+                                Text("\(settingsProfile.searchEngineOption.displayName)")
                             }
                             
                             HStack(alignment: .top) {
                                 Text("Search Content:").bold()
-                                Text("\(searchContentOption.displayName)")
+                                Text("\(settingsProfile.searchContentOption.displayName)")
                             }
                             
-                            if searchContentOption == .translate {
+                            if settingsProfile.searchContentOption == .translate {
                                 VStack(alignment: .leading) {
                                     HStack(alignment: .top) {
                                         Text("From:").bold()
@@ -74,14 +73,14 @@ struct MenuView: View {
                                 }
                             } else {
                                 Button(action: {
-                                    if searchContentOption == .translate {
+                                    if settingsProfile.searchContentOption == .translate {
                                         modelContext.insert(
                                             Bookmark(
                                                 createdTime: Date.now,
                                                 searchText: searchText,
                                                 locationName: locationName,
-                                                searchEngine: searchEngineOption,
-                                                searchContent: searchContentOption,
+                                                searchEngine: settingsProfile.searchEngineOption,
+                                                searchContent: settingsProfile.searchContentOption,
                                                 translateFromLanguage: translatePreference.from,
                                                 translateToLanguage: translatePreference.to
                                             )
@@ -92,8 +91,8 @@ struct MenuView: View {
                                                 createdTime: Date.now,
                                                 searchText: searchText,
                                                 locationName: locationName,
-                                                searchEngine: searchEngineOption,
-                                                searchContent: searchContentOption,
+                                                searchEngine: settingsProfile.searchEngineOption,
+                                                searchContent: settingsProfile.searchContentOption,
                                                 translateFromLanguage: nil,
                                                 translateToLanguage: nil
                                             )
@@ -130,11 +129,11 @@ struct MenuView: View {
                             
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: searchEngineOption,
-                                    content: searchContentOption,
+                                    engine: settingsProfile.searchEngineOption,
+                                    content: settingsProfile.searchContentOption,
                                     searchText: searchText,
                                     locationName: "",
-                                    translatePreference: translatePreference
+                                    settingsProfile: settingsProfile
                                 ) {
                                     copyToClipboard(text: url.absoluteString)
                                 }
@@ -145,11 +144,11 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: searchEngineOption,
-                                        content: searchContentOption,
+                                        engine: settingsProfile.searchEngineOption,
+                                        content: settingsProfile.searchContentOption,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        translatePreference: translatePreference
+                                        settingsProfile: settingsProfile
                                     ) {
                                         copyToClipboard(text: url.absoluteString)
                                     }
@@ -176,11 +175,11 @@ struct MenuView: View {
                             
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: searchEngineOption,
-                                    content: searchContentOption,
+                                    engine: settingsProfile.searchEngineOption,
+                                    content: settingsProfile.searchContentOption,
                                     searchText: searchText,
                                     locationName: "",
-                                    translatePreference: translatePreference
+                                    settingsProfile: settingsProfile
                                 ) {
                                     shareText(text: url.absoluteString)
                                 }
@@ -191,11 +190,11 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: searchEngineOption,
-                                        content: searchContentOption,
+                                        engine: settingsProfile.searchEngineOption,
+                                        content: settingsProfile.searchContentOption,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        translatePreference: translatePreference
+                                        settingsProfile: settingsProfile
                                     ) {
                                         shareText(text: url.absoluteString)
                                     }
@@ -208,11 +207,11 @@ struct MenuView: View {
                         Section(header: Text("Browser")) {
                             Button(action: {
                                 if let url = getSearchUrl(
-                                    engine: searchEngineOption,
-                                    content: searchContentOption,
+                                    engine: settingsProfile.searchEngineOption,
+                                    content: settingsProfile.searchContentOption,
                                     searchText: searchText,
                                     locationName: "",
-                                    translatePreference: translatePreference
+                                    settingsProfile: settingsProfile
                                 ) {
                                     UIApplication.shared.open(url)
                                 }
@@ -223,11 +222,11 @@ struct MenuView: View {
                             if !locationName.isEmpty {
                                 Button(action: {
                                     if let url = getSearchUrl(
-                                        engine: searchEngineOption,
-                                        content: searchContentOption,
+                                        engine: settingsProfile.searchEngineOption,
+                                        content: settingsProfile.searchContentOption,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        translatePreference: translatePreference
+                                        settingsProfile: settingsProfile
                                     ) {
                                         UIApplication.shared.open(url)
                                     }
@@ -291,15 +290,15 @@ struct MenuView: View {
             if $0.searchContent == .translate {
                 $0.searchText == searchText &&
                 $0.locationName == locationName &&
-                $0.searchEngine == searchEngineOption &&
-                $0.searchContent == searchContentOption &&
+                $0.searchEngine == settingsProfile.searchEngineOption &&
+                $0.searchContent == settingsProfile.searchContentOption &&
                 $0.translateFromLanguage == translatePreference.from &&
                 $0.translateToLanguage == translatePreference.to
             } else {
                 $0.searchText == searchText &&
                 $0.locationName == locationName &&
-                $0.searchEngine == searchEngineOption &&
-                $0.searchContent == searchContentOption
+                $0.searchEngine == settingsProfile.searchEngineOption &&
+                $0.searchContent == settingsProfile.searchContentOption
             }
         })
     }
@@ -319,10 +318,8 @@ struct BookmarksView: View {
                         searchEngineOption: bookmark.searchEngine,
                         searchContentOption: bookmark.searchContent,
                         createdTime: bookmark.createdTime,
-                        translatePreference: TranslatePreference(
-                            from: bookmark.translateFromLanguage ?? .english,
-                            to: bookmark.translateToLanguage ?? .chineseSimplified
-                        )
+                        from: bookmark.translateFromLanguage,
+                        to: bookmark.translateToLanguage
                     )
                 } label: {
                     VStack(alignment: .leading) {
@@ -388,7 +385,9 @@ struct BookmarkView: View {
     var searchEngineOption: SearchEngineOption
     var searchContentOption: SearchContentOption
     var createdTime: Date
-    var translatePreference: TranslatePreference
+    //    var translatePreference: TranslatePreference
+    var from: TranslateLanguage?
+    var to: TranslateLanguage?
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
@@ -419,14 +418,16 @@ struct BookmarkView: View {
                     }
                     
                     if searchContentOption == .translate {
-                        VStack(alignment: .leading) {
-                            HStack(alignment: .top) {
-                                Text("From:").bold()
-                                Text(translatePreference.from.displayName)
-                            }
-                            HStack(alignment: .top) {
-                                Text("To:").bold()
-                                Text(translatePreference.to.displayName)
+                        if let fromString = from?.displayName, let toString = to?.displayName {
+                            VStack(alignment: .leading) {
+                                HStack(alignment: .top) {
+                                    Text("From:").bold()
+                                    Text(fromString)
+                                }
+                                HStack(alignment: .top) {
+                                    Text("To:").bold()
+                                    Text(toString)
+                                }
                             }
                         }
                     }
@@ -458,7 +459,8 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePreference
+                            from: from,
+                            to: to
                         ) {
                             copyToClipboard(text: url.absoluteString)
                         }
@@ -473,7 +475,8 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePreference
+                                from: from,
+                                to: to
                             ) {
                                 copyToClipboard(text: url.absoluteString)
                             }
@@ -504,7 +507,8 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePreference
+                            from: from,
+                            to: to
                         ) {
                             shareText(text: url.absoluteString)
                         }
@@ -519,7 +523,8 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePreference
+                                from: from,
+                                to: to
                             ) {
                                 shareText(text: url.absoluteString)
                             }
@@ -536,7 +541,8 @@ struct BookmarkView: View {
                             content: searchContentOption,
                             searchText: searchText,
                             locationName: "",
-                            translatePreference: translatePreference
+                            from: from,
+                            to: to
                         ) {
                             UIApplication.shared.open(url)
                         }
@@ -551,7 +557,8 @@ struct BookmarkView: View {
                                 content: searchContentOption,
                                 searchText: searchText,
                                 locationName: locationName,
-                                translatePreference: translatePreference
+                                from: from,
+                                to: to
                             ) {
                                 UIApplication.shared.open(url)
                             }

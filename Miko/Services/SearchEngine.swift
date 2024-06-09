@@ -116,31 +116,31 @@ private let defaultTranslatePreference = TranslatePreference(
     to: .chineseSimplified
 )
 
-func saveSearchEnginePreference(option: SearchEngineOption) {
-    UserDefaults.standard.set(option.rawValue, forKey: "searchEngineOption")
-}
-
-func loadSearchEnginePreference() -> SearchEngineOption {
-    if let savedOption = UserDefaults.standard.string(forKey: "searchEngineOption"),
-       let option = SearchEngineOption.from(savedOption) {
-        return option
-    } else {
-        return .google
-    }
-}
-
-func saveSearchContentPreference(option: SearchContentOption) {
-    UserDefaults.standard.set(option.rawValue, forKey: "searchContentOption")
-}
-
-func loadSearchContentPreference() -> SearchContentOption {
-    if let savedOption = UserDefaults.standard.string(forKey: "searchContentOption"),
-       let option = SearchContentOption.from(savedOption) {
-        return option
-    } else {
-        return .images
-    }
-}
+//func saveSearchEnginePreference(option: SearchEngineOption) {
+//    UserDefaults.standard.set(option.rawValue, forKey: "searchEngineOption")
+//}
+//
+//func loadSearchEnginePreference() -> SearchEngineOption {
+//    if let savedOption = UserDefaults.standard.string(forKey: "searchEngineOption"),
+//       let option = SearchEngineOption.from(savedOption) {
+//        return option
+//    } else {
+//        return .google
+//    }
+//}
+//
+//func saveSearchContentPreference(option: SearchContentOption) {
+//    UserDefaults.standard.set(option.rawValue, forKey: "searchContentOption")
+//}
+//
+//func loadSearchContentPreference() -> SearchContentOption {
+//    if let savedOption = UserDefaults.standard.string(forKey: "searchContentOption"),
+//       let option = SearchContentOption.from(savedOption) {
+//        return option
+//    } else {
+//        return .images
+//    }
+//}
 
 func saveTranslateLanguagePreference(preference: TranslatePreference) {
     UserDefaults.standard.set(preference.from.rawValue, forKey: "translateFromLanguage")
@@ -163,43 +163,43 @@ func loadTranslateLanguagePreference() -> TranslatePreference {
     return defaultTranslatePreference
 }
 
-let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String, TranslatePreference) -> String]] = [
+let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String, TranslateLanguage?, TranslateLanguage?) -> String]] = [
     .google: [
-        .all:       { searchText, preference in "https://www.google.com/search?q=\(searchText)" },
-        .images:    { searchText, preference in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
-        .videos:    { searchText, preference in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
-        .news:      { searchText, preference in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
-        .shopping:  { searchText, preference in "https://www.google.com/search?tbm=shop&q=\(searchText)" },
-        .translate: { searchText, preference in "https://translate.google.com/?sl=\(preference.from.rawValue)&tl=\(preference.to.rawValue)&op=translate&text=\(searchText)" },
+        .all:       { searchText, from, to in "https://www.google.com/search?q=\(searchText)" },
+        .images:    { searchText, from, to in "https://www.google.com/search?tbm=isch&q=\(searchText)" },
+        .videos:    { searchText, from, to in "https://www.google.com/search?tbm=vid&q=\(searchText)" },
+        .news:      { searchText, from, to in "https://www.google.com/search?tbm=nws&q=\(searchText)" },
+        .shopping:  { searchText, from, to in "https://www.google.com/search?tbm=shop&q=\(searchText)" },
+        .translate: { searchText, from, to in "https://translate.google.com/?sl=\((from ?? .english).rawValue)&tl=\((to ?? .chineseSimplified).rawValue)&op=translate&text=\(searchText)" },
     ],
     .brave: [
-        .all:       { searchText, preference in "https://search.brave.com/search?source=web&q=\(searchText)" },
-        .images:    { searchText, preference in "https://search.brave.com/images?q=\(searchText)" },
-        .videos:    { searchText, preference in "https://search.brave.com/videos?q=\(searchText)" },
-        .news:      { searchText, preference in "https://search.brave.com/news?q=\(searchText)" },
+        .all:       { searchText, from, to in "https://search.brave.com/search?source=web&q=\(searchText)" },
+        .images:    { searchText, from, to in "https://search.brave.com/images?q=\(searchText)" },
+        .videos:    { searchText, from, to in "https://search.brave.com/videos?q=\(searchText)" },
+        .news:      { searchText, from, to in "https://search.brave.com/news?q=\(searchText)" },
     ],
     .bing: [
-        .all:       { searchText, preference in "https://www.bing.com/search?q=\(searchText)" },
-        .images:    { searchText, preference in "https://www.bing.com/images/search?q=\(searchText)" },
-        .videos:    { searchText, preference in "https://www.bing.com/videos/search?q=\(searchText)" },
-        .news:      { searchText, preference in "https://www.bing.com/news/search?q=\(searchText)" },
-        .shopping:  { searchText, preference in "https://www.bing.com/shop/search?q=\(searchText)" },
+        .all:       { searchText, from, to in "https://www.bing.com/search?q=\(searchText)" },
+        .images:    { searchText, from, to in "https://www.bing.com/images/search?q=\(searchText)" },
+        .videos:    { searchText, from, to in "https://www.bing.com/videos/search?q=\(searchText)" },
+        .news:      { searchText, from, to in "https://www.bing.com/news/search?q=\(searchText)" },
+        .shopping:  { searchText, from, to in "https://www.bing.com/shop/search?q=\(searchText)" },
     ],
     .duckDuckGo: [
-        .all:       { searchText, preference in "https://duckduckgo.com?q=\(searchText)" },
-        .images:    { searchText, preference in "https://duckduckgo.com?iax=images&ia=images&q=\(searchText)" },
-        .videos:    { searchText, preference in "https://duckduckgo.com?iax=videos&ia=videos&q=\(searchText)" },
-        .news:      { searchText, preference in "https://duckduckgo.com?iar=news&ia=news&q=\(searchText)" },
-        .shopping:  { searchText, preference in "https://duckduckgo.com?iar=shopping&ia=shopping&q=\(searchText)" },
+        .all:       { searchText, from, to in "https://duckduckgo.com?q=\(searchText)" },
+        .images:    { searchText, from, to in "https://duckduckgo.com?iax=images&ia=images&q=\(searchText)" },
+        .videos:    { searchText, from, to in "https://duckduckgo.com?iax=videos&ia=videos&q=\(searchText)" },
+        .news:      { searchText, from, to in "https://duckduckgo.com?iar=news&ia=news&q=\(searchText)" },
+        .shopping:  { searchText, from, to in "https://duckduckgo.com?iar=shopping&ia=shopping&q=\(searchText)" },
     ],
     .baidu: [
-        .all:       { searchText, preference in "https://www.baidu.com/s?wd=\(searchText)" },
-        .images:    { searchText, preference in "https://image.baidu.com/search/index?tn=baiduimage&word=\(searchText)" },
+        .all:       { searchText, from, to in "https://www.baidu.com/s?wd=\(searchText)" },
+        .images:    { searchText, from, to in "https://image.baidu.com/search/index?tn=baiduimage&word=\(searchText)" },
     ],
     .yandex: [
-        .all:       { searchText, preference in "https://yandex.com/search?text=\(searchText)" },
-        .images:    { searchText, preference in "https://yandex.com/images/search?text=\(searchText)" },
-        .videos:    { searchText, preference in "https://yandex.com/video/search?text=\(searchText)" },
+        .all:       { searchText, from, to in "https://yandex.com/search?text=\(searchText)" },
+        .images:    { searchText, from, to in "https://yandex.com/images/search?text=\(searchText)" },
+        .videos:    { searchText, from, to in "https://yandex.com/video/search?text=\(searchText)" },
     ]
     
 ]
@@ -208,7 +208,34 @@ func getDefaultSearchUrl(searchText: String) -> URL? {
     return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String, translatePreference: TranslatePreference) -> URL? {
+func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, searchText: String, locationName: String, settingsProfile: SettingsProfile) -> URL? {
+    let query = if locationName.isEmpty {
+        searchText
+    } else {
+        "\(searchText), \(locationName)"
+    }
+    
+    if let contentOptions = searchEngineDirectory[engine] {
+        if let searchMethod = contentOptions[content] {
+            let urlString = searchMethod(query, settingsProfile.fromTranslateLanguage, settingsProfile.toTranslateLanguage)
+            
+            if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                return URL(string: encodedUrlString)
+            }
+        }
+    }
+    
+    return nil
+}
+
+func getSearchUrl(
+    engine: SearchEngineOption,
+    content: SearchContentOption,
+    searchText: String,
+    locationName: String,
+    from: TranslateLanguage?,
+    to: TranslateLanguage?
+) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
@@ -218,7 +245,7 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
     let contentOptions = searchEngineDirectory[engine]
     if contentOptions == nil { return getDefaultSearchUrl(searchText: query) }
     let searchMethod = (contentOptions ?? [:])[content]
-    let urlString = searchMethod!(query, translatePreference)
+    let urlString = searchMethod!(query, from, to)
     
     if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
         return URL(string: encodedUrlString)
@@ -226,3 +253,4 @@ func getSearchUrl(engine: SearchEngineOption, content: SearchContentOption, sear
     
     return nil
 }
+
