@@ -6,7 +6,6 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
     @Query private var settingsProfiles: [SettingsProfile]
-    
     @State private var isCameraReady = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
@@ -62,7 +61,9 @@ struct ContentView: View {
                 showMenu: $showMenu,
                 searchText: $searchText,
                 sheetOffset: $sheetOffset,
-                selectedSearchLanguages: $selectedSearchLanguages
+                selectedSearchLanguages: $selectedSearchLanguages,
+                currentSettingsProfile: $currentSettingsProfile,
+                settingsProfiles: settingsProfiles
             )
             .presentationDetents([restSheetAnchor, fullSheetAnchor], selection: $selectSheetAnchor)
             .presentationDragIndicator(.visible)
@@ -103,12 +104,6 @@ struct ContentView: View {
     
     private func getCurrentSettingsProfile(settingsProfiles: [SettingsProfile]) -> SettingsProfile {
         let settingsProfileId = loadSettingsProfileId()
-        
-        print("HERE 1 \(settingsProfileId)")
-        
-        settingsProfiles.forEach {
-            print("HERE 2 \($0.id)")
-        }
         
         if let settingsProfile = settingsProfiles.first(where: {
             $0.id == settingsProfileId

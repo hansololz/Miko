@@ -392,9 +392,6 @@ struct BookmarkView: View {
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     
-    @Environment(\.modelContext) private var modelContext
-    @Query private var bookmarks: [Bookmark]
-    
     var body: some View {
         ZStack {
             List {

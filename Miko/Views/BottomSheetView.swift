@@ -8,6 +8,9 @@ struct BottomSheetView: View {
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     @Binding var selectedSearchLanguages: [SearchLanguage]
+    @Binding var currentSettingsProfile: SettingsProfile
+    var settingsProfiles: [SettingsProfile]
+    
     @StateObject private var locationManager = LocationManager()
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
     @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
