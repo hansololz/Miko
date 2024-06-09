@@ -6,7 +6,7 @@ struct MikoApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Bookmark.self,
-//            SettingsProfile.self,
+            SettingsProfile.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
