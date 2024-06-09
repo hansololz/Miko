@@ -8,6 +8,12 @@ struct SettingsView: View {
     @State var searchEngineOption: SearchEngineOption {
         didSet {
             settingsProfile.searchEngineOption = searchEngineOption
+            
+            if let searchEngineMethods = searchEngineDirectory[searchEngineOption], let searchMehtod = searchEngineMethods[searchContentOption] {
+                
+            } else {
+                searchContentOption = .images
+            }
         }
     }
     @State var searchContentOption: SearchContentOption {
