@@ -14,7 +14,7 @@ struct ContentView: View {
     @State private var showMenu = false
     @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
     @State private var cameraOverlayAlpha = 0.0
-    @State private var currentSettingsProfile = createDefaultSettingsProfile()
+    @State private var settingsProfile = createDefaultSettingsProfile()
     
     var body: some View {
         VStack {
@@ -25,7 +25,7 @@ struct ContentView: View {
                         showSettings: $showSettings,
                         showMenu: $showMenu,
                         searchText: $searchText,
-                        selectedSearchLanguages: $selectedSearchLanguages
+                        settingsProfile: $settingsProfile
                     )
                     Rectangle()
                         .fill(.black)
@@ -62,8 +62,8 @@ struct ContentView: View {
                 searchText: $searchText,
                 sheetOffset: $sheetOffset,
                 selectedSearchLanguages: $selectedSearchLanguages,
-                currentSettingsProfile: $currentSettingsProfile,
-                settingsProfiles: settingsProfiles
+                settingsProfile: $settingsProfile,
+                modelContext: modelContext
             )
             .presentationDetents([restSheetAnchor, fullSheetAnchor], selection: $selectSheetAnchor)
             .presentationDragIndicator(.visible)
@@ -82,7 +82,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            currentSettingsProfile = getCurrentSettingsProfile(settingsProfiles: settingsProfiles)
+            settingsProfile = getCurrentSettingsProfile(settingsProfiles: settingsProfiles)
             checkCameraPermission()
         }
     }

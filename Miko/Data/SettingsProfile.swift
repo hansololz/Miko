@@ -37,7 +37,7 @@ func createDefaultSettingsProfile() -> SettingsProfile {
     return SettingsProfile(
         createdTime: Date.now,
         name: "Settings Profile",
-        supportLanguages: [SearchLanguage.englishUS],
+        supportLanguages: [.englishUS],
         useLocationInSearchQuery: false,
         searchEngineOption: .google,
         searchContentOption:.images,

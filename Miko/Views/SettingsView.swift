@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 var shouldShowAlertPrompt = false
 
@@ -34,13 +35,10 @@ struct SettingsView: View {
         }
     }
     @State var showingAlert = false
-    @Binding var selectedSearchLanguages: [SearchLanguage] {
-        didSet {
-            saveCameraSearchLanguages(languages: selectedSearchLanguages)
-        }
-    }
     @StateObject var locationManager = LocationManager()
     @Binding var translatePreference: TranslatePreference
+    @Binding var settingsProfile: SettingsProfile
+    var modelContext: ModelContext
     
     var searchEngines: [SearchEngineOption] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -56,7 +54,11 @@ struct SettingsView: View {
         NavigationView {
             List {
                 Section(header: Text("Languages")) {
-                    NavigationLink(destination: SupportedLangaugesView(selectedSearchLanguages: $selectedSearchLanguages)) {
+                    NavigationLink(destination: SupportedLangaugesView(
+                        settingsProfile: $settingsProfile,
+                        modelContext: modelContext,
+                        selectedSearchLanguages: settingsProfile.supportLanguages
+                    )) {
                         Label("Supported Languages", systemImage: "character.bubble")
                     }
                 }
@@ -231,9 +233,14 @@ struct ContactView: View {
 // Always push English back to the end of the array. The Camera processes the langauges in order.
 // If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
-    @Binding var selectedSearchLanguages: [SearchLanguage] {
+    @Binding var settingsProfile: SettingsProfile
+    var modelContext: ModelContext
+    @State var selectedSearchLanguages: [SearchLanguage] {
         didSet {
-            saveCameraSearchLanguages(languages: selectedSearchLanguages)
+            settingsProfile.supportLanguages = selectedSearchLanguages
+//            settingsProfile = settingsProfile
+//            try! modelContext.save()
+//            saveCameraSearchLanguages(languages: selectedSearchLanguages)
         }
     }
     

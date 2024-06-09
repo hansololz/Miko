@@ -1,5 +1,6 @@
 import SwiftUI
 import WebKit
+import SwiftData
 
 struct BottomSheetView: View {
     @Binding var selectSheetAnchor: PresentationDetent
@@ -8,8 +9,8 @@ struct BottomSheetView: View {
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
     @Binding var selectedSearchLanguages: [SearchLanguage]
-    @Binding var currentSettingsProfile: SettingsProfile
-    var settingsProfiles: [SettingsProfile]
+    @Binding var settingsProfile: SettingsProfile
+    var modelContext: ModelContext
     
     @StateObject private var locationManager = LocationManager()
     @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
@@ -57,8 +58,9 @@ struct BottomSheetView: View {
                         searchEngineOption: $searchEngineOption,
                         searchContentOption: $searchContentOption,
                         locationInSearchQuery: $locationInSearchQuery,
-                        selectedSearchLanguages: $selectedSearchLanguages,
-                        translatePreference: $translatePreference
+                        translatePreference: $translatePreference,
+                        settingsProfile: $settingsProfile,
+                        modelContext: modelContext
                     )
                     .id(resetSettings)
                 } else if searchText.isEmpty {
