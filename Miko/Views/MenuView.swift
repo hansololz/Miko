@@ -288,12 +288,19 @@ struct MenuView: View {
     
     private func findBookmark() -> Bookmark? {
         return bookmarks.first(where: {
-            $0.searchText == searchText &&
-            $0.locationName == locationName &&
-            $0.searchEngine == searchEngineOption &&
-            $0.searchContent == searchContentOption &&
-            $0.translateFromLanguage == translatePreference.from &&
-            $0.translateToLanguage == translatePreference.to
+            if $0.searchContent == .translate {
+                $0.searchText == searchText &&
+                $0.locationName == locationName &&
+                $0.searchEngine == searchEngineOption &&
+                $0.searchContent == searchContentOption &&
+                $0.translateFromLanguage == translatePreference.from &&
+                $0.translateToLanguage == translatePreference.to
+            } else {
+                $0.searchText == searchText &&
+                $0.locationName == locationName &&
+                $0.searchEngine == searchEngineOption &&
+                $0.searchContent == searchContentOption
+            }
         })
     }
 }
@@ -341,11 +348,11 @@ struct BookmarksView: View {
                             VStack(alignment: .leading) {
                                 HStack(alignment: .top) {
                                     Text("From:").bold()
-                                    Text("\((bookmark.translateFromLanguage ?? .english) .displayName),")
+                                    Text((bookmark.translateFromLanguage ?? .english) .displayName)
                                 }
                                 HStack(alignment: .top) {
                                     Text("To:").bold()
-                                    Text("\((bookmark.translateToLanguage ?? .chineseSimplified).displayName)")
+                                    Text((bookmark.translateToLanguage ?? .chineseSimplified).displayName)
                                 }
                             }
                         }
@@ -418,11 +425,11 @@ struct BookmarkView: View {
                         VStack(alignment: .leading) {
                             HStack(alignment: .top) {
                                 Text("From:").bold()
-                                Text("\(translatePreference.from.displayName),")
+                                Text(translatePreference.from.displayName)
                             }
                             HStack(alignment: .top) {
                                 Text("To:").bold()
-                                Text("\(translatePreference.to.displayName)")
+                                Text(translatePreference.to.displayName)
                             }
                         }
                     }

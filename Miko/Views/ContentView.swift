@@ -5,7 +5,7 @@ import AVFoundation
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
-    @Query private var settingsProfiles: [SettingsProfile]
+//    @Query private var settingsProfiles: [SettingsProfile]
     
     @State private var isCameraReady = false
     @State private var searchText = ""
@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var showMenu = false
     @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
     @State private var cameraOverlayAlpha = 0.0
-    @State private var currentSettingsProfile = createDefaultSettingsProfile()
+//    @State private var currentSettingsProfile = createDefaultSettingsProfile()
     
     var body: some View {
         VStack {
@@ -81,7 +81,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            currentSettingsProfile = getCurrentSettingsProfile(settingsProfiles: settingsProfiles)
+//            currentSettingsProfile = getCurrentSettingsProfile(settingsProfiles: settingsProfiles)
             checkCameraPermission()
         }
     }
@@ -101,43 +101,43 @@ struct ContentView: View {
         }
     }
     
-    private func getCurrentSettingsProfile(settingsProfiles: [SettingsProfile]) -> SettingsProfile {
-        let settingsProfileId = loadSettingsProfileId()
-        
-        print("HERE 1 \(settingsProfileId)")
-        
-        settingsProfiles.forEach {
-            print("HERE 2 \($0.id)")
-        }
-        
-        if let settingsProfile = settingsProfiles.first(where: {
-            $0.id == settingsProfileId
-        }) {
-            print("HERE 3")
-            return settingsProfile
-        }
-        
-        if let newestSettingsProfile = settingsProfiles.max(by: { s1, s2 in
-            s1.createdTime > s2.createdTime
-        }) {
-            print("HERE 4 \(newestSettingsProfile.id)")
-            print("HERE 5 \(settingsProfiles.count)")
-            
-            saveSettingsProfileId(id: newestSettingsProfile.id)
-            return newestSettingsProfile
-        }
-        
-        print("HERE 6")
-        
-        let newSettingsProfile = createDefaultSettingsProfile()
-        modelContext.insert(newSettingsProfile)
-        try! modelContext.save()
-  
-        print("HERE 7 \(newSettingsProfile.id)")
-        print("HERE 8 \(settingsProfiles.count)")
-        
-        saveSettingsProfileId(id: newSettingsProfile.id)
-        
-        return newSettingsProfile
-    }
+//    private func getCurrentSettingsProfile(settingsProfiles: [SettingsProfile]) -> SettingsProfile {
+//        let settingsProfileId = loadSettingsProfileId()
+//        
+//        print("HERE 1 \(settingsProfileId)")
+//        
+//        settingsProfiles.forEach {
+//            print("HERE 2 \($0.id)")
+//        }
+//        
+//        if let settingsProfile = settingsProfiles.first(where: {
+//            $0.id == settingsProfileId
+//        }) {
+//            print("HERE 3")
+//            return settingsProfile
+//        }
+//        
+//        if let newestSettingsProfile = settingsProfiles.max(by: { s1, s2 in
+//            s1.createdTime > s2.createdTime
+//        }) {
+//            print("HERE 4 \(newestSettingsProfile.id)")
+//            print("HERE 5 \(settingsProfiles.count)")
+//            
+//            saveSettingsProfileId(id: newestSettingsProfile.id)
+//            return newestSettingsProfile
+//        }
+//        
+//        print("HERE 6")
+//        
+//        let newSettingsProfile = createDefaultSettingsProfile()
+//        modelContext.insert(newSettingsProfile)
+//        try! modelContext.save()
+//  
+//        print("HERE 7 \(newSettingsProfile.id)")
+//        print("HERE 8 \(settingsProfiles.count)")
+//        
+//        saveSettingsProfileId(id: newSettingsProfile.id)
+//        
+//        return newSettingsProfile
+//    }
 }
