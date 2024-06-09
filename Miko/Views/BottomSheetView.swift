@@ -8,7 +8,7 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @Binding var selectedSearchLanguages: [SearchLanguage]
+//    @Binding var selectedSearchLanguages: [SearchLanguage]
     @Binding var settingsProfile: SettingsProfile
     var modelContext: ModelContext
     
@@ -55,10 +55,9 @@ struct BottomSheetView: View {
                 } else if showSettings {
                     SettingsView(
                         selectSheetAnchor: $selectSheetAnchor,
-                        searchEngineOption: $searchEngineOption,
-                        searchContentOption: $searchContentOption,
+                        searchEngineOption: settingsProfile.searchEngineOption,
+                        searchContentOption: settingsProfile.searchContentOption,
                         useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
-                        translatePreference: $translatePreference,
                         settingsProfile: $settingsProfile,
                         modelContext: modelContext
                     )

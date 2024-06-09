@@ -5,23 +5,25 @@ var shouldShowAlertPrompt = false
 
 struct SettingsView: View {
     @Binding var selectSheetAnchor: PresentationDetent
-    @Binding var searchEngineOption: SearchEngineOption {
+    @State var searchEngineOption: SearchEngineOption {
         didSet {
-            saveSearchEnginePreference(option: searchEngineOption)
-            
-            let contentOptions = searchEngineDirectory[searchEngineOption] ?? [:]
-            if contentOptions[searchContentOption] == nil {
-                if contentOptions[.images] == nil {
-                    searchContentOption = .all
-                } else {
-                    searchContentOption = .images
-                }
-            }
+            settingsProfile.searchEngineOption = searchEngineOption
+            //            saveSearchEnginePreference(option: searchEngineOption)
+            //
+            //            let contentOptions = searchEngineDirectory[searchEngineOption] ?? [:]
+            //            if contentOptions[searchContentOption] == nil {
+            //                if contentOptions[.images] == nil {
+            //                    searchContentOption = .all
+            //                } else {
+            //                    searchContentOption = .images
+            //                }
+            //            }
         }
     }
-    @Binding var searchContentOption: SearchContentOption {
+    @State var searchContentOption: SearchContentOption {
         didSet {
-            saveSearchContentPreference(option: searchContentOption)
+            settingsProfile.searchContentOption = searchContentOption
+            //            saveSearchContentPreference(option: searchContentOption)
         }
     }
     @State var useLocationInSearchQuery: Bool {
@@ -36,7 +38,7 @@ struct SettingsView: View {
     }
     @State var showingAlert = false
     @StateObject var locationManager = LocationManager()
-    @Binding var translatePreference: TranslatePreference
+    //    @Binding var translatePreference: TranslatePreference
     @Binding var settingsProfile: SettingsProfile
     var modelContext: ModelContext
     
@@ -116,7 +118,11 @@ struct SettingsView: View {
                 
                 if searchContentOption == .translate {
                     Section(header: Text("Translate")) {
-                        NavigationLink(destination: TranslateSettingsView(translatePreference: $translatePreference)) {
+                        NavigationLink(destination: TranslateSettingsView(
+                            settingsProfile: $settingsProfile,
+                            from: settingsProfile.fromTranslateLanguage,
+                            to: settingsProfile.toTranslateLanguage
+                        )) {
                             Label("Choose Language", systemImage: "character.bubble")
                         }
                     }
@@ -292,35 +298,49 @@ struct LanguageRow: View {
 }
 
 struct TranslateSettingsView: View {
-    @Binding var translatePreference: TranslatePreference
+    @Binding var settingsProfile: SettingsProfile
+    @State var from: TranslateLanguage {
+        didSet {
+            settingsProfile.fromTranslateLanguage = from
+        }
+    }
+    @State var to: TranslateLanguage {
+        didSet {
+            settingsProfile.toTranslateLanguage = to
+        }
+    }
     
     var body: some View {
         List {
             Section(header: Text("From")) {
                 NavigationLink(destination: TranslateLanguageSelectionView(
                     isFrom: true,
-                    translatePreference: $translatePreference
+                    settingsProfile: $settingsProfile,
+                    from: from,
+                    to: to
                 )) {
-                    Label(translatePreference.from.displayName, systemImage: "character.bubble")
+                    Label(settingsProfile.fromTranslateLanguage.displayName, systemImage: "character.bubble")
                 }
             }
             
             Section(header: Text("To")) {
                 NavigationLink(destination: TranslateLanguageSelectionView(
                     isFrom: false,
-                    translatePreference: $translatePreference
+                    settingsProfile: $settingsProfile,
+                    from: from,
+                    to: to
                 )) {
-                    Label(translatePreference.to.displayName, systemImage: "character.bubble")
+                    Label(settingsProfile.toTranslateLanguage.displayName, systemImage: "character.bubble")
                 }
             }
         }
         .navigationBarTitle("Translate")
         .toolbar {
             Button(action: {
-                translatePreference = TranslatePreference(
-                    from: translatePreference.to,
-                    to: translatePreference.from
-                )
+                let newTo = settingsProfile.fromTranslateLanguage
+                let newFrom = settingsProfile.toTranslateLanguage
+                from = newFrom
+                to = newTo
             }) {
                 Image(systemName: "arrow.up.arrow.down")
             }
@@ -330,9 +350,15 @@ struct TranslateSettingsView: View {
 
 struct TranslateLanguageSelectionView: View {
     let isFrom: Bool
-    @Binding var translatePreference: TranslatePreference {
+    @Binding var settingsProfile: SettingsProfile
+    @State var from: TranslateLanguage {
         didSet {
-            saveTranslateLanguagePreference(preference: translatePreference)
+            settingsProfile.fromTranslateLanguage = from
+        }
+    }
+    @State var to: TranslateLanguage {
+        didSet {
+            settingsProfile.toTranslateLanguage = to
         }
     }
     
@@ -340,21 +366,15 @@ struct TranslateLanguageSelectionView: View {
         List(TranslateLanguage.allCases, id: \.self) { language in
             Button(action: {
                 if (isFrom) {
-                    translatePreference = TranslatePreference(
-                        from: language,
-                        to: translatePreference.to
-                    )
+                    from = language
                 } else {
-                    translatePreference = TranslatePreference(
-                        from: translatePreference.from,
-                        to: language
-                    )
+                    to = language
                 }
             }) {
                 HStack {
                     Text(language.displayName)
                     Spacer()
-                    if (isFrom && language == translatePreference.from) || (!isFrom && language == translatePreference.to) {
+                    if (isFrom && language == from) || (!isFrom && language == to) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
                     }

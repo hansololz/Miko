@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var sheetOffset: CGFloat = UIScreen.main.bounds.height
     @State private var showSettings = false
     @State private var showMenu = false
-    @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
+//    @State private var selectedSearchLanguages: [SearchLanguage] = loadCameraSearchLanguages()
     @State private var cameraOverlayAlpha = 0.0
     @State private var settingsProfile = createDefaultSettingsProfile()
     
@@ -61,7 +61,7 @@ struct ContentView: View {
                 showMenu: $showMenu,
                 searchText: $searchText,
                 sheetOffset: $sheetOffset,
-                selectedSearchLanguages: $selectedSearchLanguages,
+//                selectedSearchLanguages: $selectedSearchLanguages,
                 settingsProfile: $settingsProfile,
                 modelContext: modelContext
             )
