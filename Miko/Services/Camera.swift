@@ -35,25 +35,3 @@ enum SearchLanguage: String, Codable, CaseIterable {
         }
     }
 }
-
-//func saveCameraSearchLanguages(languages: [SearchLanguage]) {
-//    let data = try? JSONEncoder().encode(languages)
-//    UserDefaults.standard.set(data, forKey: "selectedCameraSearchLanguages")
-//}
-//
-//func loadCameraSearchLanguages() -> [SearchLanguage] {
-//    let userDefaults = UserDefaults.standard
-//    if userDefaults.object(forKey: "selectedCameraSearchLanguages") == nil {
-//        return [
-//            .englishUS,
-//        ]
-//    } else {
-//        if let data = userDefaults.data(forKey: "selectedCameraSearchLanguages"),
-//           let languages = try? JSONDecoder().decode([SearchLanguage].self, from: data) {
-//            return languages
-//        }
-//        return [
-//            .englishUS,
-//        ]
-//    }
-//}

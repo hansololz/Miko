@@ -8,22 +8,11 @@ struct SettingsView: View {
     @State var searchEngineOption: SearchEngineOption {
         didSet {
             settingsProfile.searchEngineOption = searchEngineOption
-            //            saveSearchEnginePreference(option: searchEngineOption)
-            //
-            //            let contentOptions = searchEngineDirectory[searchEngineOption] ?? [:]
-            //            if contentOptions[searchContentOption] == nil {
-            //                if contentOptions[.images] == nil {
-            //                    searchContentOption = .all
-            //                } else {
-            //                    searchContentOption = .images
-            //                }
-            //            }
         }
     }
     @State var searchContentOption: SearchContentOption {
         didSet {
             settingsProfile.searchContentOption = searchContentOption
-            //            saveSearchContentPreference(option: searchContentOption)
         }
     }
     @State var useLocationInSearchQuery: Bool {
@@ -38,7 +27,6 @@ struct SettingsView: View {
     }
     @State var showingAlert = false
     @StateObject var locationManager = LocationManager()
-    //    @Binding var translatePreference: TranslatePreference
     @Binding var settingsProfile: SettingsProfile
     var modelContext: ModelContext
     

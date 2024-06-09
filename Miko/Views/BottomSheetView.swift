@@ -8,23 +8,10 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-//    @Binding var selectedSearchLanguages: [SearchLanguage]
     @Binding var settingsProfile: SettingsProfile
-    var modelContext: ModelContext
     
+    var modelContext: ModelContext
     @StateObject private var locationManager = LocationManager()
-//    @State private var searchEngineOption: SearchEngineOption = loadSearchEnginePreference()
-//    @State private var searchContentOption: SearchContentOption = loadSearchContentPreference()
-//    @State private var locationInSearchQuery: Bool = loadLocationInSearchQueryPreference() {
-//        didSet {
-//            saveLocationInSearchQueryPreference(preference: locationInSearchQuery)
-//        }
-//    }
-    @State private var translatePreference: TranslatePreference = loadTranslateLanguagePreference() {
-        didSet {
-            saveTranslateLanguagePreference(preference: translatePreference)
-        }
-    }
     @State private var resetMenu: Bool = false
     @State private var resetSettings: Bool = false
     @State private var isInternetAvailable: Bool = true
@@ -47,9 +34,6 @@ struct BottomSheetView: View {
                         locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
-//                        searchEngineOption: $searchEngineOption,
-//                        searchContentOption: $searchContentOption,
-                        translatePreference: $translatePreference,
                         settingsProfile: $settingsProfile
                     )
                     .id(resetMenu)

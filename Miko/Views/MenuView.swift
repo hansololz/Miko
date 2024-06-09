@@ -6,7 +6,6 @@ struct MenuView: View {
     let locationName: String
     @Binding var selectSheetAnchor: PresentationDetent
     @Binding var searchText: String
-    @Binding var translatePreference: TranslatePreference
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
     @Binding var settingsProfile: SettingsProfile
@@ -50,11 +49,11 @@ struct MenuView: View {
                                 VStack(alignment: .leading) {
                                     HStack(alignment: .top) {
                                         Text("From:").bold()
-                                        Text("\(translatePreference.from.displayName),")
+                                        Text("\(settingsProfile.fromTranslateLanguage.displayName),")
                                     }
                                     HStack(alignment: .top) {
                                         Text("To:").bold()
-                                        Text("\(translatePreference.to.displayName)")
+                                        Text("\(settingsProfile.toTranslateLanguage.displayName)")
                                     }
                                 }
                             }
@@ -81,8 +80,8 @@ struct MenuView: View {
                                                 locationName: locationName,
                                                 searchEngine: settingsProfile.searchEngineOption,
                                                 searchContent: settingsProfile.searchContentOption,
-                                                translateFromLanguage: translatePreference.from,
-                                                translateToLanguage: translatePreference.to
+                                                translateFromLanguage: settingsProfile.fromTranslateLanguage,
+                                                translateToLanguage: settingsProfile.toTranslateLanguage
                                             )
                                         )
                                     } else {
@@ -292,8 +291,8 @@ struct MenuView: View {
                 $0.locationName == locationName &&
                 $0.searchEngine == settingsProfile.searchEngineOption &&
                 $0.searchContent == settingsProfile.searchContentOption &&
-                $0.translateFromLanguage == translatePreference.from &&
-                $0.translateToLanguage == translatePreference.to
+                $0.translateFromLanguage == settingsProfile.fromTranslateLanguage &&
+                $0.translateToLanguage == settingsProfile.toTranslateLanguage
             } else {
                 $0.searchText == searchText &&
                 $0.locationName == locationName &&
@@ -385,7 +384,6 @@ struct BookmarkView: View {
     var searchEngineOption: SearchEngineOption
     var searchContentOption: SearchContentOption
     var createdTime: Date
-    //    var translatePreference: TranslatePreference
     var from: TranslateLanguage?
     var to: TranslateLanguage?
     @State private var showCopiedMessage = false

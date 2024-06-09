@@ -106,63 +106,6 @@ enum TranslateLanguage: String, Codable, CaseIterable {
     }
 }
 
-struct TranslatePreference {
-    let from: TranslateLanguage
-    let to: TranslateLanguage
-}
-
-private let defaultTranslatePreference = TranslatePreference(
-    from: .english,
-    to: .chineseSimplified
-)
-
-//func saveSearchEnginePreference(option: SearchEngineOption) {
-//    UserDefaults.standard.set(option.rawValue, forKey: "searchEngineOption")
-//}
-//
-//func loadSearchEnginePreference() -> SearchEngineOption {
-//    if let savedOption = UserDefaults.standard.string(forKey: "searchEngineOption"),
-//       let option = SearchEngineOption.from(savedOption) {
-//        return option
-//    } else {
-//        return .google
-//    }
-//}
-//
-//func saveSearchContentPreference(option: SearchContentOption) {
-//    UserDefaults.standard.set(option.rawValue, forKey: "searchContentOption")
-//}
-//
-//func loadSearchContentPreference() -> SearchContentOption {
-//    if let savedOption = UserDefaults.standard.string(forKey: "searchContentOption"),
-//       let option = SearchContentOption.from(savedOption) {
-//        return option
-//    } else {
-//        return .images
-//    }
-//}
-
-func saveTranslateLanguagePreference(preference: TranslatePreference) {
-    UserDefaults.standard.set(preference.from.rawValue, forKey: "translateFromLanguage")
-    UserDefaults.standard.set(preference.to.rawValue, forKey: "translateToLanguage")
-}
-
-func loadTranslateLanguagePreference() -> TranslatePreference {
-    if let savedFrom = UserDefaults.standard.string(forKey: "translateFromLanguage") {
-        if let from = TranslateLanguage.from(savedFrom) {
-            if let savedTo = UserDefaults.standard.string(forKey: "translateToLanguage") {
-                if let to = TranslateLanguage.from(savedTo) {
-                    return TranslatePreference(
-                        from: from,
-                        to: to
-                    )
-                }
-            }
-        }
-    }
-    return defaultTranslatePreference
-}
-
 let searchEngineDirectory: [SearchEngineOption: [SearchContentOption: (String, TranslateLanguage?, TranslateLanguage?) -> String]] = [
     .google: [
         .all:       { searchText, from, to in "https://www.google.com/search?q=\(searchText)" },

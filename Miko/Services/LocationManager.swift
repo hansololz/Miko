@@ -1,14 +1,6 @@
 import Foundation
 import CoreLocation
 
-//func saveLocationInSearchQueryPreference(preference: Bool) {
-//    UserDefaults.standard.set(preference, forKey: "locationInSearchQuery")
-//}
-
-//func loadLocationInSearchQueryPreference() -> Bool {
-//    return UserDefaults.standard.bool(forKey: "locationInSearchQuery")
-//}
-
 func saveIsFirstEverLocationPermissionRequest() {
     UserDefaults.standard.set(false, forKey: "isFirstEverLocationPermissionRequest")
 }
