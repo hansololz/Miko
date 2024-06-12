@@ -9,9 +9,7 @@ struct SettingsView: View {
         didSet {
             settingsProfile.searchEngine = searchEngine
             
-            if let searchEngineMethods = searchEngineDirectory[searchEngine], let searchMehtod = searchEngineMethods[searchContent] {
-                
-            } else {
+            if searchEngineDirectory[searchEngine]?[searchContent] == nil  {
                 searchContent = .images
             }
         }
