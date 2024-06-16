@@ -5,7 +5,7 @@ import AVFoundation
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
-    @Query private var settingsProfiles: [SettingsProfile]
+    @Query private var settingsProfiles: [SearchConfig]
     @State private var isCameraReady = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
@@ -100,7 +100,7 @@ struct ContentView: View {
         }
     }
     
-    private func getCurrentSettingsProfile(settingsProfiles: [SettingsProfile]) -> SettingsProfile {
+    private func getCurrentSettingsProfile(settingsProfiles: [SearchConfig]) -> SearchConfig {
         let settingsProfileId = loadSettingsProfileId()
         
         if let settingsProfile = settingsProfiles.first(where: {

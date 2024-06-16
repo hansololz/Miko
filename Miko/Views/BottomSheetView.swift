@@ -8,7 +8,7 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     
     var modelContext: ModelContext
     @StateObject private var locationManager = LocationManager()

@@ -31,7 +31,7 @@ struct SettingsView: View {
     }
     @State var showingAlert = false
     @StateObject var locationManager = LocationManager()
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     var modelContext: ModelContext
     
     var searchEngines: [SearchEngine] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
@@ -109,13 +109,15 @@ struct SettingsView: View {
                 }
                 
                 if searchContent == .translate {
-                    Section(header: Text("Translate")) {
-                        NavigationLink(destination: TranslateSettingsView(
-                            settingsProfile: $settingsProfile,
-                            from: settingsProfile.fromTranslateLanguage,
-                            to: settingsProfile.toTranslateLanguage
-                        )) {
-                            Label("Choose Language", systemImage: "character.bubble")
+                    if let from = settingsProfile.fromTranslateLanguage, let to = settingsProfile.toTranslateLanguage  {
+                        Section(header: Text("Translate")) {
+                            NavigationLink(destination: TranslateSettingsView(
+                                settingsProfile: $settingsProfile,
+                                from: from,
+                                to: to
+                            )) {
+                                Label("Choose Language", systemImage: "character.bubble")
+                            }
                         }
                     }
                 }
@@ -230,7 +232,7 @@ struct ContactView: View {
 // Always push English back to the end of the array. The Camera processes the langauges in order.
 // If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     @State var selectedSearchLanguages: [SearchLanguage] {
         didSet {
             settingsProfile.supportLanguages = selectedSearchLanguages
@@ -290,7 +292,7 @@ struct LanguageRow: View {
 }
 
 struct TranslateSettingsView: View {
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     @State var from: TranslateLanguage {
         didSet {
             settingsProfile.fromTranslateLanguage = from
@@ -311,7 +313,7 @@ struct TranslateSettingsView: View {
                     from: from,
                     to: to
                 )) {
-                    Label(settingsProfile.fromTranslateLanguage.displayName, systemImage: "character.bubble")
+                    Label(settingsProfile.fromTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
                 }
             }
             
@@ -322,17 +324,17 @@ struct TranslateSettingsView: View {
                     from: from,
                     to: to
                 )) {
-                    Label(settingsProfile.toTranslateLanguage.displayName, systemImage: "character.bubble")
+                    Label(settingsProfile.toTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
                 }
             }
         }
         .navigationBarTitle("Translate")
         .toolbar {
             Button(action: {
-                let newTo = settingsProfile.fromTranslateLanguage
-                let newFrom = settingsProfile.toTranslateLanguage
-                from = newFrom
-                to = newTo
+                if let newTo = settingsProfile.fromTranslateLanguage, let newFrom = settingsProfile.toTranslateLanguage {
+                    from = newFrom
+                    to = newTo
+                }
             }) {
                 Image(systemName: "arrow.up.arrow.down")
             }
@@ -342,7 +344,7 @@ struct TranslateSettingsView: View {
 
 struct TranslateLanguageSelectionView: View {
     let isFrom: Bool
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     @State var from: TranslateLanguage {
         didSet {
             settingsProfile.fromTranslateLanguage = from

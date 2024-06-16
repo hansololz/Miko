@@ -9,7 +9,7 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
-    @Binding var settingsProfile: SettingsProfile
+    @Binding var settingsProfile: SearchConfig
     
     class Coordinator: NSObject {
         var lastTextUpdateTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000

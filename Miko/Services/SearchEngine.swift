@@ -151,7 +151,7 @@ func getDefaultSearchUrl(searchText: String) -> URL? {
     return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: String, locationName: String, settingsProfile: SettingsProfile) -> URL? {
+func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: String, locationName: String, settingsProfile: SearchConfig) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
