@@ -36,41 +36,43 @@ final class SearchConfig {
     }
 }
 
-let imageSearchConfig = SearchConfig(
-    createdTime: Date.now,
-    modifiedTime: Date.now,
-    name: "Iamges",
-    supportLanguages: [.englishUS],
-    useLocationInSearchQuery: false,
-    searchEngine: .google,
-    searchContent:.images,
-    fromTranslateLanguage: nil,
-    toTranslateLanguage: nil
-)
-
-let translateSearchConfig = SearchConfig(
-    createdTime: Date.now,
-    modifiedTime: Date.now,
-    name: "Tranlsate",
-    supportLanguages: [.englishUS, .chineseSimplified],
-    useLocationInSearchQuery: false,
-    searchEngine: .google,
-    searchContent:.images,
-    fromTranslateLanguage: .english,
-    toTranslateLanguage: .chineseSimplified
-)
-
-let shoppinghConfig = SearchConfig(
-    createdTime: Date.now,
-    modifiedTime: Date.now,
-    name: "Shopping",
-    supportLanguages: [.englishUS],
-    useLocationInSearchQuery: false,
-    searchEngine: .google,
-    searchContent:.images,
-    fromTranslateLanguage: nil,
-    toTranslateLanguage: nil
-)
+func createDefaultSearchConfigs() -> [SearchConfig] {
+    return [
+        SearchConfig(
+            createdTime: Date.now,
+            modifiedTime: Date.now,
+            name: "Iamges",
+            supportLanguages: [.englishUS],
+            useLocationInSearchQuery: false,
+            searchEngine: .google,
+            searchContent:.images,
+            fromTranslateLanguage: nil,
+            toTranslateLanguage: nil
+        ),
+        SearchConfig(
+            createdTime: Date.now,
+            modifiedTime: Date.now,
+            name: "Tranlsate",
+            supportLanguages: [.englishUS, .chineseSimplified],
+            useLocationInSearchQuery: false,
+            searchEngine: .google,
+            searchContent:.images,
+            fromTranslateLanguage: .english,
+            toTranslateLanguage: .chineseSimplified
+        ),
+        SearchConfig(
+            createdTime: Date.now,
+            modifiedTime: Date.now,
+            name: "Shopping",
+            supportLanguages: [.englishUS],
+            useLocationInSearchQuery: false,
+            searchEngine: .google,
+            searchContent:.images,
+            fromTranslateLanguage: nil,
+            toTranslateLanguage: nil
+        )
+    ]
+}
 
 func createDefaultSettingsProfile() -> SearchConfig {
     return SearchConfig(

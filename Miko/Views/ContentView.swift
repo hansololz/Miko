@@ -122,15 +122,20 @@ struct ContentView: View {
         
         print("HERE 6")
         
-        let newSettingsProfile = createDefaultSettingsProfile()
-        modelContext.insert(newSettingsProfile)
+        let defaultSearchConfigs = createDefaultSearchConfigs()
+        
+        defaultSearchConfigs.forEach { searchConfig in
+            modelContext.insert(searchConfig)
+        }
         try! modelContext.save()
-  
-        print("HERE 7 \(newSettingsProfile.id)")
-        print("HERE 8 \(settingsProfiles.count)")
         
-        saveSettingsProfileId(id: newSettingsProfile.id)
+        let firstSearchConfig = defaultSearchConfigs[0]
         
-        return newSettingsProfile
+        print("HERE 7 \(firstSearchConfig.id)")
+        print("HERE 8 \(defaultSearchConfigs.count)")
+        
+        saveSettingsProfileId(id: firstSearchConfig.id)
+        
+        return firstSearchConfig
     }
 }
