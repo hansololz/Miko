@@ -42,7 +42,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 2, to: Date.now) ?? Date.now,
             name: "Images",
-            supportLanguages: [.englishUS],
+            supportLanguages: [.englishUS, .chineseSimplified],
             useLocationInSearchQuery: false,
             searchEngine: .google,
             searchContent: .images,
@@ -64,7 +64,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             createdTime: Date.now,
             modifiedTime: Date.now,
             name: "Shopping",
-            supportLanguages: [.englishUS],
+            supportLanguages: [.englishUS, .chineseSimplified],
             useLocationInSearchQuery: false,
             searchEngine: .google,
             searchContent: .shopping,
@@ -74,12 +74,12 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
     ]
 }
 
-func createDefaultSettingsProfile() -> SearchConfig {
+func createNewSearchConfig() -> SearchConfig {
     return SearchConfig(
         createdTime: Date.now,
         modifiedTime: Date.now,
-        name: "Settings Profile",
-        supportLanguages: [.englishUS],
+        name: "New Config",
+        supportLanguages: [.englishUS, .chineseSimplified],
         useLocationInSearchQuery: false,
         searchEngine: .google,
         searchContent:.images,

@@ -115,7 +115,15 @@ struct BottomSheetView: View {
                                                 }
                                                 
                                                 Button(action: {
-                
+                                                    let searchConfig = createNewSearchConfig()
+                                                    modelContext.insert(searchConfig)
+                                                    try! modelContext.save()
+
+                                                    settingsProfileId = searchConfig.id
+                                                    settingsProfile = searchConfig
+                                                    
+                                                    self.showSettings = true
+                                                    self.selectSheetAnchor = fullSheetAnchor                                                    
                                                 }) {
                                                     HStack {
                                                         Image(systemName: "plus")

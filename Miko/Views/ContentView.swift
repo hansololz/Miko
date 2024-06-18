@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var showMenu = false
     @State private var cameraOverlayAlpha = 0.0
-    @State private var settingsProfile = createDefaultSettingsProfile()
+    @State private var settingsProfile = createNewSearchConfig()
     
     var body: some View {
         VStack {
