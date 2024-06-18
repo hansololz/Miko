@@ -41,11 +41,11 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
         SearchConfig(
             createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 2, to: Date.now) ?? Date.now,
-            name: "Iamges",
+            name: "Images",
             supportLanguages: [.englishUS],
             useLocationInSearchQuery: false,
             searchEngine: .google,
-            searchContent:.images,
+            searchContent: .images,
             fromTranslateLanguage: nil,
             toTranslateLanguage: nil
         ),
@@ -56,7 +56,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             supportLanguages: [.englishUS, .chineseSimplified],
             useLocationInSearchQuery: false,
             searchEngine: .google,
-            searchContent:.images,
+            searchContent: .translate,
             fromTranslateLanguage: .english,
             toTranslateLanguage: .chineseSimplified
         ),
@@ -67,7 +67,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             supportLanguages: [.englishUS],
             useLocationInSearchQuery: false,
             searchEngine: .google,
-            searchContent:.images,
+            searchContent: .shopping,
             fromTranslateLanguage: nil,
             toTranslateLanguage: nil
         )
