@@ -11,7 +11,7 @@ struct BottomSheetView: View {
     @Binding var settingsProfile: SearchConfig
     
     var modelContext: ModelContext
-    @Query private var searchConfigs: [SearchConfig]
+    @Query(sort: \SearchConfig.modifiedTime, order: .reverse) private var searchConfigs: [SearchConfig]
     @StateObject private var locationManager = LocationManager()
     @State private var settingsProfileId: PersistentIdentifier? = loadSettingsProfileId() {
         didSet {

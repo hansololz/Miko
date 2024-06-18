@@ -40,7 +40,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
     return [
         SearchConfig(
             createdTime: Date.now,
-            modifiedTime: Date.now,
+            modifiedTime: Calendar.current.date(byAdding: .second, value: 2, to: Date.now) ?? Date.now,
             name: "Iamges",
             supportLanguages: [.englishUS],
             useLocationInSearchQuery: false,
@@ -51,7 +51,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
         ),
         SearchConfig(
             createdTime: Date.now,
-            modifiedTime: Date.now,
+            modifiedTime: Calendar.current.date(byAdding: .second, value: 1, to: Date.now) ?? Date.now,
             name: "Tranlsate",
             supportLanguages: [.englishUS, .chineseSimplified],
             useLocationInSearchQuery: false,

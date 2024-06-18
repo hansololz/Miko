@@ -117,8 +117,8 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.layer.addSublayer(previewLayer)
         
         addViewfinderIconOverlay()
-        addSettingsIconOverlay()
-        addMenuIconOverlay()
+//        addSettingsIconOverlay()
+//        addMenuIconOverlay()
         addDoubleTapGesture()
         
         setupMotionManager()
