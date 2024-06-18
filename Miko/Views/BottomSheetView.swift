@@ -11,7 +11,15 @@ struct BottomSheetView: View {
     @Binding var settingsProfile: SearchConfig
     
     var modelContext: ModelContext
+    @Query private var searchConfigs: [SearchConfig]
     @StateObject private var locationManager = LocationManager()
+    @State private var settingsProfileId: PersistentIdentifier? = loadSettingsProfileId() {
+        didSet {
+            if let id = settingsProfileId {
+                saveSettingsProfileId(id: id)
+            }
+        }
+    }
     @State private var resetMenu: Bool = false
     @State private var resetSettings: Bool = false
     @State private var isInternetAvailable: Bool = true
@@ -63,14 +71,75 @@ struct BottomSheetView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, UIScreen.main.bounds.width * 0.15)
                 } else {
-                    if let url = getSearchUrl(
-                        engine: settingsProfile.searchEngine,
-                        content: settingsProfile.searchContent,
-                        searchText: searchText,
-                        locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
-                        settingsProfile: settingsProfile
-                    ) {
-                        WebView(url: url)
+                    VStack {
+                        if let url = getSearchUrl(
+                            engine: settingsProfile.searchEngine,
+                            content: settingsProfile.searchContent,
+                            searchText: searchText,
+                            locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
+                            settingsProfile: settingsProfile
+                        ) {
+                            NavigationView{
+                                VStack {
+                                    WebView(url: url)
+                                }
+                                .toolbar {
+                                    ToolbarItem(placement: .navigationBarLeading) {
+                                        Button(action: {
+                                            self.showMenu = true
+                                            self.selectSheetAnchor = fullSheetAnchor
+                                        }) {
+                                            Image(systemName: "ellipsis.circle")
+                                        }
+                                    }
+                                    ToolbarItem(placement: .navigation) {
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack {
+                                                ForEach(searchConfigs) { searchConfig in
+                                                    if searchConfig.id == settingsProfileId {
+                                                        Button(action: {
+                                                            
+                                                        }) {
+                                                            Text(searchConfig.name)
+                                                        }
+                                                        .buttonStyle(.borderedProminent)
+                                                    } else {
+                                                        Button(action: {
+                                                            settingsProfileId = searchConfig.id
+                                                            settingsProfile = searchConfig
+                                                        }) {
+                                                            Text(searchConfig.name)
+                                                        }
+                                                        .buttonStyle(.bordered)
+                                                    }
+                                                }
+                                                
+                                                Button(action: {
+                
+                                                }) {
+                                                    HStack {
+                                                        Image(systemName: "plus")
+                                                        Text("Add New Config")
+                                                    }
+                                                }
+                                                .buttonStyle(.bordered)
+   
+                                            }
+                                            .padding(.horizontal)
+                                        }
+                                    }
+                                    ToolbarItem(placement: .navigationBarTrailing) {
+                                        Button(action: {
+                                            self.showSettings = true
+                                            self.selectSheetAnchor = fullSheetAnchor
+                                        }) {
+                                            Image(systemName: "switch.2")
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
                     }
                 }
             }
