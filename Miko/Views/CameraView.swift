@@ -9,7 +9,7 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var showSettings: Bool
     @Binding var showMenu: Bool
     @Binding var searchText: String
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     
     class Coordinator: NSObject {
         var lastTextUpdateTimestamp = DispatchTime.now().uptimeNanoseconds / 1_000_000
@@ -51,7 +51,7 @@ struct CameraView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let cameraViewController = CameraViewController()
         cameraViewController.coordinator = context.coordinator
-        cameraViewController.selectedSearchLanguages = settingsProfile.supportLanguages.map { $0.rawValue }
+        cameraViewController.selectedSearchLanguages = selectedSearchConfig.supportLanguages.map { $0.rawValue }
         print("LANGUAGE 1 \(cameraViewController.selectedSearchLanguages)")
         return cameraViewController
     }
@@ -66,7 +66,7 @@ struct CameraView: UIViewControllerRepresentable {
                 cameraViewController.pauseCamera()
             }
             
-            cameraViewController.selectedSearchLanguages = settingsProfile.supportLanguages.map { $0.rawValue }
+            cameraViewController.selectedSearchLanguages = selectedSearchConfig.supportLanguages.map { $0.rawValue }
             print("LANGUAGE 2 \(cameraViewController.selectedSearchLanguages)")
         }
     }

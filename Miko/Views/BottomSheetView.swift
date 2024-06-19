@@ -8,14 +8,14 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     
     var modelContext: ModelContext
     @Query(sort: \SearchConfig.modifiedTime, order: .reverse) private var searchConfigs: [SearchConfig]
     @StateObject private var locationManager = LocationManager()
-    @State private var settingsProfileId: PersistentIdentifier? = loadSelectedSearchConfigId() {
+    @State private var selectedSearchConfigId: PersistentIdentifier? = loadSelectedSearchConfigId() {
         didSet {
-            if let id = settingsProfileId {
+            if let id = selectedSearchConfigId {
                 saveSelectedSearchConfigId(id: id)
             }
         }
@@ -39,32 +39,32 @@ struct BottomSheetView: View {
                     }
                 } else if showMenu {
                     MenuView(
-                        locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
+                        locationName: selectedSearchConfig.useLocationInSearchQuery ? locationManager.locationName : "",
                         selectSheetAnchor: $selectSheetAnchor,
                         searchText: $searchText,
-                        settingsProfile: $settingsProfile
+                        selectedSearchConfig: $selectedSearchConfig
                     )
                     .id(resetMenu)
                 } else if showSettings {
                     SettingsView(
                         showSettings: $showSettings,
                         selectSheetAnchor: $selectSheetAnchor,
-                        searchEngine: settingsProfile.searchEngine,
-                        searchContent: settingsProfile.searchContent,
-                        useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
-                        settingsProfileName: settingsProfile.name,
-                        settingsProfile: $settingsProfile,
-                        settingsProfileId: $settingsProfileId,
+                        searchEngine: selectedSearchConfig.searchEngine,
+                        searchContent: selectedSearchConfig.searchContent,
+                        useLocationInSearchQuery: selectedSearchConfig.useLocationInSearchQuery,
+                        settingsProfileName: selectedSearchConfig.name,
+                        selectedSearchConfig: $selectedSearchConfig,
+                        selectedSearchConfigId: $selectedSearchConfigId,
                         modelContext: modelContext
                     )
                     .id(resetSettings)
                 } else if searchText.isEmpty {
                     if let url = getSearchUrl(
-                        engine: settingsProfile.searchEngine,
-                        content: settingsProfile.searchContent,
+                        engine: selectedSearchConfig.searchEngine,
+                        content: selectedSearchConfig.searchContent,
                         searchText: searchText,
                         locationName: "",
-                        settingsProfile: settingsProfile
+                        settingsProfile: selectedSearchConfig
                     ) {
                         WebView(url: url)
                             .opacity(0)
@@ -76,11 +76,11 @@ struct BottomSheetView: View {
                 } else {
                     VStack {
                         if let url = getSearchUrl(
-                            engine: settingsProfile.searchEngine,
-                            content: settingsProfile.searchContent,
+                            engine: selectedSearchConfig.searchEngine,
+                            content: selectedSearchConfig.searchContent,
                             searchText: searchText,
-                            locationName: settingsProfile.useLocationInSearchQuery ? locationManager.locationName : "",
-                            settingsProfile: settingsProfile
+                            locationName: selectedSearchConfig.useLocationInSearchQuery ? locationManager.locationName : "",
+                            settingsProfile: selectedSearchConfig
                         ) {
                             NavigationView{
                                 VStack {
@@ -99,7 +99,7 @@ struct BottomSheetView: View {
                                         ScrollView(.horizontal, showsIndicators: false) {
                                             HStack {
                                                 ForEach(searchConfigs) { searchConfig in
-                                                    if searchConfig.id == settingsProfileId {
+                                                    if searchConfig.id == selectedSearchConfigId {
                                                         Button(action: {
                                                             
                                                         }) {
@@ -108,8 +108,8 @@ struct BottomSheetView: View {
                                                         .buttonStyle(.borderedProminent)
                                                     } else {
                                                         Button(action: {
-                                                            settingsProfileId = searchConfig.id
-                                                            settingsProfile = searchConfig
+                                                            selectedSearchConfigId = searchConfig.id
+                                                            selectedSearchConfig = searchConfig
                                                         }) {
                                                             Text(searchConfig.name)
                                                         }
@@ -122,8 +122,8 @@ struct BottomSheetView: View {
                                                     modelContext.insert(searchConfig)
                                                     try! modelContext.save()
                                                     
-                                                    settingsProfileId = searchConfig.id
-                                                    settingsProfile = searchConfig
+                                                    selectedSearchConfigId = searchConfig.id
+                                                    selectedSearchConfig = searchConfig
                                                     
                                                     self.showSettings = true
                                                     self.selectSheetAnchor = fullSheetAnchor
@@ -165,7 +165,7 @@ struct BottomSheetView: View {
                 
                 toggleLocationUpdate()
                 if !locationManager.isAuthorized() {
-                    settingsProfile.useLocationInSearchQuery = false
+                    selectedSearchConfig.useLocationInSearchQuery = false
                 }
             }
             .onChange(of: geometry.frame(in: .global).minY) { oldValue, newValue in
@@ -188,7 +188,7 @@ struct BottomSheetView: View {
     }
     
     private func toggleLocationUpdate() {
-        if selectSheetAnchor == restSheetAnchor && locationManager.isAuthorized() && settingsProfile.useLocationInSearchQuery {
+        if selectSheetAnchor == restSheetAnchor && locationManager.isAuthorized() && selectedSearchConfig.useLocationInSearchQuery {
             locationManager.startUpdatingLocation()
         } else {
             locationManager.stopUpdatingLocation()

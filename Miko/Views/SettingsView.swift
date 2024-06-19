@@ -8,7 +8,7 @@ struct SettingsView: View {
     @Binding var selectSheetAnchor: PresentationDetent
     @State var searchEngine: SearchEngine {
         didSet {
-            settingsProfile.searchEngine = searchEngine
+            selectedSearchConfig.searchEngine = searchEngine
             
             if searchEngineDirectory[searchEngine]?[searchContent] == nil  {
                 searchContent = .images
@@ -17,12 +17,12 @@ struct SettingsView: View {
     }
     @State var searchContent: SearchContent {
         didSet {
-            settingsProfile.searchContent = searchContent
+            selectedSearchConfig.searchContent = searchContent
         }
     }
     @State var useLocationInSearchQuery: Bool {
         didSet {
-            settingsProfile.useLocationInSearchQuery = useLocationInSearchQuery
+            selectedSearchConfig.useLocationInSearchQuery = useLocationInSearchQuery
         }
     }
     @State var isFirstEverLocationPermissionRequest: Bool = loadIsFirstEverLocationPermissionRequest() {
@@ -33,17 +33,17 @@ struct SettingsView: View {
     @State var settingsProfileName: String {
         didSet {
             print("FAANG")
-            settingsProfile.name = settingsProfileName
+            selectedSearchConfig.name = settingsProfileName
         }
     }
     @State var showingAlert = false
     @State var showDeleteAlert = false
     @StateObject var locationManager = LocationManager()
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     @Query private var settingsProfiles: [SearchConfig]
-    @Binding var settingsProfileId: PersistentIdentifier? {
+    @Binding var selectedSearchConfigId: PersistentIdentifier? {
         didSet {
-            if let id = settingsProfileId {
+            if let id = selectedSearchConfigId {
                 saveSelectedSearchConfigId(id: id)
             }
         }
@@ -86,8 +86,8 @@ struct SettingsView: View {
                 
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(
-                        settingsProfile: $settingsProfile,
-                        selectedSearchLanguages: settingsProfile.supportLanguages
+                        settingsProfile: $selectedSearchConfig,
+                        selectedSearchLanguages: selectedSearchConfig.supportLanguages
                     )) {
                         Label("Supported Languages", systemImage: "character.bubble")
                     }
@@ -146,10 +146,10 @@ struct SettingsView: View {
                 }
                 
                 if searchContent == .translate {
-                    if let from = settingsProfile.fromTranslateLanguage, let to = settingsProfile.toTranslateLanguage  {
+                    if let from = selectedSearchConfig.fromTranslateLanguage, let to = selectedSearchConfig.toTranslateLanguage  {
                         Section(header: Text("Translate")) {
                             NavigationLink(destination: TranslateSettingsView(
-                                settingsProfile: $settingsProfile,
+                                settingsProfile: $selectedSearchConfig,
                                 from: from,
                                 to: to
                             )) {
@@ -172,12 +172,12 @@ struct SettingsView: View {
                                 title: Text("Warning"),
                                 message: Text("Are you sure you want to delete search configuration? Action cannot be undone."),
                                 primaryButton: .default(Text("Delete")) {
-                                    modelContext.delete(settingsProfile)
+                                    modelContext.delete(selectedSearchConfig)
                                     try! modelContext.save()
                                     
                                     if let newSearchConfig = settingsProfiles.first {
-                                        settingsProfile = newSearchConfig
-                                        settingsProfileId = newSearchConfig.id
+                                        selectedSearchConfig = newSearchConfig
+                                        selectedSearchConfigId = newSearchConfig.id
                                     }
                                     
                                     showSettings = false

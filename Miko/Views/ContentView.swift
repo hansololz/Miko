@@ -5,7 +5,7 @@ import AVFoundation
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
-    @Query private var settingsProfiles: [SearchConfig]
+    @Query private var searchConfigs: [SearchConfig]
     @State private var isCameraReady = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var showMenu = false
     @State private var cameraOverlayAlpha = 0.0
-    @State private var settingsProfile = createNewSearchConfig()
+    @State private var selectedSearchConfig = createNewSearchConfig()
     
     var body: some View {
         VStack {
@@ -24,7 +24,7 @@ struct ContentView: View {
                         showSettings: $showSettings,
                         showMenu: $showMenu,
                         searchText: $searchText,
-                        settingsProfile: $settingsProfile
+                        selectedSearchConfig: $selectedSearchConfig
                     )
                     Rectangle()
                         .fill(.black)
@@ -60,7 +60,7 @@ struct ContentView: View {
                 showMenu: $showMenu,
                 searchText: $searchText,
                 sheetOffset: $sheetOffset,
-                settingsProfile: $settingsProfile,
+                selectedSearchConfig: $selectedSearchConfig,
                 modelContext: modelContext
             )
             .presentationDetents([restSheetAnchor, fullSheetAnchor], selection: $selectSheetAnchor)
@@ -80,7 +80,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            settingsProfile = getCurrentSettingsProfile(settingsProfiles: settingsProfiles)
+            selectedSearchConfig = getCurrentSettingsProfile(settingsProfiles: searchConfigs)
             checkCameraPermission()
         }
     }
