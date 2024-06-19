@@ -51,6 +51,7 @@ struct BottomSheetView: View {
                         searchEngine: settingsProfile.searchEngine,
                         searchContent: settingsProfile.searchContent,
                         useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
+                        settingsProfileName: settingsProfile.name,
                         settingsProfile: $settingsProfile,
                         modelContext: modelContext
                     )
@@ -118,12 +119,12 @@ struct BottomSheetView: View {
                                                     let searchConfig = createNewSearchConfig()
                                                     modelContext.insert(searchConfig)
                                                     try! modelContext.save()
-
+                                                    
                                                     settingsProfileId = searchConfig.id
                                                     settingsProfile = searchConfig
                                                     
                                                     self.showSettings = true
-                                                    self.selectSheetAnchor = fullSheetAnchor                                                    
+                                                    self.selectSheetAnchor = fullSheetAnchor
                                                 }) {
                                                     HStack {
                                                         Image(systemName: "plus")
@@ -131,7 +132,7 @@ struct BottomSheetView: View {
                                                     }
                                                 }
                                                 .buttonStyle(.bordered)
-   
+                                                
                                             }
                                             .padding(.horizontal)
                                         }

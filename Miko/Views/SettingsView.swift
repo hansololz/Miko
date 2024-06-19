@@ -29,12 +29,20 @@ struct SettingsView: View {
             saveIsFirstEverLocationPermissionRequest()
         }
     }
+    @State var settingsProfileName: String {
+        didSet {
+            print("FAANG")
+            settingsProfile.name = settingsProfileName
+        }
+    }
     @State var showingAlert = false
     @StateObject var locationManager = LocationManager()
     @Binding var settingsProfile: SearchConfig
     var modelContext: ModelContext
     
     var searchEngines: [SearchEngine] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
+    
+    @FocusState private var isFocused: Bool
     
     private var appVersion: String {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -47,6 +55,24 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
+                Section(header: Text("Name")) {
+                    HStack {
+                        Button(action: {
+                            isFocused = true
+                        }) {
+                            Image(systemName: "pencil")
+                        }
+
+                        TextField("", text: $settingsProfileName)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .focused($isFocused)
+                            .onChange(of: settingsProfileName) { oldValue, newValue in
+                                print("Text changed to: \(newValue)")
+                                settingsProfileName = newValue
+                            }
+                    }
+                }
+                
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(
                         settingsProfile: $settingsProfile,
