@@ -54,6 +54,7 @@ struct BottomSheetView: View {
                         useLocationInSearchQuery: settingsProfile.useLocationInSearchQuery,
                         settingsProfileName: settingsProfile.name,
                         settingsProfile: $settingsProfile,
+                        settingsProfileId: $settingsProfileId,
                         modelContext: modelContext
                     )
                     .id(resetSettings)

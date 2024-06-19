@@ -106,21 +106,15 @@ struct ContentView: View {
         if let settingsProfile = settingsProfiles.first(where: {
             $0.id == settingsProfileId
         }) {
-            print("HERE 3")
             return settingsProfile
         }
         
         if let newestSettingsProfile = settingsProfiles.max(by: { s1, s2 in
             s1.createdTime > s2.createdTime
         }) {
-            print("HERE 4 \(newestSettingsProfile.id)")
-            print("HERE 5 \(settingsProfiles.count)")
-            
             saveSettingsProfileId(id: newestSettingsProfile.id)
             return newestSettingsProfile
         }
-        
-        print("HERE 6")
         
         let defaultSearchConfigs = createDefaultSearchConfigs()
         
@@ -130,9 +124,6 @@ struct ContentView: View {
         try! modelContext.save()
         
         let firstSearchConfig = defaultSearchConfigs[0]
-        
-        print("HERE 7 \(firstSearchConfig.id)")
-        print("HERE 8 \(defaultSearchConfigs.count)")
         
         saveSettingsProfileId(id: firstSearchConfig.id)
         

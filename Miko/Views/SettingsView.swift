@@ -40,8 +40,16 @@ struct SettingsView: View {
     @State var showDeleteAlert = false
     @StateObject var locationManager = LocationManager()
     @Binding var settingsProfile: SearchConfig
-    var modelContext: ModelContext
     @Query private var settingsProfiles: [SearchConfig]
+    @Binding var settingsProfileId: PersistentIdentifier? {
+        didSet {
+            if let id = settingsProfileId {
+                saveSettingsProfileId(id: id)
+            }
+        }
+    }
+    
+    var modelContext: ModelContext
     
     var searchEngines: [SearchEngine] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -169,7 +177,7 @@ struct SettingsView: View {
                                     
                                     if let newSearchConfig = settingsProfiles.first {
                                         settingsProfile = newSearchConfig
-                                        saveSettingsProfileId(id: newSearchConfig.id)
+                                        settingsProfileId = newSearchConfig.id
                                     }
                                     
                                     showSettings = false
