@@ -19,5 +19,5 @@ let maximumUserAcceleration = 0.03
 let minimumSearchTextLength = 3
 
 let cameraFadeOutHeight = 0.9
-let cameraFadeInHeight = 0.6
+let cameraFadeInHeight = 0.7
 let fadeInAndOutHeightDifference = cameraFadeOutHeight - cameraFadeInHeight
