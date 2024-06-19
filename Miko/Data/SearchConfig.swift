@@ -52,7 +52,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
         SearchConfig(
             createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 1, to: Date.now) ?? Date.now,
-            name: "Tranlsate",
+            name: "Tranlsate English to Chinese",
             supportLanguages: [.englishUS, .chineseSimplified],
             useLocationInSearchQuery: false,
             searchEngine: .google,

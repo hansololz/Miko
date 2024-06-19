@@ -82,10 +82,11 @@ struct BottomSheetView: View {
                             locationName: selectedSearchConfig.useLocationInSearchQuery ? locationManager.locationName : "",
                             searchConfig: selectedSearchConfig
                         ) {
-                            NavigationView{
+                            NavigationView {
                                 VStack {
                                     WebView(url: url)
                                 }
+                                .edgesIgnoringSafeArea(.all)
                                 .toolbar {
                                     ToolbarItem(placement: .navigationBarLeading) {
                                         Button(action: {
@@ -149,7 +150,6 @@ struct BottomSheetView: View {
                                     }
                                 }
                             }
-                            
                         }
                     }
                 }
