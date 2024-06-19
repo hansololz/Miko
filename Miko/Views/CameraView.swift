@@ -117,8 +117,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         view.layer.addSublayer(previewLayer)
         
         addViewfinderIconOverlay()
-//        addSettingsIconOverlay()
-//        addMenuIconOverlay()
         addDoubleTapGesture()
         
         setupMotionManager()
@@ -164,86 +162,6 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
             viewfinderIconView.widthAnchor.constraint(equalToConstant: iconSize),
             viewfinderIconView.heightAnchor.constraint(equalToConstant: iconSize)
         ])
-    }
-    
-    func addSettingsIconOverlay() {
-        let settingsIcon = UIImage(systemName: "switch.2")
-        
-        // Create a container view
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.isUserInteractionEnabled = true
-        view.addSubview(containerView)
-        
-        // Create the icon view
-        settingsIconView = UIImageView(image: settingsIcon)
-        settingsIconView.translatesAutoresizingMaskIntoConstraints = false
-        settingsIconView.contentMode = .scaleAspectFit
-        settingsIconView.tintColor = .white
-        containerView.addSubview(settingsIconView)
-        
-        let iconSize: CGFloat = 30
-        let touchAreaSize: CGFloat = 60 // Increase this value to make the touch area larger
-        
-        // Constraints for the container view
-        NSLayoutConstraint.activate([
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - (touchAreaSize * (2/3))),
-            containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
-            containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
-        ])
-        
-        // Center the icon view inside the container view
-        NSLayoutConstraint.activate([
-            settingsIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            settingsIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - iconSize),
-            settingsIconView.widthAnchor.constraint(equalToConstant: iconSize),
-            settingsIconView.heightAnchor.constraint(equalToConstant: iconSize)
-        ])
-        
-        // Add tap gesture recognizer to the container view
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingsIconTapped))
-        containerView.addGestureRecognizer(tapGesture)
-    }
-    
-    func addMenuIconOverlay() {
-        let menuIcon = UIImage(systemName: "ellipsis.circle")
-        
-        // Create a container view
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.isUserInteractionEnabled = true
-        view.addSubview(containerView)
-        
-        // Create the icon view
-        menuIconView = UIImageView(image: menuIcon)
-        menuIconView.translatesAutoresizingMaskIntoConstraints = false
-        menuIconView.contentMode = .scaleAspectFit
-        menuIconView.tintColor = .white
-        containerView.addSubview(menuIconView)
-        
-        let iconSize: CGFloat = 30
-        let touchAreaSize: CGFloat = 60 // Increase this value to make the touch area larger
-        
-        // Constraints for the container view
-        NSLayoutConstraint.activate([
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - (touchAreaSize * (2/3))),
-            containerView.widthAnchor.constraint(equalToConstant: touchAreaSize),
-            containerView.heightAnchor.constraint(equalToConstant: touchAreaSize)
-        ])
-        
-        // Center the icon view inside the container view
-        NSLayoutConstraint.activate([
-            menuIconView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -75),
-            menuIconView.topAnchor.constraint(equalTo: view.topAnchor, constant: (view.bounds.height * cameraViewButtonLocation) - iconSize),
-            menuIconView.widthAnchor.constraint(equalToConstant: iconSize),
-            menuIconView.heightAnchor.constraint(equalToConstant: iconSize)
-        ])
-        
-        // Add tap gesture recognizer to the container view
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(menuIconTapped))
-        containerView.addGestureRecognizer(tapGesture)
     }
     
     func addDoubleTapGesture() {
