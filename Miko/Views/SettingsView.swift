@@ -44,7 +44,7 @@ struct SettingsView: View {
     @Binding var settingsProfileId: PersistentIdentifier? {
         didSet {
             if let id = settingsProfileId {
-                saveSettingsProfileId(id: id)
+                saveSelectedSearchConfigId(id: id)
             }
         }
     }

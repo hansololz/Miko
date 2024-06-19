@@ -101,7 +101,7 @@ struct ContentView: View {
     }
     
     private func getCurrentSettingsProfile(settingsProfiles: [SearchConfig]) -> SearchConfig {
-        let settingsProfileId = loadSettingsProfileId()
+        let settingsProfileId = loadSelectedSearchConfigId()
         
         if let settingsProfile = settingsProfiles.first(where: {
             $0.id == settingsProfileId
@@ -112,7 +112,7 @@ struct ContentView: View {
         if let newestSettingsProfile = settingsProfiles.max(by: { s1, s2 in
             s1.createdTime > s2.createdTime
         }) {
-            saveSettingsProfileId(id: newestSettingsProfile.id)
+            saveSelectedSearchConfigId(id: newestSettingsProfile.id)
             return newestSettingsProfile
         }
         
@@ -125,7 +125,7 @@ struct ContentView: View {
         
         let firstSearchConfig = defaultSearchConfigs[0]
         
-        saveSettingsProfileId(id: firstSearchConfig.id)
+        saveSelectedSearchConfigId(id: firstSearchConfig.id)
         
         return firstSearchConfig
     }

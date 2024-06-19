@@ -88,12 +88,12 @@ func createNewSearchConfig() -> SearchConfig {
     )
 }
 
-func saveSettingsProfileId(id: PersistentIdentifier) {
+func saveSelectedSearchConfigId(id: PersistentIdentifier) {
     let data = try! JSONEncoder().encode(id)
     UserDefaults.standard.setValue(data, forKey: "SearchConfigId")
 }
 
-func loadSettingsProfileId() -> PersistentIdentifier? {
+func loadSelectedSearchConfigId() -> PersistentIdentifier? {
     if let data = UserDefaults.standard.data(forKey: "SearchConfigId") {
         return try! JSONDecoder().decode(PersistentIdentifier.self, from: data)
     }
