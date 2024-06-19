@@ -73,7 +73,7 @@ struct SettingsView: View {
                         }) {
                             Image(systemName: "pencil")
                         }
-
+                        
                         TextField("", text: $searchConfigName)
                             .textFieldStyle(PlainTextFieldStyle())
                             .focused($isFocused)
