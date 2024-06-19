@@ -4,6 +4,7 @@ import SwiftData
 var shouldShowAlertPrompt = false
 
 struct SettingsView: View {
+    @Binding var showSettings: Bool
     @Binding var selectSheetAnchor: PresentationDetent
     @State var searchEngine: SearchEngine {
         didSet {
@@ -36,9 +37,11 @@ struct SettingsView: View {
         }
     }
     @State var showingAlert = false
+    @State var showDeleteAlert = false
     @StateObject var locationManager = LocationManager()
     @Binding var settingsProfile: SearchConfig
     var modelContext: ModelContext
+    @Query private var settingsProfiles: [SearchConfig]
     
     var searchEngines: [SearchEngine] = [.google, .brave, .bing, .duckDuckGo, .baidu, .yandex]
     
@@ -144,6 +147,36 @@ struct SettingsView: View {
                             )) {
                                 Label("Choose Language", systemImage: "character.bubble")
                             }
+                        }
+                    }
+                }
+                
+                if settingsProfiles.count > 1 {
+                    Section(header: Text("Delete")) {
+                        Button(action: {
+                            showDeleteAlert = true
+                        }) {
+                            Label("Delete search configration", systemImage: "trash")
+                                .foregroundColor(.red)
+                        }
+                        .alert(isPresented: $showDeleteAlert) {
+                            Alert(
+                                title: Text("Warning"),
+                                message: Text("Are you sure you want to delete search configuration? Action cannot be undone."),
+                                primaryButton: .default(Text("Delete")) {
+                                    modelContext.delete(settingsProfile)
+                                    try! modelContext.save()
+                                    
+                                    if let newSearchConfig = settingsProfiles.first {
+                                        settingsProfile = newSearchConfig
+                                        saveSettingsProfileId(id: newSearchConfig.id)
+                                    }
+                                    
+                                    showSettings = false
+                                    selectSheetAnchor = restSheetAnchor
+                                },
+                                secondaryButton: .cancel()
+                            )
                         }
                     }
                 }

@@ -47,6 +47,7 @@ struct BottomSheetView: View {
                     .id(resetMenu)
                 } else if showSettings {
                     SettingsView(
+                        showSettings: $showSettings,
                         selectSheetAnchor: $selectSheetAnchor,
                         searchEngine: settingsProfile.searchEngine,
                         searchContent: settingsProfile.searchContent,
