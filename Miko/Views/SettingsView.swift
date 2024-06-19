@@ -30,17 +30,17 @@ struct SettingsView: View {
             saveIsFirstEverLocationPermissionRequest()
         }
     }
-    @State var settingsProfileName: String {
+    @State var searchConfigName: String {
         didSet {
             print("FAANG")
-            selectedSearchConfig.name = settingsProfileName
+            selectedSearchConfig.name = searchConfigName
         }
     }
     @State var showingAlert = false
     @State var showDeleteAlert = false
     @StateObject var locationManager = LocationManager()
     @Binding var selectedSearchConfig: SearchConfig
-    @Query private var settingsProfiles: [SearchConfig]
+    @Query private var searchConfigs: [SearchConfig]
     @Binding var selectedSearchConfigId: PersistentIdentifier? {
         didSet {
             if let id = selectedSearchConfigId {
@@ -74,19 +74,19 @@ struct SettingsView: View {
                             Image(systemName: "pencil")
                         }
 
-                        TextField("", text: $settingsProfileName)
+                        TextField("", text: $searchConfigName)
                             .textFieldStyle(PlainTextFieldStyle())
                             .focused($isFocused)
-                            .onChange(of: settingsProfileName) { oldValue, newValue in
+                            .onChange(of: searchConfigName) { oldValue, newValue in
                                 print("Text changed to: \(newValue)")
-                                settingsProfileName = newValue
+                                searchConfigName = newValue
                             }
                     }
                 }
                 
                 Section(header: Text("Languages")) {
                     NavigationLink(destination: SupportedLangaugesView(
-                        settingsProfile: $selectedSearchConfig,
+                        selectedSearchConfig: $selectedSearchConfig,
                         selectedSearchLanguages: selectedSearchConfig.supportLanguages
                     )) {
                         Label("Supported Languages", systemImage: "character.bubble")
@@ -149,7 +149,7 @@ struct SettingsView: View {
                     if let from = selectedSearchConfig.fromTranslateLanguage, let to = selectedSearchConfig.toTranslateLanguage  {
                         Section(header: Text("Translate")) {
                             NavigationLink(destination: TranslateSettingsView(
-                                settingsProfile: $selectedSearchConfig,
+                                selectedSearchConfig: $selectedSearchConfig,
                                 from: from,
                                 to: to
                             )) {
@@ -159,7 +159,7 @@ struct SettingsView: View {
                     }
                 }
                 
-                if settingsProfiles.count > 1 {
+                if searchConfigs.count > 1 {
                     Section(header: Text("Delete")) {
                         Button(action: {
                             showDeleteAlert = true
@@ -175,7 +175,7 @@ struct SettingsView: View {
                                     modelContext.delete(selectedSearchConfig)
                                     try! modelContext.save()
                                     
-                                    if let newSearchConfig = settingsProfiles.first {
+                                    if let newSearchConfig = searchConfigs.first {
                                         selectedSearchConfig = newSearchConfig
                                         selectedSearchConfigId = newSearchConfig.id
                                     }
@@ -299,10 +299,10 @@ struct ContactView: View {
 // Always push English back to the end of the array. The Camera processes the langauges in order.
 // If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     @State var selectedSearchLanguages: [SearchLanguage] {
         didSet {
-            settingsProfile.supportLanguages = selectedSearchLanguages
+            selectedSearchConfig.supportLanguages = selectedSearchLanguages
         }
     }
     
@@ -359,15 +359,15 @@ struct LanguageRow: View {
 }
 
 struct TranslateSettingsView: View {
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     @State var from: TranslateLanguage {
         didSet {
-            settingsProfile.fromTranslateLanguage = from
+            selectedSearchConfig.fromTranslateLanguage = from
         }
     }
     @State var to: TranslateLanguage {
         didSet {
-            settingsProfile.toTranslateLanguage = to
+            selectedSearchConfig.toTranslateLanguage = to
         }
     }
     
@@ -376,29 +376,29 @@ struct TranslateSettingsView: View {
             Section(header: Text("From")) {
                 NavigationLink(destination: TranslateLanguageSelectionView(
                     isFrom: true,
-                    settingsProfile: $settingsProfile,
+                    selectedSearchConfig: $selectedSearchConfig,
                     from: from,
                     to: to
                 )) {
-                    Label(settingsProfile.fromTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
+                    Label(selectedSearchConfig.fromTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
                 }
             }
             
             Section(header: Text("To")) {
                 NavigationLink(destination: TranslateLanguageSelectionView(
                     isFrom: false,
-                    settingsProfile: $settingsProfile,
+                    selectedSearchConfig: $selectedSearchConfig,
                     from: from,
                     to: to
                 )) {
-                    Label(settingsProfile.toTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
+                    Label(selectedSearchConfig.toTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
                 }
             }
         }
         .navigationBarTitle("Translate")
         .toolbar {
             Button(action: {
-                if let newTo = settingsProfile.fromTranslateLanguage, let newFrom = settingsProfile.toTranslateLanguage {
+                if let newTo = selectedSearchConfig.fromTranslateLanguage, let newFrom = selectedSearchConfig.toTranslateLanguage {
                     from = newFrom
                     to = newTo
                 }
@@ -411,15 +411,15 @@ struct TranslateSettingsView: View {
 
 struct TranslateLanguageSelectionView: View {
     let isFrom: Bool
-    @Binding var settingsProfile: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfig
     @State var from: TranslateLanguage {
         didSet {
-            settingsProfile.fromTranslateLanguage = from
+            selectedSearchConfig.fromTranslateLanguage = from
         }
     }
     @State var to: TranslateLanguage {
         didSet {
-            settingsProfile.toTranslateLanguage = to
+            selectedSearchConfig.toTranslateLanguage = to
         }
     }
     

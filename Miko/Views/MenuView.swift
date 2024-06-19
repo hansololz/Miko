@@ -132,7 +132,7 @@ struct MenuView: View {
                                     content: selectedSearchConfig.searchContent,
                                     searchText: searchText,
                                     locationName: "",
-                                    settingsProfile: selectedSearchConfig
+                                    searchConfig: selectedSearchConfig
                                 ) {
                                     copyToClipboard(text: url.absoluteString)
                                 }
@@ -147,7 +147,7 @@ struct MenuView: View {
                                         content: selectedSearchConfig.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        settingsProfile: selectedSearchConfig
+                                        searchConfig: selectedSearchConfig
                                     ) {
                                         copyToClipboard(text: url.absoluteString)
                                     }
@@ -178,7 +178,7 @@ struct MenuView: View {
                                     content: selectedSearchConfig.searchContent,
                                     searchText: searchText,
                                     locationName: "",
-                                    settingsProfile: selectedSearchConfig
+                                    searchConfig: selectedSearchConfig
                                 ) {
                                     shareText(text: url.absoluteString)
                                 }
@@ -193,7 +193,7 @@ struct MenuView: View {
                                         content: selectedSearchConfig.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        settingsProfile: selectedSearchConfig
+                                        searchConfig: selectedSearchConfig
                                     ) {
                                         shareText(text: url.absoluteString)
                                     }
@@ -210,7 +210,7 @@ struct MenuView: View {
                                     content: selectedSearchConfig.searchContent,
                                     searchText: searchText,
                                     locationName: "",
-                                    settingsProfile: selectedSearchConfig
+                                    searchConfig: selectedSearchConfig
                                 ) {
                                     UIApplication.shared.open(url)
                                 }
@@ -225,7 +225,7 @@ struct MenuView: View {
                                         content: selectedSearchConfig.searchContent,
                                         searchText: searchText,
                                         locationName: locationName,
-                                        settingsProfile: selectedSearchConfig
+                                        searchConfig: selectedSearchConfig
                                     ) {
                                         UIApplication.shared.open(url)
                                     }

@@ -52,7 +52,7 @@ struct BottomSheetView: View {
                         searchEngine: selectedSearchConfig.searchEngine,
                         searchContent: selectedSearchConfig.searchContent,
                         useLocationInSearchQuery: selectedSearchConfig.useLocationInSearchQuery,
-                        settingsProfileName: selectedSearchConfig.name,
+                        searchConfigName: selectedSearchConfig.name,
                         selectedSearchConfig: $selectedSearchConfig,
                         selectedSearchConfigId: $selectedSearchConfigId,
                         modelContext: modelContext
@@ -64,7 +64,7 @@ struct BottomSheetView: View {
                         content: selectedSearchConfig.searchContent,
                         searchText: searchText,
                         locationName: "",
-                        settingsProfile: selectedSearchConfig
+                        searchConfig: selectedSearchConfig
                     ) {
                         WebView(url: url)
                             .opacity(0)
@@ -80,7 +80,7 @@ struct BottomSheetView: View {
                             content: selectedSearchConfig.searchContent,
                             searchText: searchText,
                             locationName: selectedSearchConfig.useLocationInSearchQuery ? locationManager.locationName : "",
-                            settingsProfile: selectedSearchConfig
+                            searchConfig: selectedSearchConfig
                         ) {
                             NavigationView{
                                 VStack {

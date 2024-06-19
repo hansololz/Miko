@@ -151,7 +151,7 @@ func getDefaultSearchUrl(searchText: String) -> URL? {
     return URL(string: "https://www.google.com/search?tbm=isch&q=\(searchText)")
 }
 
-func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: String, locationName: String, settingsProfile: SearchConfig) -> URL? {
+func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: String, locationName: String, searchConfig: SearchConfig) -> URL? {
     let query = if locationName.isEmpty {
         searchText
     } else {
@@ -160,7 +160,7 @@ func getSearchUrl(engine: SearchEngine, content: SearchContent, searchText: Stri
     
     if let contentOptions = searchEngineDirectory[engine] {
         if let searchMethod = contentOptions[content] {
-            let urlString = searchMethod(query, settingsProfile.fromTranslateLanguage, settingsProfile.toTranslateLanguage)
+            let urlString = searchMethod(query, searchConfig.fromTranslateLanguage, searchConfig.toTranslateLanguage)
             
             if let encodedUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                 return URL(string: encodedUrlString)

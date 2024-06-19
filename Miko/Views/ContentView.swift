@@ -80,7 +80,7 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            selectedSearchConfig = getCurrentSettingsProfile(settingsProfiles: searchConfigs)
+            selectedSearchConfig = getSelectedSearchConfig(searchConfigs: searchConfigs)
             checkCameraPermission()
         }
     }
@@ -100,20 +100,20 @@ struct ContentView: View {
         }
     }
     
-    private func getCurrentSettingsProfile(settingsProfiles: [SearchConfig]) -> SearchConfig {
-        let settingsProfileId = loadSelectedSearchConfigId()
+    private func getSelectedSearchConfig(searchConfigs: [SearchConfig]) -> SearchConfig {
+        let selectedSearchConfigId = loadSelectedSearchConfigId()
         
-        if let settingsProfile = settingsProfiles.first(where: {
-            $0.id == settingsProfileId
+        if let selectedSearchConfig = searchConfigs.first(where: {
+            $0.id == selectedSearchConfigId
         }) {
-            return settingsProfile
+            return selectedSearchConfig
         }
         
-        if let newestSettingsProfile = settingsProfiles.max(by: { s1, s2 in
+        if let newestSearchConfig = searchConfigs.max(by: { s1, s2 in
             s1.createdTime > s2.createdTime
         }) {
-            saveSelectedSearchConfigId(id: newestSettingsProfile.id)
-            return newestSettingsProfile
+            saveSelectedSearchConfigId(id: newestSearchConfig.id)
+            return newestSearchConfig
         }
         
         let defaultSearchConfigs = createDefaultSearchConfigs()
