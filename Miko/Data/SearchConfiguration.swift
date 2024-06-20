@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class SearchConfig {
+final class SearchConfiguration {
     var createdTime: Date
     var modifiedTime: Date
     var name: String
@@ -10,8 +10,8 @@ final class SearchConfig {
     var useLocationInSearchQuery: Bool
     var searchEngine: SearchEngine
     var searchContent: SearchContent
-    var fromTranslateLanguage: TranslateLanguage?
-    var toTranslateLanguage: TranslateLanguage?
+    var fromTranslateLanguage: TranslateLanguage
+    var toTranslateLanguage: TranslateLanguage
     
     init(
         createdTime: Date,
@@ -21,8 +21,8 @@ final class SearchConfig {
         useLocationInSearchQuery: Bool,
         searchEngine: SearchEngine,
         searchContent: SearchContent,
-        fromTranslateLanguage: TranslateLanguage?,
-        toTranslateLanguage: TranslateLanguage?
+        fromTranslateLanguage: TranslateLanguage,
+        toTranslateLanguage: TranslateLanguage
     ) {
         self.createdTime = createdTime
         self.modifiedTime = modifiedTime
@@ -36,9 +36,9 @@ final class SearchConfig {
     }
 }
 
-func createDefaultSearchConfigs() -> [SearchConfig] {
+func createDefaultSearchConfigs() -> [SearchConfiguration] {
     return [
-        SearchConfig(
+        SearchConfiguration(
             createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 2, to: Date.now) ?? Date.now,
             name: "Images",
@@ -46,10 +46,10 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             useLocationInSearchQuery: false,
             searchEngine: .google,
             searchContent: .images,
-            fromTranslateLanguage: nil,
-            toTranslateLanguage: nil
+            fromTranslateLanguage: .english,
+            toTranslateLanguage: .chineseSimplified
         ),
-        SearchConfig(
+        SearchConfiguration(
             createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 1, to: Date.now) ?? Date.now,
             name: "Tranlsate EN to CH",
@@ -60,7 +60,7 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             fromTranslateLanguage: .english,
             toTranslateLanguage: .chineseSimplified
         ),
-        SearchConfig(
+        SearchConfiguration(
             createdTime: Date.now,
             modifiedTime: Date.now,
             name: "Shopping",
@@ -68,14 +68,14 @@ func createDefaultSearchConfigs() -> [SearchConfig] {
             useLocationInSearchQuery: false,
             searchEngine: .google,
             searchContent: .shopping,
-            fromTranslateLanguage: nil,
-            toTranslateLanguage: nil
+            fromTranslateLanguage: .english,
+            toTranslateLanguage: .chineseSimplified
         )
     ]
 }
 
-func createNewSearchConfig() -> SearchConfig {
-    return SearchConfig(
+func createNewSearchConfig() -> SearchConfiguration {
+    return SearchConfiguration(
         createdTime: Date.now,
         modifiedTime: Date.now,
         name: "New Config",
@@ -83,18 +83,18 @@ func createNewSearchConfig() -> SearchConfig {
         useLocationInSearchQuery: false,
         searchEngine: .google,
         searchContent:.images,
-        fromTranslateLanguage: nil,
-        toTranslateLanguage: nil
+        fromTranslateLanguage: .english,
+        toTranslateLanguage: .chineseSimplified
     )
 }
 
 func saveSelectedSearchConfigId(id: PersistentIdentifier) {
     let data = try! JSONEncoder().encode(id)
-    UserDefaults.standard.setValue(data, forKey: "SearchConfigId")
+    UserDefaults.standard.setValue(data, forKey: "SearchConfigurationId")
 }
 
 func loadSelectedSearchConfigId() -> PersistentIdentifier? {
-    if let data = UserDefaults.standard.data(forKey: "SearchConfigId") {
+    if let data = UserDefaults.standard.data(forKey: "SearchConfigurationId") {
         return try! JSONDecoder().decode(PersistentIdentifier.self, from: data)
     }
     

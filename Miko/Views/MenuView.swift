@@ -8,7 +8,7 @@ struct MenuView: View {
     @Binding var searchText: String
     @State private var showCopiedMessage = false
     @State private var copiedMessageOpacity = 0.0
-    @Binding var selectedSearchConfig: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfiguration
     
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
@@ -49,11 +49,11 @@ struct MenuView: View {
                                 VStack(alignment: .leading) {
                                     HStack(alignment: .top) {
                                         Text("From:").bold()
-                                        Text("\(selectedSearchConfig.fromTranslateLanguage?.displayName ?? ""),")
+                                        Text("\(selectedSearchConfig.fromTranslateLanguage.displayName)")
                                     }
                                     HStack(alignment: .top) {
                                         Text("To:").bold()
-                                        Text("\(selectedSearchConfig.toTranslateLanguage?.displayName ?? "")")
+                                        Text("\(selectedSearchConfig.toTranslateLanguage.displayName)")
                                     }
                                 }
                             }

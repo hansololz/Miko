@@ -39,8 +39,8 @@ struct SettingsView: View {
     @State var showingAlert = false
     @State var showDeleteAlert = false
     @StateObject var locationManager = LocationManager()
-    @Binding var selectedSearchConfig: SearchConfig
-    @Query private var searchConfigs: [SearchConfig]
+    @Binding var selectedSearchConfig: SearchConfiguration
+    @Query private var searchConfigs: [SearchConfiguration]
     @Binding var selectedSearchConfigId: PersistentIdentifier? {
         didSet {
             if let id = selectedSearchConfigId {
@@ -146,15 +146,13 @@ struct SettingsView: View {
                 }
                 
                 if searchContent == .translate {
-                    if let from = selectedSearchConfig.fromTranslateLanguage, let to = selectedSearchConfig.toTranslateLanguage  {
-                        Section(header: Text("Translate")) {
-                            NavigationLink(destination: TranslateSettingsView(
-                                selectedSearchConfig: $selectedSearchConfig,
-                                from: from,
-                                to: to
-                            )) {
-                                Label("Choose Language", systemImage: "character.bubble")
-                            }
+                    Section(header: Text("Translate")) {
+                        NavigationLink(destination: TranslateSettingsView(
+                            selectedSearchConfig: $selectedSearchConfig,
+                            from: selectedSearchConfig.fromTranslateLanguage ?? .english,
+                            to: selectedSearchConfig.toTranslateLanguage ?? .chineseSimplified
+                        )) {
+                            Label("Choose Language", systemImage: "character.bubble")
                         }
                     }
                 }
@@ -299,7 +297,7 @@ struct ContactView: View {
 // Always push English back to the end of the array. The Camera processes the langauges in order.
 // If English is first in the array, characters from other languages won't be picked up.
 struct SupportedLangaugesView: View {
-    @Binding var selectedSearchConfig: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfiguration
     @State var selectedSearchLanguages: [SearchLanguage] {
         didSet {
             selectedSearchConfig.supportLanguages = selectedSearchLanguages
@@ -359,7 +357,7 @@ struct LanguageRow: View {
 }
 
 struct TranslateSettingsView: View {
-    @Binding var selectedSearchConfig: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfiguration
     @State var from: TranslateLanguage {
         didSet {
             selectedSearchConfig.fromTranslateLanguage = from
@@ -380,7 +378,7 @@ struct TranslateSettingsView: View {
                     from: from,
                     to: to
                 )) {
-                    Label(selectedSearchConfig.fromTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
+                    Label(selectedSearchConfig.fromTranslateLanguage.displayName, systemImage: "character.bubble")
                 }
             }
             
@@ -391,17 +389,17 @@ struct TranslateSettingsView: View {
                     from: from,
                     to: to
                 )) {
-                    Label(selectedSearchConfig.toTranslateLanguage?.displayName ?? "", systemImage: "character.bubble")
+                    Label(selectedSearchConfig.toTranslateLanguage.displayName, systemImage: "character.bubble")
                 }
             }
         }
         .navigationBarTitle("Translate")
         .toolbar {
             Button(action: {
-                if let newTo = selectedSearchConfig.fromTranslateLanguage, let newFrom = selectedSearchConfig.toTranslateLanguage {
-                    from = newFrom
-                    to = newTo
-                }
+                let oldFrom = selectedSearchConfig.fromTranslateLanguage
+                let oldTo = selectedSearchConfig.toTranslateLanguage
+                from = oldTo
+                to = oldFrom
             }) {
                 Image(systemName: "arrow.up.arrow.down")
             }
@@ -411,7 +409,7 @@ struct TranslateSettingsView: View {
 
 struct TranslateLanguageSelectionView: View {
     let isFrom: Bool
-    @Binding var selectedSearchConfig: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfiguration
     @State var from: TranslateLanguage {
         didSet {
             selectedSearchConfig.fromTranslateLanguage = from

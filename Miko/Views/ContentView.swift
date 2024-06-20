@@ -5,7 +5,7 @@ import AVFoundation
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var bookmarks: [Bookmark]
-    @Query private var searchConfigs: [SearchConfig]
+    @Query private var searchConfigs: [SearchConfiguration]
     @State private var isCameraReady = false
     @State private var searchText = ""
     @State private var selectSheetAnchor = restSheetAnchor
@@ -100,7 +100,7 @@ struct ContentView: View {
         }
     }
     
-    private func getSelectedSearchConfig(searchConfigs: [SearchConfig]) -> SearchConfig {
+    private func getSelectedSearchConfig(searchConfigs: [SearchConfiguration]) -> SearchConfiguration {
         let selectedSearchConfigId = loadSelectedSearchConfigId()
         
         if let selectedSearchConfig = searchConfigs.first(where: {

@@ -8,10 +8,10 @@ struct BottomSheetView: View {
     @Binding var showMenu: Bool
     @Binding var searchText: String
     @Binding var sheetOffset: CGFloat
-    @Binding var selectedSearchConfig: SearchConfig
+    @Binding var selectedSearchConfig: SearchConfiguration
     
     var modelContext: ModelContext
-    @Query(sort: \SearchConfig.modifiedTime, order: .reverse) private var searchConfigs: [SearchConfig]
+    @Query(sort: \SearchConfiguration.modifiedTime, order: .reverse) private var searchConfigs: [SearchConfiguration]
     @StateObject private var locationManager = LocationManager()
     @State private var selectedSearchConfigId: PersistentIdentifier? = loadSelectedSearchConfigId() {
         didSet {
