@@ -86,7 +86,7 @@ struct BottomSheetView: View {
                                 VStack {
                                     WebView(url: url)
                                 }
-                                .edgesIgnoringSafeArea(.all)
+                                .edgesIgnoringSafeArea(.bottom)
                                 .toolbar {
                                     ToolbarItem(placement: .navigationBarLeading) {
                                         Button(action: {
