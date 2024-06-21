@@ -123,7 +123,7 @@ struct ContentView: View {
         }
         try! modelContext.save()
         
-        let firstSearchConfig = defaultSearchConfigs[0]
+        let firstSearchConfig = defaultSearchConfigs[1]
         
         saveSelectedSearchConfigId(id: firstSearchConfig.id)
         

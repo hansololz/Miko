@@ -40,6 +40,17 @@ func createDefaultSearchConfigs() -> [SearchConfiguration] {
     return [
         SearchConfiguration(
             createdTime: Date.now,
+            modifiedTime: Calendar.current.date(byAdding: .second, value: 3, to: Date.now) ?? Date.now,
+            name: "All",
+            supportLanguages: [.englishUS, .chineseSimplified],
+            useLocationInSearchQuery: false,
+            searchEngine: .google,
+            searchContent: .all,
+            fromTranslateLanguage: .english,
+            toTranslateLanguage: .chineseSimplified
+        ),
+        SearchConfiguration(
+            createdTime: Date.now,
             modifiedTime: Calendar.current.date(byAdding: .second, value: 2, to: Date.now) ?? Date.now,
             name: "Images",
             supportLanguages: [.englishUS, .chineseSimplified],
