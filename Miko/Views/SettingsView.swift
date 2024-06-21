@@ -149,8 +149,8 @@ struct SettingsView: View {
                     Section(header: Text("Translate")) {
                         NavigationLink(destination: TranslateSettingsView(
                             selectedSearchConfig: $selectedSearchConfig,
-                            from: selectedSearchConfig.fromTranslateLanguage ?? .english,
-                            to: selectedSearchConfig.toTranslateLanguage ?? .chineseSimplified
+                            from: selectedSearchConfig.fromTranslateLanguage,
+                            to: selectedSearchConfig.toTranslateLanguage
                         )) {
                             Label("Choose Language", systemImage: "character.bubble")
                         }
@@ -202,7 +202,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle("Search Config")
             .navigationBarItems(leading: Button("Done") {
                 selectSheetAnchor = restSheetAnchor
             })
